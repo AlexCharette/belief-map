@@ -1,0 +1,16 @@
+[
+  {
+    "name": "inspire",
+    "path": "/inspire",
+    "component": "/home/acharette/repos/web/worldview_map/pages/inspire.vue",
+    "chunkName": "pages/inspire",
+    "_name": "_50d28218"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/home/acharette/repos/web/worldview_map/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_5bfd1d28"
+  }
+]
