@@ -42,10 +42,28 @@
           "children": []
         },
         {
+          "id": 16,
+          "name": "YER MOM'S FAT",
+          "notes": "",
+          "type": "scientificEvidence",
+          "references": [],
+          "isRoot": false,
+          "children": []
+        },
+        {
+          "id": 12,
+          "name": "VEGETABLES ARE DULL",
+          "notes": "",
+          "type": "observation",
+          "references": [],
+          "isRoot": false,
+          "children": []
+        },
+        {
           "id": 4,
           "name": "SEA CREATURES ARE BAD",
           "notes": "",
-          "type": "personalAssumption",
+          "type": "observation",
           "references": [],
           "isRoot": false,
           "children": []

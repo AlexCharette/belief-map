@@ -146,7 +146,7 @@ export default Vue.extend({
       this.initTransformData.y = Math.floor(NODE_HEIGHT);
     },
     buildTree(root: any) {
-      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH, HEIGHT_LEVEL]); // TODO [nodeWidth, levelHeight]
+      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH * 2, HEIGHT_LEVEL]); // TODO [nodeWidth, levelHeight]
       const tree = treeBuilder(d3.hierarchy(root));
       return [tree.descendants(), tree.links()];
     },

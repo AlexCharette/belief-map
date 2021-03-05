@@ -65,7 +65,7 @@ export default Vue.extend({
             // Create a new segment object
             const segment = {
               type: entry[0],
-              count: 1,
+              count: entry[1],
               colour: self.getTypeColour(entry[0]),
             } as Segment
             segments.push(segment)

@@ -5,8 +5,8 @@
       :key="index"
       fill="transparent"
       :stroke="getHexColour(segment.colour)"
-      :stroke-width="(20 * segment.count)"
-      :d="describeArc(circleData.x, circleData.y, circleData.radius + (5 * segment.count), arcPoints[index][0], arcPoints[index][1])"
+      :stroke-width="(strokeWidth + (segment.count * 3))"
+      :d="describeArc(circleData.x, circleData.y, circleData.radius, arcPoints[index][0], arcPoints[index][1])"
     ></path>
   </svg>
   <svg v-else>
@@ -16,7 +16,7 @@
       :cy="circleData.y"
       :r="circleData.radius"
       :stroke="getHexColour(this.segments[0].colour)"
-      :stroke-width="20"
+      :stroke-width="strokeWidth"
     ></circle>
   </svg>
 </template>
@@ -31,6 +31,7 @@ export default Vue.extend({
   data() {
     return {
       numSegments: this.segments.length,
+      strokeWidth: 15 as number,
     }
   },
   computed: {
