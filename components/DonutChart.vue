@@ -1,5 +1,5 @@
 <template>
-  <svg :width="svgSize" :height="svgSize" :viewBox="`0 0 ${svgSize} ${svgSize}`">
+  <svg v-if="(numSegments > 1)" svg :width="svgSize" :height="svgSize">
     <path 
       v-for="(segment, index) in segments" 
       :key="index"
@@ -8,6 +8,16 @@
       :stroke-width="(10 * segment.count)"
       :d="describeArc(circleData.x, circleData.y, circleData.radius + (5 * segment.count), arcPoints[index][0], arcPoints[index][1])"
     ></path>
+  </svg>
+  <svg v-else :width="svgSize" :height="svgSize">
+    <circle 
+      fill="transparent"
+      :cx="circleData.x"
+      :cy="circleData.y"
+      :r="circleData.radius"
+      :stroke="getHexColour(this.segments[0].colour)"
+      :stroke-width="10"
+    ></circle>
   </svg>
 </template>
 
@@ -85,6 +95,9 @@ export default Vue.extend({
       };
     },
     // END OF TAKEN CODE
+  },
+  mounted() {
+    console.log(`Num segments: ${this.numSegments}`)
   }
 })
 </script>

@@ -11,8 +11,8 @@
   "BeliefTree": {
     "description": "Auto imported from components/BeliefTree.vue"
   },
-  "Dashboard": {
-    "description": "Auto imported from components/Dashboard.vue"
+  "D3Tree": {
+    "description": "Auto imported from components/D3Tree.vue"
   },
   "DonutChart": {
     "description": "Auto imported from components/DonutChart.vue"

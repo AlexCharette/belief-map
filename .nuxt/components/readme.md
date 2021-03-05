@@ -10,7 +10,7 @@ You can directly use them in pages and other components without the need to impo
 - `<BeliefDetails>` | `<belief-details>` (components/BeliefDetails.vue)
 - `<BeliefNode>` | `<belief-node>` (components/BeliefNode.vue)
 - `<BeliefTree>` | `<belief-tree>` (components/BeliefTree.vue)
-- `<Dashboard>` | `<dashboard>` (components/Dashboard.vue)
+- `<D3Tree>` | `<d3tree>` (components/D3Tree.vue)
 - `<DonutChart>` | `<donut-chart>` (components/DonutChart.vue)
 - `<Logo>` | `<logo>` (components/Logo.vue)
 - `<RootNode>` | `<root-node>` (components/RootNode.vue)
