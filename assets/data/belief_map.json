@@ -7,6 +7,15 @@
   "isRoot": true,
   "children": [
     {
+      "id": 2,
+      "name": "SUFFERING IS GOOD FOR YOU",
+      "notes": "",
+      "type": "personalConclusion",
+      "references": [],
+      "isRoot": false,
+      "children": []
+    },
+    {
       "id": 1,
       "name": "LOBSTERS PRODUCE CORTISOL",
       "notes": "",

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>So-and-so's Beliefs</h1>
-      <d-3-tree :dataSet="beliefData"></d-3-tree>
+      <d-3-tree :dataSet="beliefData" style="width: 800px; height: 600px;"></d-3-tree>
   </div>
 </template>
 

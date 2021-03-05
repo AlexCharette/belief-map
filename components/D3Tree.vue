@@ -1,22 +1,23 @@
 <template>
-  <div>
-    <svg id="belief-map"></svg>
-    <div>
-      <!-- <transition-group name="tree-node" tag="div" class="annoying"> -->
-          <belief-node 
-            v-for="(node, index) of nodes"
-            :index="index" 
-            :node="node" 
-            :children="node.children"
-            :key="node.data.id"
-            :style="{
-                left: formatDimension(node.x),
-                top: formatDimension(node.y),
-                width: formatDimension(320),
-                height: formatDimension(320)
-              }"
-          ></belief-node>
-      <!-- </transition-group> -->
+  <div id="tree-container" ref="container">
+    <svg id="belief-map" :style="initialTransformStyle"></svg>
+    <div id="node-container" :style="initialTransformStyle">
+      <transition-group name="tree-node" tag="div" class="annoying">
+        <belief-node
+          v-for="(node, index) of nodes"
+          :index="index"
+          :node="node"
+          :children="node.children"
+          :key="node.data.id"
+          class="node"
+          :style="{
+            left: formatDimension(node.x),
+            top: formatDimension(node.y),
+            width: formatDimension(320),
+            height: formatDimension(320)
+          }"
+        ></belief-node>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -26,7 +27,11 @@ import Vue from "vue";
 import * as uuid from "uuid";
 import * as d3 from "d3";
 import BeliefNode from "~/components/BeliefNode.vue";
-import { BeliefType, BezierData, Node } from "~/belief-map.types";
+import { BeliefType } from "~/belief-map.types";
+
+const NODE_WIDTH = 320;
+const NODE_HEIGHT = 320;
+const HEIGHT_LEVEL = 500;
 
 export default Vue.extend({
   name: "D3Tree",
@@ -39,27 +44,37 @@ export default Vue.extend({
       links: [] as any[],
       nodes: [] as any[],
       currentNode: null as any, // OLD
-      duration: 0, // OLD
+      duration: 250,
       index: 0, // OLD
       newNode: null as unknown, // OLD
-      nodeObj: null as unknown, // OLD
-      root: null as any, // OLD
-      svg: null as any, // OLD
-      treeMap: null as any, // OLD
+      root: null as any,
+      svg: null as any,
+      initTransformData: {
+        x: 0 as number,
+        y: 0 as number,
+      } as any,
     };
+  },
+  computed: {
+    initialTransformStyle: function (): Object {
+      return {
+        transform: `scale(1) translate(${this.initTransformData.x}px, ${this.initTransformData.y}px)`,
+        transformOrigin: "center",
+      };
+    },
   },
   methods: {
     addNode(name: string) {
-      // TODO Open node creation widget
+      // TODO Tell store to open node creation widget
       const id = uuid.v4();
       const parent = this.currentNode;
       const child = {
-          id,
-          name: 'Some name',
-          notes: '',
-          type: BeliefType.ScientificEvidence,
-          references: [],
-          isRoot: false,
+        id,
+        name: "Some name",
+        notes: "",
+        type: BeliefType.ScientificEvidence,
+        references: [],
+        isRoot: false,
         children: [],
       };
 
@@ -93,23 +108,30 @@ export default Vue.extend({
       }
     },
     formatDimension(dimension: any) {
-      if (typeof dimension === 'number') return `${dimension}px`
-      if (dimension.indexOf('px') !== -1) {
-        return dimension
+      if (typeof dimension === "number") return `${dimension}px`;
+      if (dimension.indexOf("px") !== -1) {
+        return dimension;
       } else {
-        return `${dimension}px`
+        return `${dimension}px`;
       }
     },
     addUniqueKey(root: any) {
-      const queue = [root]
+      const queue = [root];
       while (queue.length !== 0) {
-        const node = queue.pop()
-        node.id = uuid.v4()
+        const node = queue.pop();
+        node.id = uuid.v4();
         if (node.children) {
-          queue.push(...node.children)
+          queue.push(...node.children);
         }
       }
-      return root
+      return root;
+    },
+    initTransform() {
+      const container = this.$refs.container as Vue;
+      const containerWidth = (this.$refs.container as any).offsetWidth;
+      const containerHeight = (this.$refs.container as any).offsetHeight;
+      this.initTransformData.x = Math.floor(containerWidth / 2);
+      this.initTransformData.y = Math.floor(NODE_HEIGHT);
     },
     buildTree(root: any) {
       const treeBuilder = d3.tree().nodeSize([100, 100]); // TODO [nodeWidth, levelHeight]
@@ -123,25 +145,24 @@ export default Vue.extend({
       const width = 960 - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
-      this.svg = d3
-        .select("#belief-map")
-        .attr("viewBox", `0, 0, ${1000}, ${800}`)
-        .append("g")
-        // .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
       const [nodes, links] = this.buildTree(source);
       this.links = links;
 
-      const linkObjects = this.svg
-        .selectAll(".link")
-        .data(links, (d: any) => {
-          return `${d.source.data.id}-${d.target.data.id}`;
-        });
+      this.svg = d3.select("#belief-map");
+
+      const linkObjects = this.svg.selectAll(".link").data(links, (d: any) => {
+        return `${d.source.data.id}-${d.target.data.id}`;
+      });
 
       // Enter any new links at the parent's previous position.
       linkObjects
         .enter()
-        .insert("path", "g")
+        .append("path")
+        .style("opacity", 0)
+        .transition()
+        .duration(this.duration)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", 1)
         .attr("class", "link")
         .attr("d", (d: any) => {
           return self.diagonal(d);
@@ -150,6 +171,7 @@ export default Vue.extend({
       linkObjects
         .transition()
         .duration(self.duration)
+        .ease(d3.easeCubicInOut)
         .attr("d", (d: any) => {
           return self.diagonal(d);
         });
@@ -158,20 +180,19 @@ export default Vue.extend({
         .exit()
         .transition()
         .duration(self.duration)
-        .attr("d", (d: any) => {
-          return self.diagonal(d);
-        })
+        .ease(d3.easeCubicInOut)
+        .style("opacity", 0)
         .remove();
 
       this.nodes = nodes;
     },
     diagonal(d: any) {
-      const self = this
-      const linkPath = d3.path()
-      let source = { x: d.source.x, y: d.source.y }
-      let target = { x: d.target.x, y: d.target.y }
-      linkPath.moveTo(source.x, source.y)
-      linkPath.moveTo(target.x, target.y)
+      const self = this;
+      const linkPath = d3.path();
+      let source = { x: d.source.x, y: d.source.y };
+      let target = { x: d.target.x, y: d.target.y };
+      linkPath.moveTo(source.x, source.y);
+      linkPath.moveTo(target.x, target.y);
       return linkPath.toString();
     },
     onClick(node: any) {
@@ -187,27 +208,61 @@ export default Vue.extend({
     },
   },
   created() {
-    this.addUniqueKey(this.dataSet)
-    console.log(`${this.dataSet}`)
+    this.addUniqueKey(this.dataSet);
+    console.log(`${this.dataSet}`);
   },
   mounted() {
     this.index = 0;
 
     this.duration = 250;
 
-    this.root = this.dataSet
+    this.root = this.dataSet;
 
     this.update(this.root);
+    this.initTransform();
   },
 });
 </script>
 
-<style lang="scss" scoped>
-#belief-map {
-  .link {
-    stroke-width: 2px !important;
-    fill: transparent !important;
-    stroke: red !important;
+<style lang="scss">
+#tree-container {
+  position: relative;
+  // overflow: hidden;
+  #belief-map {
+    position: relative;
+    .link {
+      stroke-width: 2px !important;
+      fill: transparent !important;
+      stroke: red !important;
+    }
+  }
+
+  #node-container {
+    z-index: 1;
+  }
+
+  #belief-map,
+  #node-container,
+  svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible;
+    transform-origin: 0 50%;
+  }
+
+  .node {
+    position: absolute;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: content-box;
+    transition: all 0.8s;
+    transition-timing-function: ease-in-out;
   }
 }
 </style>
