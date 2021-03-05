@@ -8,14 +8,10 @@
           :index="index"
           :node="node"
           :children="node.children"
+          :shapeData="{x: node.x, y: node.y, size: nodeWidth}"
           :key="node.data.id"
           class="node"
-          :style="{
-            left: formatDimension(node.x),
-            top: formatDimension(node.y),
-            width: formatDimension(320),
-            height: formatDimension(320)
-          }"
+          :style="nodeStyle(node)"
         ></belief-node>
       </transition-group>
     </div>
@@ -29,9 +25,9 @@ import * as d3 from "d3";
 import BeliefNode from "~/components/BeliefNode.vue";
 import { BeliefType } from "~/belief-map.types";
 
-const NODE_WIDTH = 320;
-const NODE_HEIGHT = 320;
-const HEIGHT_LEVEL = 500;
+const NODE_WIDTH = 100;
+const NODE_HEIGHT = 100;
+const HEIGHT_LEVEL = 200;
 
 export default Vue.extend({
   name: "D3Tree",
@@ -41,6 +37,9 @@ export default Vue.extend({
   props: ["dataSet"],
   data() {
     return {
+      nodeWidth: NODE_WIDTH as number,
+      nodeHeight: NODE_HEIGHT as number,
+      heightLevel: HEIGHT_LEVEL as number,
       links: [] as any[],
       nodes: [] as any[],
       currentNode: null as any, // OLD
@@ -64,6 +63,19 @@ export default Vue.extend({
     },
   },
   methods: {
+    nodeStyle(node: any) {
+      return node.data.isRoot ? {
+        left: this.formatDimension(node.x + (this.nodeWidth / 2)),
+        top: this.formatDimension(node.y + (this.nodeHeight / 2)),
+        width: this.formatDimension(this.nodeWidth),
+        height: this.formatDimension(this.nodeHeight)
+      } : {
+        left: this.formatDimension(this.nodeWidth / 2),
+        top: this.formatDimension(this.nodeHeight / 2),
+        width: this.formatDimension(this.nodeWidth),
+        height: this.formatDimension(this.nodeHeight)
+      }
+    },
     addNode(name: string) {
       // TODO Tell store to open node creation widget
       const id = uuid.v4();
@@ -134,16 +146,12 @@ export default Vue.extend({
       this.initTransformData.y = Math.floor(NODE_HEIGHT);
     },
     buildTree(root: any) {
-      const treeBuilder = d3.tree().nodeSize([100, 100]); // TODO [nodeWidth, levelHeight]
+      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH, HEIGHT_LEVEL]); // TODO [nodeWidth, levelHeight]
       const tree = treeBuilder(d3.hierarchy(root));
       return [tree.descendants(), tree.links()];
     },
     update(source: any) {
       const self = this;
-
-      const margin = { top: -200, right: 90, bottom: 30, left: 90 };
-      const width = 960 - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
 
       const [nodes, links] = this.buildTree(source);
       this.links = links;
@@ -187,7 +195,6 @@ export default Vue.extend({
       this.nodes = nodes;
     },
     diagonal(d: any) {
-      const self = this;
       const linkPath = d3.path();
       let source = { x: d.source.x, y: d.source.y };
       let target = { x: d.target.x, y: d.target.y };

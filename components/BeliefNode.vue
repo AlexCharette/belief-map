@@ -43,9 +43,9 @@ export default Vue.extend({
   },
   computed: {
     circleData() {
-      const x = 80
-      const y = 80
-      const radius = 60
+      const x = this.shapeData.x
+      const y = this.shapeData.y
+      const radius = this.shapeData.size / 3
       return {
         x,
         y,

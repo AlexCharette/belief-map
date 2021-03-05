@@ -1,22 +1,22 @@
 <template>
-  <svg v-if="(numSegments > 1)" svg :width="svgSize" :height="svgSize">
+  <svg v-if="(numSegments > 1)">
     <path 
       v-for="(segment, index) in segments" 
       :key="index"
       fill="transparent"
       :stroke="getHexColour(segment.colour)"
-      :stroke-width="(10 * segment.count)"
+      :stroke-width="(20 * segment.count)"
       :d="describeArc(circleData.x, circleData.y, circleData.radius + (5 * segment.count), arcPoints[index][0], arcPoints[index][1])"
     ></path>
   </svg>
-  <svg v-else :width="svgSize" :height="svgSize">
+  <svg v-else>
     <circle 
       fill="transparent"
       :cx="circleData.x"
       :cy="circleData.y"
       :r="circleData.radius"
       :stroke="getHexColour(this.segments[0].colour)"
-      :stroke-width="10"
+      :stroke-width="20"
     ></circle>
   </svg>
 </template>
