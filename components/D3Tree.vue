@@ -192,7 +192,7 @@ export default Vue.extend({
       let source = { x: d.source.x, y: d.source.y };
       let target = { x: d.target.x, y: d.target.y };
       linkPath.moveTo(source.x, source.y);
-      linkPath.moveTo(target.x, target.y);
+      linkPath.lineTo(target.x, target.y);
       return linkPath.toString();
     },
     onClick(node: any) {
@@ -208,8 +208,7 @@ export default Vue.extend({
     },
   },
   created() {
-    this.addUniqueKey(this.dataSet);
-    console.log(`${this.dataSet}`);
+    this.addUniqueKey(this.dataSet)
   },
   mounted() {
     this.index = 0;

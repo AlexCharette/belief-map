@@ -96,8 +96,5 @@ export default Vue.extend({
     },
     // END OF TAKEN CODE
   },
-  mounted() {
-    console.log(`Num segments: ${this.numSegments}`)
-  }
 })
 </script>

@@ -129,9 +129,7 @@ export default Vue.extend({
     }
   },
   created() {
-    console.log('new node!')
     if (this.children === undefined) {
-      console.log('This node has no children')
       this.hasChildren = false
     }
   },
