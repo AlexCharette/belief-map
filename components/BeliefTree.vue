@@ -245,6 +245,9 @@ export default Vue.extend({
       this.update(node)
     },
   },
+  created() {
+    console.log('New node!')
+  },
   mounted() {
     const margin = { top: -200, right: 90, bottom: 30, left: 90 }
     const width = 960 - margin.left - margin.right
