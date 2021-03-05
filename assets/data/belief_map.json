@@ -1,5 +1,68 @@
 {
+  "data": {
+    "id": 0,
     "name": "Alexander Charette's Belief Map",
-    "root": null,
-    "children": []
+    "notes": "",
+    "type": "personalConclusion",
+    "references": [],
+    "isRoot": true
+  },
+  "children": [
+    {
+      "data": {
+        "id": 1,
+        "name": "LOBSTERS PRODUCE CORTISOL",
+        "notes": "",
+        "type": "scientificEvidence",
+        "references": [],
+        "isRoot": false
+      },
+      "children": [
+        {
+          "data": {
+            "id": 2,
+            "name": "GOOFS GONNA GOOF",
+            "notes": "",
+            "type": "religiousThinking",
+            "references": [],
+            "isRoot": false
+          },
+          "children": []
+        },
+        {
+          "data": {
+            "id": 3,
+            "name": "WORMHOLES MAKE MY TAINT TIGGLE",
+            "notes": "",
+            "type": "scientificEvidence",
+            "references": [],
+            "isRoot": false
+          },
+          "children": []
+        },
+        {
+          "data": {
+            "id": 4,
+            "name": "SEA CREATURES ARE BAD",
+            "notes": "",
+            "type": "personalAssumption",
+            "references": [],
+            "isRoot": false
+          },
+          "children": []
+        },
+        {
+          "data": {
+            "id": 1,
+            "name": "TRIBESPEOPLE EAT FAMILY MEMBERS",
+            "notes": "",
+            "type": "observation",
+            "references": [],
+            "isRoot": false
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
 }

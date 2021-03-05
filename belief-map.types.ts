@@ -14,10 +14,11 @@ export interface BeliefReference {
   link: string,
 }
 
-export interface Segment {
-  type: BeliefType,
-  count: number,
-  colour: string,
+export interface BezierData {
+  parentHeight: number,
+  halfSize: number,
+  radius: number,
+  y: number,
 }
 
 export interface CircleData {
@@ -26,12 +27,29 @@ export interface CircleData {
   radius: number,
 }
 
+export interface Segment {
+  type: BeliefType,
+  count: number,
+  colour: string,
+}
+
+// TODO is this necessary?
+export interface JsonNode {
+  id: string,
+  name: string,
+  notes: string,
+  type: string,
+  references: any[],
+  children: any[],
+}
+
 export interface NodeData {
   id: string,
   name: string,
   notes: string,
   type: BeliefType,
-  references: BeliefReference[], // TODO define this
+  references: BeliefReference[],
+  isRoot: boolean,
 }
 
 export interface Node {

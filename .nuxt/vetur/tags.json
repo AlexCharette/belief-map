@@ -11,11 +11,17 @@
   "BeliefTree": {
     "description": "Auto imported from components/BeliefTree.vue"
   },
+  "Dashboard": {
+    "description": "Auto imported from components/Dashboard.vue"
+  },
   "DonutChart": {
     "description": "Auto imported from components/DonutChart.vue"
   },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
+  },
+  "RootNode": {
+    "description": "Auto imported from components/RootNode.vue"
   },
   "VuetifyLogo": {
     "description": "Auto imported from components/VuetifyLogo.vue"

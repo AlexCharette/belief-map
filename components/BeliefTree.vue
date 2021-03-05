@@ -1,8 +1,20 @@
 <template>
-  <div>
-    <h1>{{ beliefData.name }}</h1>
-    <belief-node></belief-node>
-  </div>
+  <g>
+    <belief-node
+      :index="0"
+      :distance="5"
+      :bezierData="bezierData"
+      :shapeData="{ radius: 60 }"
+      :node="node"
+    ></belief-node>
+    <g v-if="node.children && node.children.length">
+      <belief-tree 
+        v-for="child in node.children"
+        :key="child.id"
+        :node="child"
+      ></belief-tree>
+    </g>
+  </g>
 </template>
 
 <script lang="ts">
@@ -10,41 +22,34 @@ import Vue from 'vue'
 import * as uuid from 'uuid'
 import * as d3 from 'd3'
 import BeliefNode from '~/components/BeliefNode.vue'
-
-// interface Node {
-//   id: string,
-//   data: {},
-//   parent: Node,
-//   depth: number,
-//   children: Array<Node>,
-// }
-
-// interface Link {
-//   source: Node,
-//   target: Node,
-// }
+import { BezierData } from '~/belief-map.types'
 
 export default Vue.extend({
   name: 'BeliefTree',
   components: {
     BeliefNode,
   },
+  props: ['node'],
   data() {
     return {
-      beliefData: null as any,
-      currentNode: null as any,
-      duration: 0,
-      index: 0,
-      links: [] as any[],
-      newNode: null as unknown,
-      nodeObj: null as unknown,
-      nodes: [] as any[],
-      root: null as any,
-      svg: null as any,
-      treeMap: null as any,
+      bezierData: {
+        halfSize: 30, parentHeight: 10, y: 50, radius: 10,
+      } as BezierData,
+      beliefData: null as any, // OLD
+      currentNode: null as any, // OLD
+      duration: 0, // OLD
+      index: 0, // OLD
+      links: [] as any[], // OLD
+      newNode: null as unknown, // OLD
+      nodeObj: null as unknown, // OLD
+      nodes: [] as any[], // OLD
+      root: null as any, // OLD
+      svg: null as any, // OLD
+      treeMap: null as any, // OLD
     }
   },
   computed: {
+    // OLD
     tree() {
       return d3.tree()
     }
@@ -239,9 +244,6 @@ export default Vue.extend({
       }
       this.update(node)
     },
-  },
-  created() {
-    this.beliefData = require('~/assets/data/belief_map.json')
   },
   mounted() {
     const margin = { top: -200, right: 90, bottom: 30, left: 90 }

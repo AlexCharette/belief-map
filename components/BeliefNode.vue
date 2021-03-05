@@ -1,5 +1,18 @@
 <template>
-  <donut-chart :segments="segments" :circleData="circleData"></donut-chart>
+  <g>
+    <!-- <path 
+      :d="
+        'M' + bezierData.halfSize + ',' + (bezierData.parentHeight + bezierData.radius) + 
+        ' C' + bezierData.halfSize + ',' + bezierData.halfSize + ' ' + x + 
+        ',' + bezierData.halfSize + ' ' + x + ',' + bezierData.y
+      "
+    ></path> -->
+    <donut-chart 
+      :segments="segments" 
+      :circleData="getCircleData"
+      @click="onClick"
+    ></donut-chart>
+  </g>
 </template>
 
 <script lang="ts">
@@ -23,19 +36,23 @@ export default Vue.extend({
   components: {
     DonutChart,
   },
-  props: ['id', 'name', 'notes', 'references', 'type', 'children'],
+  props: ['index', 'node', 'distance', 'bezierData', 'shapeData'],
   data() {
     return {
+      id: this.node.data.id,
+      name: this.node.data.name,
+      notes: this.node.data.notes,
+      references: this.node.data.references,
+      type: this.node.data.type,
+      children: this.node.children,
       numTypes: 0 as number,
       segmentData: [] as Segment[],
-      circleData: {
-        x: 80 as number,
-        y: 80 as number,
-        radius: 60 as number,
-      } as CircleData,
     }
   },
   computed: {
+    x() {
+      return this.distance * this.index + this.distance * 0.5
+    },
     segments() {
       const self = this
       const typeCount = this.childrenTypeCount
@@ -72,6 +89,23 @@ export default Vue.extend({
     },
   },
   methods: {
+    copy() {
+      // TODO Send data to store
+    },
+    onClick(event: any) {
+      console.log('allo!')
+      // TODO Send relevant data to store
+    },
+    getCircleData() {
+      const x = this.x as number
+      const y = this.bezierData.y as number
+      const radius = this.shapeData.radius as number
+      return {
+        x,
+        y,
+        radius,
+      } as CircleData
+    },
     getTypeColour(type: string) {
       switch(type) {
         case BeliefType.ScientificEvidence:
@@ -81,7 +115,7 @@ export default Vue.extend({
         case BeliefType.PersonalConclusion:
           return 'indigo darken-3'
         case BeliefType.PersonalAssumption:
-          return 'deep-purple darken 3'
+          return 'deep-purple darken-3'
         case BeliefType.ReligiousThinking:
           return 'amber darken-3'
         case BeliefType.StatedByAuthority:
