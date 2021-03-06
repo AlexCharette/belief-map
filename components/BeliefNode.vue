@@ -1,10 +1,21 @@
 <template>
-  <!-- <div class="node">Halloooooooo</div> -->
+  <div>
     <donut-chart 
+      :node="node"
       :segments="segments" 
       :circleData="circleData"
-      @click="onClick"
     ></donut-chart>
+    <p
+    @click="onClick"
+    :style="{
+      position: 'absolute',
+      textAlign: 'center',
+      minWidth: '75px',
+      top: shapeData.y + 'px',
+      left: shapeData.x + 'px',
+    }"
+    >hi there</p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,9 +63,9 @@ export default Vue.extend({
         radius,
       } as CircleData
     },
-    x() {
-      return this.distance * this.index + this.distance * 0.5
-    },
+    // x() {
+    //   return this.distance * this.index + this.distance * 0.5
+    // },
     segments() {
       const self = this
       let segments = [] as Segment[]
@@ -105,12 +116,15 @@ export default Vue.extend({
     },
     onClick(event: any) {
       console.log('allo!')
-      // TODO Send relevant data to store
+      this.$store.commit('nodes/set', this.node)
+      if (!this.$store.state.displayBeliefDetails) {
+        this.$store.commit('display/toggleDisplayBeliefDetails')
+      }
     },
     getTypeColour(type: string) {
       switch(type) {
         case BeliefType.ScientificEvidence:
-          return 'green darken-3'
+          return 'light-green darken-3'
         case BeliefType.Observation:
           return 'blue darken-3'
         case BeliefType.PersonalConclusion:

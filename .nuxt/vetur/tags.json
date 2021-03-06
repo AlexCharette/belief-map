@@ -1,6 +1,9 @@
 {
-  "AddNode": {
-    "description": "Auto imported from components/AddNode.vue"
+  "AddBelief": {
+    "description": "Auto imported from components/AddBelief.vue"
+  },
+  "BaseWidget": {
+    "description": "Auto imported from components/BaseWidget.vue"
   },
   "BeliefDetails": {
     "description": "Auto imported from components/BeliefDetails.vue"
@@ -19,6 +22,9 @@
   },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
+  },
+  "NodeDetails": {
+    "description": "Auto imported from components/NodeDetails.vue"
   },
   "RootNode": {
     "description": "Auto imported from components/RootNode.vue"

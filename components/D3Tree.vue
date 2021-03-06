@@ -19,15 +19,18 @@
 </template>
 
 <script lang="ts">
+
+// TODO Type combinations should be cumulative (passed up through descendants)
+
 import Vue from "vue";
 import * as uuid from "uuid";
 import * as d3 from "d3";
 import BeliefNode from "~/components/BeliefNode.vue";
 import { BeliefType } from "~/belief-map.types";
 
-const NODE_WIDTH = 100;
-const NODE_HEIGHT = 100;
-const HEIGHT_LEVEL = 200;
+const NODE_WIDTH = 75;
+const NODE_HEIGHT = 75;
+const HEIGHT_LEVEL = 225;
 
 export default Vue.extend({
   name: "D3Tree",
@@ -195,12 +198,23 @@ export default Vue.extend({
       this.nodes = nodes;
     },
     diagonal(d: any) {
-      const linkPath = d3.path();
-      let source = { x: d.source.x, y: d.source.y };
-      let target = { x: d.target.x, y: d.target.y };
-      linkPath.moveTo(source.x, source.y);
-      linkPath.lineTo(target.x, target.y);
-      return linkPath.toString();
+      const linkPath = d3.linkVertical();
+      // let source = { x: d.source.x, y: d.source.y };
+      // let target = { x: d.target.x, y: d.target.y };
+      linkPath
+          .x((d: any) => {
+            return d.x
+          })
+          .y((d: any) => {
+            return d.y
+          })
+          .source((d: any) => {
+            return d.source
+          })
+          .target((d: any) => {
+            return d.target
+          })
+      return linkPath(d);
     },
     onClick(node: any) {
       this.currentNode = node;
@@ -239,7 +253,7 @@ export default Vue.extend({
     .link {
       stroke-width: 2px !important;
       fill: transparent !important;
-      stroke: red !important;
+      stroke: #757575 !important;
     }
   }
 

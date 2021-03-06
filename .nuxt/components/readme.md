@@ -6,12 +6,14 @@ You can directly use them in pages and other components without the need to impo
 
 **Tip:** If a component is conditionally rendered with `v-if` and is big, it is better to use `Lazy` or `lazy-` prefix to lazy load.
 
-- `<AddNode>` | `<add-node>` (components/AddNode.vue)
+- `<AddBelief>` | `<add-belief>` (components/AddBelief.vue)
+- `<BaseWidget>` | `<base-widget>` (components/BaseWidget.vue)
 - `<BeliefDetails>` | `<belief-details>` (components/BeliefDetails.vue)
 - `<BeliefNode>` | `<belief-node>` (components/BeliefNode.vue)
 - `<BeliefTree>` | `<belief-tree>` (components/BeliefTree.vue)
 - `<D3Tree>` | `<d3tree>` (components/D3Tree.vue)
 - `<DonutChart>` | `<donut-chart>` (components/DonutChart.vue)
 - `<Logo>` | `<logo>` (components/Logo.vue)
+- `<NodeDetails>` | `<node-details>` (components/NodeDetails.vue)
 - `<RootNode>` | `<root-node>` (components/RootNode.vue)
 - `<VuetifyLogo>` | `<vuetify-logo>` (components/VuetifyLogo.vue)

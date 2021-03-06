@@ -1,9 +1,5 @@
 <template>
-  <v-sheet
-    :rounded="rounded"
-    height="100"
-    width="100"
-  >
+  <base-widget>
     <v-form v-model="valid" @submit.prevent="submit">
       <v-container>
         <v-row>
@@ -38,13 +34,18 @@
         </v-row>
       </v-container>
     </v-form>
-  </v-sheet>
+  </base-widget>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import BaseWidget from '~/components/BaseWidget.vue'
+
 export default Vue.extend({
-  name: 'AddNode',
+  name: 'AddBelief',
+  components: {
+    BaseWidget
+  },
   props: ['parentName'],
   data: () => {
     return {

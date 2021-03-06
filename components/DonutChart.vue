@@ -1,17 +1,25 @@
 <template>
-  <svg v-if="(numSegments > 1)">
+  <svg v-if="(numSegments > 1)" @click="onClick">
+    <circle 
+      fill="white"
+      :cx="circleData.x"
+      :cy="circleData.y"
+      :r="circleData.radius"
+      :stroke="getHexColour(this.segments[0].colour)"
+      :stroke-width="1"
+    ></circle>
     <path 
       v-for="(segment, index) in segments" 
       :key="index"
-      fill="transparent"
+      fill="white"
       :stroke="getHexColour(segment.colour)"
       :stroke-width="(strokeWidth + (segment.count * 3))"
       :d="describeArc(circleData.x, circleData.y, circleData.radius, arcPoints[index][0], arcPoints[index][1])"
     ></path>
   </svg>
-  <svg v-else>
+  <svg v-else @click="onClick">
     <circle 
-      fill="transparent"
+      fill="white"
       :cx="circleData.x"
       :cy="circleData.y"
       :r="circleData.radius"
@@ -27,7 +35,7 @@ import { CircleData, Segment } from '~/belief-map.types'
 
 export default Vue.extend({
   name: 'DonutChart',
-  props: ['segments', 'circleData'],
+  props: ['node', 'segments', 'circleData'],
   data() {
     return {
       numSegments: this.segments.length,
@@ -53,8 +61,17 @@ export default Vue.extend({
     }
   },
   methods: {
+    onClick(event: any) {
+      console.log('allo!')
+      this.$store.commit('nodes/set', this.node)
+      if (!this.$store.state.displayBeliefDetails) {
+        this.$store.commit('display/toggleDisplayBeliefDetails')
+      }
+    },
     getHexColour(name: string) {
       switch (name) {
+        case 'light-green darken-3':
+          return '#558B2F'
         case 'green darken-3':
           return '#2E7D32'
         case 'blue darken-3': 

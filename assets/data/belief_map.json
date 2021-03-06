@@ -13,7 +13,17 @@
       "type": "personalConclusion",
       "references": [],
       "isRoot": false,
-      "children": []
+      "children": [
+        {
+          "id": 7,
+          "name": "GOD HATES SNITCHES",
+          "notes": "",
+          "type": "personalAssumption",
+          "references": [],
+          "isRoot": false,
+          "children": []
+        }
+      ]
     },
     {
       "id": 1,
