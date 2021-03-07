@@ -2,7 +2,7 @@
   <div id="tree-container" ref="container">
     <svg id="belief-map" :style="initialTransformStyle"></svg>
     <div id="node-container" :style="initialTransformStyle">
-      <transition-group name="tree-node" tag="div" class="annoying">
+      <!-- <transition-group name="tree-node" tag="div" class="annoying"> -->
         <belief-node
           v-for="(node, index) of nodes"
           :index="index"
@@ -13,7 +13,7 @@
           class="node"
           :style="nodeStyle(node)"
         ></belief-node>
-      </transition-group>
+      <!-- </transition-group> -->
     </div>
   </div>
 </template>
@@ -131,9 +131,14 @@ export default Vue.extend({
       }
     },
     addUniqueKey(root: any) {
+      // TODO this is modifiying state data which is no bueno
       const queue = [root];
       while (queue.length !== 0) {
         const node = queue.pop();
+        if (node === undefined) {
+          console.log('Node is undefined')
+          return
+        }
         node.id = uuid.v4();
         if (node.children) {
           queue.push(...node.children);
@@ -142,7 +147,6 @@ export default Vue.extend({
       return root;
     },
     initTransform() {
-      const container = this.$refs.container as Vue;
       const containerWidth = (this.$refs.container as any).offsetWidth;
       const containerHeight = (this.$refs.container as any).offsetHeight;
       this.initTransformData.x = Math.floor(containerWidth / 2);
@@ -227,6 +231,15 @@ export default Vue.extend({
       }
       this.update(node);
     },
+  },
+  watch: {
+    dataSet(newData: any, oldData: any) {
+      this.addUniqueKey(this.dataSet)
+      this.root = this.dataSet;
+
+      this.update(this.root);
+      this.initTransform();
+    }
   },
   created() {
     this.addUniqueKey(this.dataSet)

@@ -16,7 +16,8 @@ export const actions = {
   export(state: any) {
     // TODO handle data exportation
   },
-  save(state: any) {
-    localStorage.treeData = state.tree
+  save(context: any) {
+    console.log(JSON.stringify(context.state.tree))
+    localStorage.treeData = JSON.stringify(context.state.tree)
   }
 }

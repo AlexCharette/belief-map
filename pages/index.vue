@@ -1,6 +1,9 @@
 <template>
   <div>
-    <file-input></file-input>
+    <v-row>
+      <file-input></file-input>
+      <v-btn @click.prevent="saveTree">Save</v-btn>
+    </v-row>
     <belief-details v-if="displayBeliefDetails"></belief-details>
     <add-belief v-if="displayAddBelief"></add-belief>
     <h1>So-and-so's Beliefs</h1>
@@ -26,10 +29,12 @@ export default Vue.extend({
   data() {
     return {
       size: 200 as number,
-      beliefData: null as any,
     }
   },
   computed: {
+    beliefData() {
+      return this.$store.state.data.tree
+    },
     displayBeliefDetails() {
       return this.$store.state.displayBeliefDetails
     },
@@ -41,27 +46,28 @@ export default Vue.extend({
     // },
   },
   methods: {
-    importTree() {
-      // TODO Accept JSON file
-    },
     saveTree() {
-      // TODO Save tree object to local storage
+      console.log('saving tree')
+      if (process.browser) {
+        this.$store.dispatch('data/save')
+        alert('Your tree was saved!')
+      } else {
+        alert('Your tree could not be saved at this time')
+      }
     },
     exportTree() {
       // TODO Allow user to download JSON file
     },
   },
   created() {
-    if (process.browser) {
-      console.log('we can access local storage!')
-      // if (localStorage.getItem('treeData')) {
-      //   this.beliefData = localStorage.getItem('treeData')
-      // }
-      this.beliefData = jsonData
-      return
+    if (process.browser) {  
+      if (localStorage.getItem('treeData') && localStorage.getItem('treeData') != 'undefined') {
+        const treeString = localStorage.getItem('treeData') as string
+        const treeData = JSON.parse(treeString)
+        this.$store.commit('data/set', [treeData, ''])
+        console.log('Tree data retrieved from local storage')
+      }
     }
-    this.beliefData = jsonData
-    // this.beliefData = this.$store.state.data.tree // TODO uncomment this
   },
 })
 </script>
