@@ -20,14 +20,11 @@
   "DonutChart": {
     "description": "Auto imported from components/DonutChart.vue"
   },
+  "FileInput": {
+    "description": "Auto imported from components/FileInput.vue"
+  },
   "Logo": {
     "description": "Auto imported from components/Logo.vue"
-  },
-  "NodeDetails": {
-    "description": "Auto imported from components/NodeDetails.vue"
-  },
-  "RootNode": {
-    "description": "Auto imported from components/RootNode.vue"
   },
   "VuetifyLogo": {
     "description": "Auto imported from components/VuetifyLogo.vue"

@@ -13,7 +13,6 @@ You can directly use them in pages and other components without the need to impo
 - `<BeliefTree>` | `<belief-tree>` (components/BeliefTree.vue)
 - `<D3Tree>` | `<d3tree>` (components/D3Tree.vue)
 - `<DonutChart>` | `<donut-chart>` (components/DonutChart.vue)
+- `<FileInput>` | `<file-input>` (components/FileInput.vue)
 - `<Logo>` | `<logo>` (components/Logo.vue)
-- `<NodeDetails>` | `<node-details>` (components/NodeDetails.vue)
-- `<RootNode>` | `<root-node>` (components/RootNode.vue)
 - `<VuetifyLogo>` | `<vuetify-logo>` (components/VuetifyLogo.vue)

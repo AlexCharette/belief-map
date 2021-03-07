@@ -1,5 +1,6 @@
 <template>
   <div>
+    <file-input></file-input>
     <belief-details v-if="displayBeliefDetails"></belief-details>
     <add-belief v-if="displayAddBelief"></add-belief>
     <h1>So-and-so's Beliefs</h1>
@@ -13,12 +14,14 @@ import jsonData from '~/assets/data/belief_map.json'
 import AddBelief from '~/components/AddBelief.vue'
 import BeliefDetails from '~/components/BeliefDetails.vue'
 import D3Tree from '~/components/D3Tree.vue'
+import FileInput from '~/components/FileInput.vue'
 
 export default Vue.extend({
   components: { 
     AddBelief, 
     BeliefDetails,
     D3Tree,
+    FileInput,
   },
   data() {
     return {

@@ -1,16 +1,14 @@
-import { Node } from '~/belief-map.types'
 
 export const state = () => ({
+  filename: '',
   tree: {}
 })
 
 export const mutations = {
-  import(state: any, data: {}) {
-    // TODO handle data importation
-    state.tree = data
-  },
-  set(state: any, data: {}) {
-    state.tree = data
+  set(state: any, payload: [{}, string]) {
+    state.tree = payload[0]
+    state.filename = payload[1]
+    console.log(payload[1])
   }
 }
 

@@ -8,9 +8,8 @@ const components = {
   BeliefTree: () => import('../../components/BeliefTree.vue' /* webpackChunkName: "components/belief-tree" */).then(c => c.default || c),
   D3Tree: () => import('../../components/D3Tree.vue' /* webpackChunkName: "components/d3tree" */).then(c => c.default || c),
   DonutChart: () => import('../../components/DonutChart.vue' /* webpackChunkName: "components/donut-chart" */).then(c => c.default || c),
+  FileInput: () => import('../../components/FileInput.vue' /* webpackChunkName: "components/file-input" */).then(c => c.default || c),
   Logo: () => import('../../components/Logo.vue' /* webpackChunkName: "components/logo" */).then(c => c.default || c),
-  NodeDetails: () => import('../../components/NodeDetails.vue' /* webpackChunkName: "components/node-details" */).then(c => c.default || c),
-  RootNode: () => import('../../components/RootNode.vue' /* webpackChunkName: "components/root-node" */).then(c => c.default || c),
   VuetifyLogo: () => import('../../components/VuetifyLogo.vue' /* webpackChunkName: "components/vuetify-logo" */).then(c => c.default || c)
 }
 
