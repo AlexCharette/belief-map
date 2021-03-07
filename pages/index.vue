@@ -1,8 +1,15 @@
 <template>
   <div>
     <v-row>
-      <file-input></file-input>
-      <v-btn @click.prevent="saveTree">Save</v-btn>
+      <v-col md="8">
+        <file-input></file-input>
+      </v-col>
+      <v-col md="2"> 
+        <v-btn @click.prevent="saveTree">Save</v-btn>
+      </v-col>
+      <v-col md="2">
+        <v-btn @click.prevent="exportTree">Export</v-btn>
+      </v-col>
     </v-row>
     <belief-details v-if="displayBeliefDetails"></belief-details>
     <add-belief v-if="displayAddBelief"></add-belief>
@@ -13,7 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import jsonData from '~/assets/data/belief_map.json'
+import download from 'downloadjs'
 import AddBelief from '~/components/AddBelief.vue'
 import BeliefDetails from '~/components/BeliefDetails.vue'
 import D3Tree from '~/components/D3Tree.vue'
@@ -56,7 +63,9 @@ export default Vue.extend({
       }
     },
     exportTree() {
-      // TODO Allow user to download JSON file
+      const defaultFileName = this.$store.state.data.filename
+      const filename = defaultFileName == '' ? 'beliefMap.json' : defaultFileName
+      download(JSON.stringify(this.beliefData), filename, 'application/json')
     },
   },
   created() {
