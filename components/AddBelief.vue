@@ -114,17 +114,19 @@ export default Vue.extend({
       return Object.keys(copiedNode).length > 0
     },
     node(): NodeData {
+      console.log(`Type: ${this.formData.type} is a ${typeof(this.formData.type)}`)
+      const value = this.formData.type[0].toLowerCase() + this.formData.type.slice(1)
       function getEnumKeyByEnumValue(someEnum: any, enumValue: any): any {
           let keys = Object.keys(someEnum).filter(x => someEnum[x] == enumValue);
           return keys.length > 0 ? keys[0] : null;
       }
-      const type = getEnumKeyByEnumValue(BeliefType, this.formData.type) as BeliefType
+      const type = getEnumKeyByEnumValue(BeliefType, value) as BeliefType
       return {
         id: uuid.v4(),
         name: this.formData.name,
         notes: this.formData.notes,
         references: this.formData.references,
-        type: type,
+        type: value,
         isRoot: false,
       } as NodeData
     }

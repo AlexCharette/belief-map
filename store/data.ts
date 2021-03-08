@@ -1,8 +1,17 @@
-import { Node, NodeData } from "~/belief-map.types"
+import * as uuid from 'uuid'
+import { BeliefType, Node, NodeData } from "~/belief-map.types"
 
 export const state = () => ({
   filename: '',
-  tree: {}
+  tree: {
+    id: uuid.v4(),
+    name: 'Your Beliefs',
+    notes: '',
+    references: [],
+    type: BeliefType.PersonalConclusion,
+    isRoot: true,
+    children: []
+  }
 })
 
 export const mutations = {
