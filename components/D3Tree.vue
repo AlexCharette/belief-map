@@ -6,10 +6,10 @@
         <belief-node
           v-for="(node, index) of nodes"
           :index="index"
-          :node="node"
+          :node="node.data"
           :children="node.children"
           :shapeData="{x: node.x, y: node.y, size: nodeWidth}"
-          :key="node.data.id"
+          :key="node.id"
           class="node"
           :style="nodeStyle(node)"
         ></belief-node>
@@ -79,8 +79,7 @@ export default Vue.extend({
         height: this.formatDimension(this.nodeHeight)
       }
     },
-    addNode(name: string) {
-      // TODO Tell store to open node creation widget
+    addNode() {
       const id = uuid.v4();
       const parent = this.currentNode;
       const child = {
@@ -234,7 +233,7 @@ export default Vue.extend({
   },
   watch: {
     dataSet(newData: any, oldData: any) {
-      this.addUniqueKey(this.dataSet)
+      // this.addUniqueKey(this.dataSet)
       this.root = this.dataSet;
 
       this.update(this.root);
@@ -242,7 +241,11 @@ export default Vue.extend({
     }
   },
   created() {
-    this.addUniqueKey(this.dataSet)
+    const self = this
+    // this.addUniqueKey(this.dataSet)
+    this.$nuxt.$on('tree-edited', () => {
+      self.update(self.dataSet)
+    })
   },
   mounted() {
     this.index = 0;

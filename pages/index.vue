@@ -1,27 +1,47 @@
 <template>
-  <div>
-    <v-row>
-      <v-col md="8">
-        <file-input></file-input>
-      </v-col>
-      <v-col md="2"> 
-        <v-btn @click.prevent="saveTree">Save</v-btn>
-      </v-col>
-      <v-col md="2">
-        <v-btn @click.prevent="exportTree">Export</v-btn>
-      </v-col>
-    </v-row>
-    <belief-details v-if="displayBeliefDetails"></belief-details>
-    <add-belief v-if="displayAddBelief"></add-belief>
-    <h1>So-and-so's Beliefs</h1>
-      <d-3-tree :dataSet="beliefData" style="width: 800px; height: 600px;"></d-3-tree>
-  </div>
+<v-app class="scrollX">
+  <app-bar>
+    <template v-slot:file-input>
+      <file-input></file-input>
+    </template>
+    <template v-slot:save-btn>
+      <v-btn @click.prevent="saveTree">Save</v-btn>
+    </template>
+    <template v-slot:export-btn>
+      <v-btn @click.prevent="exportTree">Export</v-btn>
+    </template>
+  </app-bar>
+      <v-main>
+        <v-container>
+          <belief-details 
+            v-if="displayBeliefDetails" 
+            :node="selectedNode"
+          ></belief-details>
+          <v-overlay 
+            :absolute="true" 
+            :value="displayAddBelief"
+          >
+            <add-belief :style="{
+              left: '50%', 
+              transform:'translate(-50%, -50%)'}"></add-belief>
+          </v-overlay>
+            <d-3-tree :dataSet="beliefData" style="width: 800px; height: 600px;"></d-3-tree>
+          <v-snackbar
+            v-model="showSnackbar"
+            :timeout="snackbarTimeout"
+          >
+          {{ snackbarMessage }}
+          </v-snackbar>
+      </v-container>
+    </v-main>
+</v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import download from 'downloadjs'
 import AddBelief from '~/components/AddBelief.vue'
+import AppBar from '~/components/AppBar.vue'
 import BeliefDetails from '~/components/BeliefDetails.vue'
 import D3Tree from '~/components/D3Tree.vue'
 import FileInput from '~/components/FileInput.vue'
@@ -29,6 +49,7 @@ import FileInput from '~/components/FileInput.vue'
 export default Vue.extend({
   components: { 
     AddBelief, 
+    AppBar,
     BeliefDetails,
     D3Tree,
     FileInput,
@@ -36,28 +57,34 @@ export default Vue.extend({
   data() {
     return {
       size: 200 as number,
+      showSnackbar: false as boolean,
+      snackbarMessage: '' as string,
+      snackbarTimeout: 1500 as number,
     }
   },
   computed: {
-    beliefData() {
+    beliefData(): any {
       return this.$store.state.data.tree
     },
-    displayBeliefDetails() {
-      return this.$store.state.displayBeliefDetails
+    displayBeliefDetails(): boolean {
+      return this.$store.state.display.displayBeliefDetails
     },
-    displayAddBelief() {
-      return this.$store.state.displayAddBelief
+    displayAddBelief(): boolean {
+      return this.$store.state.display.displayAddBelief
     },
+    selectedNode(): Node {
+      return this.$store.state.nodes.selectedNode
+    }
     // viewbox() {
     //   return `0 0 ${this.size} ${this.size}`
     // },
   },
   methods: {
     saveTree() {
-      console.log('saving tree')
       if (process.browser) {
         this.$store.dispatch('data/save')
-        alert('Your tree was saved!')
+        this.snackbarMessage = 'Your tree was successfully saved!'
+        this.showSnackbar = true
       } else {
         alert('Your tree could not be saved at this time')
       }
@@ -80,3 +107,7 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss">
+  .scrollX { overflow-x: scroll; }
+</style>

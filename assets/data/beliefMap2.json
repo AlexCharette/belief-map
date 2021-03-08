@@ -1,0 +1,102 @@
+{
+    "id": "5a7ba646-18a4-40c5-99fb-b743cfff3a07",
+    "name": "Alexander Charette's Belief Map",
+    "notes": "",
+    "type": "personalConclusion",
+    "references": [],
+    "isRoot": true,
+    "children": [
+        {
+            "id": "d803a9c8-919e-4b02-9796-01e0d5d46a54",
+            "name": "SUFFERING IS GOOD FOR YOU",
+            "notes": "",
+            "type": "personalConclusion",
+            "references": [],
+            "isRoot": false,
+            "children": [
+                {
+                    "id": "03f5f39d-0e54-44e8-85db-7716969a1c50",
+                    "name": "GOD HATES SNITCHES",
+                    "notes": "",
+                    "type": "personalAssumption",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "f6e8979a-fd58-4ac8-a183-288db6f9013f",
+                    "name": "The stoics said so",
+                    "notes": "Whatever",
+                    "references": [],
+                    "type": null,
+                    "isRoot": false,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": "cd5fd33f-f460-4632-ba4a-67a3e9db3694",
+            "name": "LOBSTERS PRODUCE CORTISOL",
+            "notes": "",
+            "type": "scientificEvidence",
+            "references": [],
+            "isRoot": false,
+            "children": [
+                {
+                    "id": "fbdce9cc-7ee4-407b-97a1-05491580610b",
+                    "name": "GOOFS GONNA GOOF",
+                    "notes": "",
+                    "type": "religiousThinking",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "a7a6e6b5-e96a-4c0a-9b7b-fb699b2c9d14",
+                    "name": "WORMHOLES MAKE MY TAINT TIGGLE",
+                    "notes": "",
+                    "type": "scientificEvidence",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "7c3d3687-5ad6-4795-ab9e-329498a17b5b",
+                    "name": "YER MOM'S FAT",
+                    "notes": "",
+                    "type": "scientificEvidence",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "101d52f5-7146-4c34-b178-8860e77aa502",
+                    "name": "VEGETABLES ARE DULL",
+                    "notes": "",
+                    "type": "observation",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "2c4d654a-3ab8-453a-a978-061303b7cbbc",
+                    "name": "SEA CREATURES ARE BAD",
+                    "notes": "",
+                    "type": "observation",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                },
+                {
+                    "id": "62d44f53-7e6b-4699-9bd3-f8a75139299b",
+                    "name": "TRIBESPEOPLE EAT FAMILY MEMBERS",
+                    "notes": "",
+                    "type": "observation",
+                    "references": [],
+                    "isRoot": false,
+                    "children": []
+                }
+            ]
+        }
+    ]
+}

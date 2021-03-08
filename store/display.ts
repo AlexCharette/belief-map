@@ -4,10 +4,10 @@ export const state = () => ({
 })
 
 export const mutations = {
-  toggleDisplayAddBelief(state: any) {
-    state.displayAddBelief = !state.displayAddBelief
+  setDisplayAddBelief(state: any, value: boolean) {
+    state.displayAddBelief = value
   },
-  toggleDisplayBeliefDetails(state: any) {
-    state.displayBeliefDetails = !state.displayBeliefDetails
+  setDisplayBeliefDetails(state: any, value: boolean) {
+    state.displayBeliefDetails = value
   },
 }

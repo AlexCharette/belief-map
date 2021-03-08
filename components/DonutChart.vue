@@ -1,12 +1,26 @@
 <template>
-  <svg v-if="(numSegments > 1)" @click="onClick">
+  <svg 
+    v-if="(numSegments > 1)" 
+    @click="onClick"
+  >
+    <defs>
+      <filter :id="`${node.id}-path-shadow`" x="0" y="0" width="200%" height="200%">
+        <feOffset result="offOut" in="SourceGraphic" dx="10" dy="10" />
+        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+        values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+      </filter>
+    </defs>
     <circle 
+      class="clickable"
       fill="white"
       :cx="circleData.x"
       :cy="circleData.y"
       :r="circleData.radius"
       :stroke="getHexColour(this.segments[0].colour)"
       :stroke-width="1"
+      :filter="`url(#${node.id}-path-shadow)`"
     ></circle>
     <path 
       v-for="(segment, index) in segments" 
@@ -18,13 +32,24 @@
     ></path>
   </svg>
   <svg v-else @click="onClick">
+    <defs>
+      <filter :id="`${node.id}-shadow`" x="-35%" y="-35%" width="200%" height="200%">
+        <feOffset result="offOut" in="SourceGraphic" dx="5" dy="7" />
+        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+        values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.5 0" />
+        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+      </filter>
+    </defs>
     <circle 
+      class="clickable"
       fill="white"
       :cx="circleData.x"
       :cy="circleData.y"
       :r="circleData.radius"
       :stroke="getHexColour(this.segments[0].colour)"
       :stroke-width="strokeWidth"
+      :filter="`url(#${node.id}-shadow)`"
     ></circle>
   </svg>
 </template>
@@ -62,14 +87,29 @@ export default Vue.extend({
   },
   methods: {
     onClick(event: any) {
-      console.log('allo!')
       this.$store.commit('nodes/set', this.node)
-      if (!this.$store.state.displayBeliefDetails) {
-        this.$store.commit('display/toggleDisplayBeliefDetails')
-      }
+      this.$store.commit('display/setDisplayBeliefDetails', true)
     },
     getHexColour(name: string) {
       switch (name) {
+        case 'light-green darken-1':
+          return '#7CB342'
+        case 'green darken-1':
+          return '#43A047'
+        case 'light-blue darken-1':
+          return '#039BE5'
+        case 'blue darken-1': 
+          return '#1E88E5'
+        case 'indigo darken-1': 
+          return '#3949AB'
+        case 'deep-purple darken-1': 
+          return '#5E35B1'
+        case 'amber darken-1': 
+          return '#FFB300'
+        case 'orange darken-1': 
+          return '##FB8C00'
+        case 'red darken-1': 
+          return '#E53935'
         case 'light-green darken-3':
           return '#558B2F'
         case 'green darken-3':
@@ -116,3 +156,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss">
+  .clickable:hover {
+    cursor: pointer;
+  }
+</style>

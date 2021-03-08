@@ -1,10 +1,14 @@
 <template>
-  <v-container>
-    <v-file-input
-      placeholder="Your existing belief map"
-      accept=".json"
-      @change="processFile"
-    ></v-file-input>
+  <v-container align="center">
+    <v-row>
+      <v-col md="4">
+      <v-file-input
+        placeholder="Your existing belief map"
+        accept=".json"
+        @change="processFile"
+      ></v-file-input>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

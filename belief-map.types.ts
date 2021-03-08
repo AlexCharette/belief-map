@@ -53,6 +53,11 @@ export interface NodeData {
 }
 
 export interface Node {
-  data: NodeData,
-  children: Array<Node>,
+  id: string,
+  name: string,
+  notes: string,
+  type: BeliefType,
+  references: BeliefReference[],
+  isRoot: boolean,
+  children: Node[],
 }

@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <donut-chart 
-      :node="node"
-      :segments="segments" 
-      :circleData="circleData"
-    ></donut-chart>
-    <p
+
+    <div
+      @mouseenter="isInflated = true"
+      @mouseleave="isInflated = false"
+    >
+      <donut-chart 
+        :node="node"
+        :segments="segments" 
+        :circleData="circleData"
+      ></donut-chart>
+    </div>
+    <!-- <p 
     @click="onClick"
     :style="{
       position: 'absolute',
@@ -14,8 +19,8 @@
       top: shapeData.y + 'px',
       left: shapeData.x + 'px',
     }"
-    >hi there</p>
-  </div>
+    >hi there</p> -->
+
 </template>
 
 <script lang="ts">
@@ -23,7 +28,11 @@ import Vue from 'vue'
 import { BeliefType, CircleData, Node, Segment } from '~/belief-map.types'
 import DonutChart from '~/components/DonutChart.vue'
 
-interface TypeCount {
+interface IObjectKeys {
+  [key: string]: number,
+}
+
+interface TypeCount extends IObjectKeys {
   scientificEvidence: number,
   observation: number,
   personalConclusion: number,
@@ -31,8 +40,10 @@ interface TypeCount {
   religiousThinking: number,
   statedByAuthority: number,
   unableToDisprove: number, 
-  hasOwnProperty<T>(this: T, v: any): v is keyof T
+  //hasOwnProperty<T>(this: T, v: any): v is keyof T
 }
+
+const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] => obj[key];
 
 export default Vue.extend({
   name: 'BeliefNode',
@@ -42,21 +53,22 @@ export default Vue.extend({
   props: ['index', 'node', 'children', 'distance', 'bezierData', 'shapeData'],
   data() {
     return {
-      id: this.node.data.id,
-      name: this.node.data.name,
-      notes: this.node.data.notes,
-      references: this.node.data.references,
-      type: this.node.data.type,
+      id: this.node.id,
+      name: this.node.name,
+      notes: this.node.notes,
+      references: this.node.references,
+      type: this.node.type,
       hasChildren: true,
       numTypes: 0 as number,
       segmentData: [] as Segment[],
+      isInflated: false,
     }
   },
   computed: {
-    circleData() {
+    circleData(): CircleData {
       const x = this.shapeData.x
       const y = this.shapeData.y
-      const radius = this.shapeData.size / 3
+      const radius = this.isInflated ? this.shapeData.size / 2 : this.shapeData.size / 3
       return {
         x,
         y,
@@ -66,7 +78,7 @@ export default Vue.extend({
     // x() {
     //   return this.distance * this.index + this.distance * 0.5
     // },
-    segments() {
+    segments(): Segment[] {
       const self = this
       let segments = [] as Segment[]
       if (this.hasChildren) {
@@ -92,7 +104,7 @@ export default Vue.extend({
       }
       return segments
     },
-    childrenTypeCount() {
+    childrenTypeCount(): any {
       if (!this.hasChildren) return 0
       let typeCount = {
         scientificEvidence: 0,
@@ -103,19 +115,15 @@ export default Vue.extend({
         statedByAuthority: 0,
         unableToDisprove: 0,
       } as TypeCount
-      this.children.forEach((child: Node) => {
-        const type = child.data.type
+      this.children.forEach((child: any) => {
+        const type = child.data.type as string
         typeCount[type]++ 
       })
       return typeCount
     },
   },
   methods: {
-    copy() {
-      // TODO Send data to store
-    },
     onClick(event: any) {
-      console.log('allo!')
       this.$store.commit('nodes/set', this.node)
       if (!this.$store.state.displayBeliefDetails) {
         this.$store.commit('display/toggleDisplayBeliefDetails')
@@ -124,19 +132,19 @@ export default Vue.extend({
     getTypeColour(type: string) {
       switch(type) {
         case BeliefType.ScientificEvidence:
-          return 'light-green darken-3'
+          return 'light-green darken-1'
         case BeliefType.Observation:
-          return 'blue darken-3'
+          return 'light-blue darken-1'
         case BeliefType.PersonalConclusion:
-          return 'indigo darken-3'
+          return 'indigo darken-1'
         case BeliefType.PersonalAssumption:
-          return 'deep-purple darken-3'
+          return 'deep-purple darken-1'
         case BeliefType.ReligiousThinking:
-          return 'amber darken-3'
+          return 'amber darken-1'
         case BeliefType.StatedByAuthority:
-          return 'orange darken-3'
+          return 'orange darken-1'
         case BeliefType.UnableToDisprove:
-          return 'red darken-3'
+          return 'red darken-1'
         default: 
           return 'white'
       }
