@@ -13,7 +13,6 @@
     "@hapi/boom": "^9.1.1",
     "@hapi/hapi": "^20.1.0",
     "@hapi/hoek": "^9.1.1",
-    "@nuxt/typescript-runtime": "^2.0.1",
     "@types/d3": "^6.3.0",
     "@types/downloadjs": "^1.4.2",
     "@types/node": "^12.20.4",
