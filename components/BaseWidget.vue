@@ -25,7 +25,7 @@ export default Vue.extend({
 
 <style lang="scss">
   .overlay {
-    position: absolute;
+    position: absolute !important;
     z-index: 60;
   }
 </style>
