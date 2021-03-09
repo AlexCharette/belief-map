@@ -74,7 +74,7 @@
         </v-container>
         <v-spacer v-else></v-spacer>
       </v-container>
-      <v-row v-if="node.isRoot">
+      <v-row v-if="!node.isRoot">
         <v-col md="4">
           <v-btn @click.prevent="copyDetails" :disabled="hasCopyData">Copy Details</v-btn>
         </v-col>
