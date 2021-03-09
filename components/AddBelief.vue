@@ -2,22 +2,21 @@
   <base-widget 
     id="add-belief"
     ref="addBeliefCard"
-    :initialWidth="600" 
-    :initialHeight="450"
-    @mousedown="drag"
+    :overlay="false"
   >
   <v-container class="pa-3">
     <v-row>
       <v-col md="8">
         <v-btn 
           @click.prevent="pasteDetails"
-          :disabled="hasCopyData"
+          :disabled="!hasCopyData"
         >
           Paste details
         </v-btn>
       </v-col>
       <v-col md="3"></v-col>
       <v-col md="1">
+        <slot></slot>
         <v-icon
           large
           color="red darken-3"
@@ -53,16 +52,48 @@
         <v-row>
           <v-textarea
             v-model="formData.notes"
-            label="Notes"
             solo
-          ></v-textarea>
+          >
+            <template v-slot:label>
+              <div>
+                Notes <small>(optional)</small>
+              </div>
+            </template>
+          </v-textarea>
         </v-row>
-        <v-row>
-          <v-chip-group
-            v-model="formData.references"
-            label="References"
-          ></v-chip-group>
-        </v-row>
+        <v-container>
+          <v-row v-for="(value, index) in formData.references" :key="index">
+            <v-col md="6">
+              <v-text-field 
+                v-model="formData.references[index].text"
+                label="Name"
+                placeholder="Enter a short name for this reference"
+              ></v-text-field>
+            </v-col>
+            <v-col md="5">
+              <v-text-field 
+                v-model="formData.references[index].link"
+                label="Link"
+                placeholder="Enter a link for this reference"
+              ></v-text-field>
+            </v-col>
+            <v-col md="1">
+              <v-btn elevation="2" icon small @click.prevent="subtractReferenceSlot">
+               <v-icon>mdi-minus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row class="d-flex align-center">
+            <v-col md="1">
+              <v-btn elevation="2" icon small @click.prevent="addReferenceSlot">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col md="3" class="d-flex align-center">
+              <h5>Add reference</h5>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-container>
       <v-btn type="submit" :disabled="!valid">Submit</v-btn>
     </v-form>
@@ -84,12 +115,7 @@ export default Vue.extend({
   props: ['parentName'],
   data() {
     return {
-      positions: {
-        clientX: undefined as any,
-        clientY: undefined as any,
-        movementX: 0,
-        movementY: 0
-      },
+      numReferenceSlots: 0 as number,
       formData: {
         name: '' as string,
         notes: '' as string,
@@ -114,13 +140,7 @@ export default Vue.extend({
       return Object.keys(copiedNode).length > 0
     },
     node(): NodeData {
-      console.log(`Type: ${this.formData.type} is a ${typeof(this.formData.type)}`)
       const value = this.formData.type[0].toLowerCase() + this.formData.type.slice(1)
-      function getEnumKeyByEnumValue(someEnum: any, enumValue: any): any {
-          let keys = Object.keys(someEnum).filter(x => someEnum[x] == enumValue);
-          return keys.length > 0 ? keys[0] : null;
-      }
-      const type = getEnumKeyByEnumValue(BeliefType, value) as BeliefType
       return {
         id: uuid.v4(),
         name: this.formData.name,
@@ -132,35 +152,17 @@ export default Vue.extend({
     }
   },
   methods: {
-    drag(event: any) {
-      event.preventDefault()
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-      document.onmousemove = this.moveCard
-      document.onmouseup = this.stopDrag
-      console.log('draaaaag')
+    addReferenceSlot() {
+      this.formData.references.push({
+        text: '',
+        link: '',
+      } as BeliefReference)
     },
-    moveCard(event: any) {
-      event.preventDefault()
-      this.positions.movementX = this.positions.clientX - event.clientX
-      this.positions.movementY = this.positions.clientY - event.clientY
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-
-      (this.$refs.addBeliefCard as any).style.top = `${(
-        (this.$refs.addBeliefCard as any).offsetTop - this.positions.movementY
-      )}px`;
-      (this.$refs.addBeliefCard as any).style.left = `${(
-        (this.$refs.addBeliefCard as any).offsetLeft - this.positions.movementX
-      )}px`;
-      console.log('dragging!')
-    },
-    stopDrag(event: any) {
-      document.onmouseup = null
-      document.onmousemove = null
+    subtractReferenceSlot() {
+      this.formData.references.pop()
     },
     close() {
-      this.$store.commit('display/setDisplayAddBelief', false)
+      this.$nuxt.$emit('add-belief-closed')
     },
     pasteDetails() {
       const details = this.$store.state.nodes.copiedNode as NodeData
@@ -175,6 +177,7 @@ export default Vue.extend({
       const selectedNode = this.$store.state.nodes.selectedNode
       this.$store.commit('data/addNode', [this.node, selectedNode.id])
       this.$nuxt.$emit('tree-edited')
+      this.close()
     },
   },
 })

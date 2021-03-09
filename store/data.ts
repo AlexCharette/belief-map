@@ -29,8 +29,32 @@ export const mutations = {
       })
     }
   },
-  deleteNode(state: any, id: string) {
-
+  deleteNode(state: any, payload: [string, []]) {
+    const selectedNodeId = payload[0]
+    const selectedNodeChildren = payload[1]
+    
+    findAndRemoveNode([state.tree], selectedNodeChildren)
+    
+    function findAndRemoveNode(children: any[], newChildren: any[]) {
+      children.forEach((currentItem: any) => {
+        // If the current item has the selected node as its child,
+        if (currentItem.children.some((currentChild: any) => currentChild.id === selectedNodeId)) {
+          console.log('found the node')
+          if (selectedNodeChildren.length > 1) { // TODO length is sometimes undefined
+            // Absorb the selected node's children
+            currentItem.children = currentItem.children.concat(selectedNodeChildren)
+          }
+          // Remove the selected node
+          currentItem.children = currentItem.children.filter((child: any) => child.id != selectedNodeId)
+          return
+        } else {
+          console.log('not yet')
+          if (currentItem.children && currentItem.children.length > 0)
+            findAndRemoveNode(currentItem.children, newChildren)
+        }    
+      })
+    }
+    console.log('Belief removed')
   },
   set(state: any, payload: [{}, string]) {
     state.tree = payload[0]

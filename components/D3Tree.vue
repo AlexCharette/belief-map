@@ -7,7 +7,6 @@
           v-for="(node, index) of nodes"
           :index="index"
           :node="node.data"
-          :children="node.children"
           :shapeData="{x: node.x, y: node.y, size: nodeWidth}"
           :key="node.id"
           class="node"
@@ -79,32 +78,8 @@ export default Vue.extend({
         height: this.formatDimension(this.nodeHeight)
       }
     },
-    addNode() {
-      const id = uuid.v4();
-      const parent = this.currentNode;
-      const child = {
-        id,
-        name: "Some name",
-        notes: "",
-        type: BeliefType.ScientificEvidence,
-        references: [],
-        isRoot: false,
-        children: [],
-      };
-
-      if (parent.children) parent.children.push(child);
-      else parent.children = [child];
-
-      this.nodes.push(child);
-      this.links.push({
-        source: parent,
-        target: child,
-      });
-
-      this.update(parent);
-    },
     deleteNode() {
-      let self = this; // TODO necessary?
+      let self = this;
 
       if (
         this.currentNode.parent &&

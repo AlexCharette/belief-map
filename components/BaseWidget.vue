@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="overlay"
+    :class="{ overlay: overlay }"
     :min-width="initialWidth"
     :min-height="initialHeight"
     elevation="8"
@@ -14,12 +14,12 @@
 import Vue from 'vue'
 export default Vue.extend({
   name: 'BaseWidget',
-  props: ['initialWidth', 'initialHeight'],
-  computed: {
-    // width(): number {
-    //   return this.initialWidth === undefined ? 
-    // }
-  }
+  props: ['initialWidth', 'initialHeight', 'overlay'],
+  // data() {
+  //   return {
+  //     isOverlay: this.overlay,
+  //   }
+  // }
 })
 </script>
 

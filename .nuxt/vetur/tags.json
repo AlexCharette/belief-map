@@ -2,6 +2,9 @@
   "AddBelief": {
     "description": "Auto imported from components/AddBelief.vue"
   },
+  "AppBackground": {
+    "description": "Auto imported from components/AppBackground.vue"
+  },
   "AppBar": {
     "description": "Auto imported from components/AppBar.vue"
   },
@@ -22,5 +25,8 @@
   },
   "FileInput": {
     "description": "Auto imported from components/FileInput.vue"
+  },
+  "IconRoundedSquare": {
+    "description": "Auto imported from components/IconRoundedSquare.vue"
   }
 }

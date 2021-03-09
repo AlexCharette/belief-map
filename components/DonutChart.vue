@@ -1,6 +1,6 @@
 <template>
   <svg 
-    v-if="(numSegments > 1)" 
+    v-if="(hasSegments && numSegments > 1)" 
     @click="onClick"
   >
     <defs>
@@ -22,6 +22,15 @@
       :stroke-width="1"
       :filter="`url(#${node.id}-path-shadow)`"
     ></circle>
+    <circle 
+      class="clickable"
+      fill="white"
+      :cx="circleData.x"
+      :cy="circleData.y"
+      :r="circleData.radius / 3"
+      :stroke="getHexColour(this.typeColour)"
+      :stroke-width="2"
+    ></circle>
     <path 
       v-for="(segment, index) in segments" 
       :key="index"
@@ -30,6 +39,36 @@
       :stroke-width="(strokeWidth + (segment.count * 3))"
       :d="describeArc(circleData.x, circleData.y, circleData.radius, arcPoints[index][0], arcPoints[index][1])"
     ></path>
+  </svg>
+  <svg v-else-if="(hasSegments && numSegments == 1)">
+    <defs>
+      <filter :id="`${node.id}-shadow`" x="-35%" y="-35%" width="200%" height="200%">
+        <feOffset result="offOut" in="SourceGraphic" dx="5" dy="7" />
+        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+        values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.5 0" />
+        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+      </filter>
+    </defs>
+    <circle 
+      class="clickable"
+      fill="white"
+      :cx="circleData.x"
+      :cy="circleData.y"
+      :r="circleData.radius / 3"
+      :stroke="getHexColour(this.typeColour)"
+      :stroke-width="2"
+    ></circle>
+    <circle 
+      class="clickable"
+      fill="white"
+      :cx="circleData.x"
+      :cy="circleData.y"
+      :r="circleData.radius"
+      :stroke="getHexColour(this.segments[0].colour)"
+      :stroke-width="strokeWidth"
+      :filter="`url(#${node.id}-shadow)`"
+    ></circle>
   </svg>
   <svg v-else @click="onClick">
     <defs>
@@ -47,7 +86,7 @@
       :cx="circleData.x"
       :cy="circleData.y"
       :r="circleData.radius"
-      :stroke="getHexColour(this.segments[0].colour)"
+      :stroke="getHexColour(this.typeColour)"
       :stroke-width="strokeWidth"
       :filter="`url(#${node.id}-shadow)`"
     ></circle>
@@ -60,7 +99,7 @@ import { CircleData, Segment } from '~/belief-map.types'
 
 export default Vue.extend({
   name: 'DonutChart',
-  props: ['node', 'segments', 'circleData'],
+  props: ['node', 'segments', 'typeColour', 'circleData'],
   data() {
     return {
       numSegments: this.segments.length,
@@ -68,6 +107,9 @@ export default Vue.extend({
     }
   },
   computed: {
+    hasSegments(): boolean {
+      return this.segments !== undefined && this.segments.length > 0
+    },
     svgSize() {
       const circleData = this.circleData as CircleData
       return circleData.x * 2

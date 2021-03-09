@@ -11,21 +11,14 @@
       <v-btn @click.prevent="exportTree">Export</v-btn>
     </template>
   </app-bar>
+      <app-background></app-background>
       <v-main>
         <v-container>
           <belief-details 
             v-if="displayBeliefDetails" 
             :node="selectedNode"
           ></belief-details>
-          <v-overlay 
-            :absolute="true" 
-            :value="displayAddBelief"
-          >
-            <add-belief :style="{
-              left: '50%', 
-              transform:'translate(-50%, -50%)'}"></add-belief>
-          </v-overlay>
-            <d-3-tree :dataSet="beliefData" style="width: 800px; height: 600px;"></d-3-tree>
+            <d-3-tree :dataSet="beliefData" style="width: 100vw; height: 100vh;"></d-3-tree>
           <v-snackbar
             v-model="showSnackbar"
             :timeout="snackbarTimeout"
@@ -45,11 +38,13 @@ import AppBar from '~/components/AppBar.vue'
 import BeliefDetails from '~/components/BeliefDetails.vue'
 import D3Tree from '~/components/D3Tree.vue'
 import FileInput from '~/components/FileInput.vue'
+import AppBackground from '~/components/AppBackground.vue'
 
 export default Vue.extend({
-  components: { 
-    AddBelief, 
+  components: {
+    AppBackground, 
     AppBar,
+    AddBelief, 
     BeliefDetails,
     D3Tree,
     FileInput,

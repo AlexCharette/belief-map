@@ -5,8 +5,9 @@
       @mouseleave="isInflated = false"
     >
       <donut-chart 
-        :node="node"
-        :segments="segments" 
+        :node="fullNode"
+        :segments="segments"
+        :typeColour="getTypeColour(this.type)" 
         :circleData="circleData"
       ></donut-chart>
     </div>
@@ -40,17 +41,14 @@ interface TypeCount extends IObjectKeys {
   religiousThinking: number,
   statedByAuthority: number,
   unableToDisprove: number, 
-  //hasOwnProperty<T>(this: T, v: any): v is keyof T
 }
-
-const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] => obj[key];
 
 export default Vue.extend({
   name: 'BeliefNode',
   components: {
     DonutChart,
   },
-  props: ['index', 'node', 'children', 'distance', 'bezierData', 'shapeData'],
+  props: ['index', 'node', 'distance', 'bezierData', 'shapeData'],
   data() {
     return {
       id: this.node.id,
@@ -58,13 +56,25 @@ export default Vue.extend({
       notes: this.node.notes,
       references: this.node.references,
       type: this.node.type,
-      hasChildren: true,
       numTypes: 0 as number,
       segmentData: [] as Segment[],
       isInflated: false,
     }
   },
   computed: {
+    fullNode(): Node {
+      return {
+        id: this.node.id,
+        name: this.node.name,
+        notes: this.node.notes,
+        references: this.node.references,
+        type: this.node.type,
+        children: this.hasChildren ? this.node.children : [],
+      } as Node
+    },  
+    hasChildren(): boolean {
+      return this.node.children !== undefined && this.node.children.length > 0
+    },
     circleData(): CircleData {
       const x = this.shapeData.x
       const y = this.shapeData.y
@@ -82,7 +92,8 @@ export default Vue.extend({
       const self = this
       let segments = [] as Segment[]
       if (this.hasChildren) {
-      const typeCount = this.childrenTypeCount
+        console.log(this.node.children)
+        const typeCount = this.childrenTypeCount
         Object.entries(typeCount).forEach((entry: [string, any]) => {
           if (entry[1] > 0) {
             // Create a new segment object
@@ -94,14 +105,15 @@ export default Vue.extend({
             segments.push(segment)
           }
         })
-      } else {
-        const segment = {
-          type: this.type,
-          count: 1,
-          colour: self.getTypeColour(this.type),
-        } as Segment
-        segments.push(segment)
       }
+      // } else {
+      //   const segment = {
+      //     type: this.type,
+      //     count: 1,
+      //     colour: self.getTypeColour(this.type),
+      //   } as Segment
+      //   segments.push(segment)
+      // }
       return segments
     },
     childrenTypeCount(): any {
@@ -115,8 +127,8 @@ export default Vue.extend({
         statedByAuthority: 0,
         unableToDisprove: 0,
       } as TypeCount
-      this.children.forEach((child: any) => {
-        const type = child.data.type as string
+      this.node.children.forEach((child: any) => {
+        const type = child.type as string
         typeCount[type]++ 
       })
       return typeCount
@@ -150,12 +162,13 @@ export default Vue.extend({
       }
     }
   },
-  created() {
-    if (this.children === undefined) {
-      this.hasChildren = false
-    }
-  },
+  // created() {
+  //   if (this.children === undefined) {
+  //     this.hasChildren = false
+  //   }
+  // },
   mounted() {
+    console.log(this.node)
     this.numTypes = Object.keys(this.childrenTypeCount).length // TODO revise
   }
 })
