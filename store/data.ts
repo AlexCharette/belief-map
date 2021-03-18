@@ -1,5 +1,5 @@
 import * as uuid from 'uuid'
-import { BeliefType, Node, NodeData } from "~/belief-map.types"
+import { BeliefType, Node } from "~/belief-map.types"
 
 export const state = () => ({
   filename: '',
@@ -29,7 +29,7 @@ export const mutations = {
       })
     }
   },
-  deleteNode(state: any, payload: [string, []]) {
+  deleteNode(state: any, payload: [string, any[]]) {
     const selectedNodeId = payload[0]
     const selectedNodeChildren = payload[1]
     

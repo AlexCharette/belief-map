@@ -34,7 +34,6 @@ export default Vue.extend({
       if (process.browser) {
         this.fileReader = new FileReader()
         const self = this
-        console.log()
         this.fileReader.onload = (e: any) => {
           try {
             self.jsonData = JSON.parse(e.target.result)

@@ -1,0 +1,29 @@
+{
+  "entry": "server.js",
+  "files": {
+    "components/add-belief.js": "components/add-belief.js",
+    "components/app-background.js": "components/app-background.js",
+    "components/app-bar.js": "components/app-bar.js",
+    "components/base-widget.js": "components/base-widget.js",
+    "components/belief-details.js": "components/belief-details.js",
+    "components/belief-node.js": "components/belief-node.js",
+    "components/d3tree.js": "components/d3tree.js",
+    "components/donut-chart.js": "components/donut-chart.js",
+    "components/file-input.js": "components/file-input.js",
+    "components/icon-rounded-square.js": "components/icon-rounded-square.js",
+    "server.js": "server.js"
+  },
+  "maps": {
+    "components/add-belief.js": "components/add-belief.js.map",
+    "components/app-background.js": "components/app-background.js.map",
+    "components/app-bar.js": "components/app-bar.js.map",
+    "components/base-widget.js": "components/base-widget.js.map",
+    "components/belief-details.js": "components/belief-details.js.map",
+    "components/belief-node.js": "components/belief-node.js.map",
+    "components/d3tree.js": "components/d3tree.js.map",
+    "components/donut-chart.js": "components/donut-chart.js.map",
+    "components/file-input.js": "components/file-input.js.map",
+    "components/icon-rounded-square.js": "components/icon-rounded-square.js.map",
+    "server.js": "server.js.map"
+  }
+}

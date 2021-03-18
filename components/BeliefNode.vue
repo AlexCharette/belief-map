@@ -5,28 +5,19 @@
       @mouseleave="isInflated = false"
     >
       <donut-chart 
+        :key="index"
+        :index="index"
         :node="fullNode"
         :segments="segments"
         :typeColour="getTypeColour(this.type)" 
         :circleData="circleData"
       ></donut-chart>
     </div>
-    <!-- <p 
-    @click="onClick"
-    :style="{
-      position: 'absolute',
-      textAlign: 'center',
-      minWidth: '75px',
-      top: shapeData.y + 'px',
-      left: shapeData.x + 'px',
-    }"
-    >hi there</p> -->
-
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { BeliefType, CircleData, Node, Segment } from '~/belief-map.types'
+import { CircleData, Node, Segment } from '~/belief-map.types'
 import DonutChart from '~/components/DonutChart.vue'
 
 interface IObjectKeys {
@@ -43,12 +34,41 @@ interface TypeCount extends IObjectKeys {
   unableToDisprove: number, 
 }
 
+      // switch(type) {
+      //   case BeliefType.ScientificEvidence:
+      //     return 'light-green darken-1'
+      //   case BeliefType.Observation:
+      //     return 'light-blue darken-1'
+      //   case BeliefType.PersonalConclusion:
+      //     return 'indigo darken-1'
+      //   case BeliefType.PersonalAssumption:
+      //     return 'deep-purple darken-1'
+      //   case BeliefType.ReligiousThinking:
+      //     return 'amber darken-1'
+      //   case BeliefType.StatedByAuthority:
+      //     return 'orange darken-1'
+      //   case BeliefType.UnableToDisprove:
+      //     return 'red darken-1'
+      //   default: 
+      //     return 'white'
+      // }
+
+const typeColourMap: any = {
+  'scientificEvidence': 'light-green darken-1',
+  'observation': 'light-blue darken-1',
+  'personalConclusion': 'indigo darken-1',
+  'personalAssumption': 'deep-purple darken-1',
+  'religiousThinking': 'amber darken-1',
+  'statedByAuthority': 'orange darken-1',
+  'unableToDisprove': 'red darken-1',
+}
+
 export default Vue.extend({
   name: 'BeliefNode',
   components: {
     DonutChart,
   },
-  props: ['index', 'node', 'distance', 'bezierData', 'shapeData'],
+  props: ['index', 'node', 'shapeData'],
   data() {
     return {
       id: this.node.id,
@@ -57,7 +77,6 @@ export default Vue.extend({
       references: this.node.references,
       type: this.node.type,
       numTypes: 0 as number,
-      segmentData: [] as Segment[],
       isInflated: false,
     }
   },
@@ -85,14 +104,11 @@ export default Vue.extend({
         radius,
       } as CircleData
     },
-    // x() {
-    //   return this.distance * this.index + this.distance * 0.5
-    // },
     segments(): Segment[] {
       const self = this
       let segments = [] as Segment[]
       if (this.hasChildren) {
-        console.log(this.node.children)
+        // console.log(this.node.children)
         const typeCount = this.childrenTypeCount
         Object.entries(typeCount).forEach((entry: [string, any]) => {
           if (entry[1] > 0) {
@@ -106,14 +122,6 @@ export default Vue.extend({
           }
         })
       }
-      // } else {
-      //   const segment = {
-      //     type: this.type,
-      //     count: 1,
-      //     colour: self.getTypeColour(this.type),
-      //   } as Segment
-      //   segments.push(segment)
-      // }
       return segments
     },
     childrenTypeCount(): any {
@@ -135,31 +143,26 @@ export default Vue.extend({
     },
   },
   methods: {
-    onClick(event: any) {
-      this.$store.commit('nodes/set', this.node)
-      if (!this.$store.state.displayBeliefDetails) {
-        this.$store.commit('display/toggleDisplayBeliefDetails')
-      }
-    },
     getTypeColour(type: string) {
-      switch(type) {
-        case BeliefType.ScientificEvidence:
-          return 'light-green darken-1'
-        case BeliefType.Observation:
-          return 'light-blue darken-1'
-        case BeliefType.PersonalConclusion:
-          return 'indigo darken-1'
-        case BeliefType.PersonalAssumption:
-          return 'deep-purple darken-1'
-        case BeliefType.ReligiousThinking:
-          return 'amber darken-1'
-        case BeliefType.StatedByAuthority:
-          return 'orange darken-1'
-        case BeliefType.UnableToDisprove:
-          return 'red darken-1'
-        default: 
-          return 'white'
-      }
+      return typeColourMap[type]
+      // switch(type) {
+      //   case BeliefType.ScientificEvidence:
+      //     return 'light-green darken-1'
+      //   case BeliefType.Observation:
+      //     return 'light-blue darken-1'
+      //   case BeliefType.PersonalConclusion:
+      //     return 'indigo darken-1'
+      //   case BeliefType.PersonalAssumption:
+      //     return 'deep-purple darken-1'
+      //   case BeliefType.ReligiousThinking:
+      //     return 'amber darken-1'
+      //   case BeliefType.StatedByAuthority:
+      //     return 'orange darken-1'
+      //   case BeliefType.UnableToDisprove:
+      //     return 'red darken-1'
+      //   default: 
+      //     return 'white'
+      // }
     }
   },
   // created() {
@@ -168,7 +171,7 @@ export default Vue.extend({
   //   }
   // },
   mounted() {
-    console.log(this.node)
+    // console.log(this.node)
     this.numTypes = Object.keys(this.childrenTypeCount).length // TODO revise
   }
 })

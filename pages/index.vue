@@ -5,7 +5,7 @@
       <file-input></file-input>
     </template>
     <template v-slot:save-btn>
-      <v-btn @click.prevent="saveTree">Save</v-btn>
+      <v-btn @click.prevent="saveTree" :disabled="!canSave">Save</v-btn>
     </template>
     <template v-slot:export-btn>
       <v-btn @click.prevent="exportTree">Export</v-btn>
@@ -18,7 +18,7 @@
             v-if="displayBeliefDetails" 
             :node="selectedNode"
           ></belief-details>
-            <d-3-tree :dataSet="beliefData" style="width: 100vw; height: 100vh;"></d-3-tree>
+            <d-3-tree style="width: 100vw; height: 100vh;"></d-3-tree>
           <v-snackbar
             v-model="showSnackbar"
             :timeout="snackbarTimeout"
@@ -58,8 +58,11 @@ export default Vue.extend({
     }
   },
   computed: {
-    beliefData(): any {
-      return this.$store.state.data.tree
+    // beliefData(): any {
+    //   return this.$store.state.data.tree
+    // },
+    canSave(): boolean {
+      return (!!process.browser)
     },
     displayBeliefDetails(): boolean {
       return this.$store.state.display.displayBeliefDetails
@@ -87,7 +90,7 @@ export default Vue.extend({
     exportTree() {
       const defaultFileName = this.$store.state.data.filename
       const filename = defaultFileName == '' ? 'beliefMap.json' : defaultFileName
-      download(JSON.stringify(this.beliefData), filename, 'application/json')
+      download(JSON.stringify(this.$store.state.data.tree), filename, 'application/json')
     },
   },
   created() {
@@ -96,7 +99,6 @@ export default Vue.extend({
         const treeString = localStorage.getItem('treeData') as string
         const treeData = JSON.parse(treeString)
         this.$store.commit('data/set', [treeData, ''])
-        console.log('Tree data retrieved from local storage')
       }
     }
   },

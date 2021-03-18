@@ -148,6 +148,7 @@ export default Vue.extend({
         references: this.formData.references,
         type: value,
         isRoot: false,
+        children: [],
       } as NodeData
     }
   },
@@ -176,7 +177,6 @@ export default Vue.extend({
     submit() {
       const selectedNode = this.$store.state.nodes.selectedNode
       this.$store.commit('data/addNode', [this.node, selectedNode.id])
-      this.$nuxt.$emit('tree-edited')
       this.close()
     },
   },

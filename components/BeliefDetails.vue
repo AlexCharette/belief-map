@@ -5,7 +5,6 @@
     :overlay="true"
     :initialWidth="300"
     :initialHeight="450"
-    @mousedown="drag"
   >
     <v-container>
       <v-row>
@@ -76,7 +75,7 @@
       </v-container>
       <v-row v-if="!node.isRoot">
         <v-col md="4">
-          <v-btn @click.prevent="copyDetails" :disabled="hasCopyData">Copy Details</v-btn>
+          <v-btn @click.prevent="copyDetails">Copy Details</v-btn>
         </v-col>
         <v-col md="2"></v-col>
         <v-col md="4">
@@ -92,7 +91,35 @@
 import Vue from 'vue'
 import AddBelief from '~/components/AddBelief.vue'
 import BaseWidget from '~/components/BaseWidget.vue'
-import { Node } from '~/belief-map.types'
+import { Node, NodeData } from '~/belief-map.types'
+
+// switch (type) {
+//   case 'scientificEvidence':
+//     return ['Scientific Evidence', 'mdi-beaker', 'light-green darken-1']
+//   case 'observation':
+//     return ['Observation', 'mdi-eye', 'light-blue darken-1']
+//   case 'personalConclusion':
+//     return ['Personal Conclusion', 'mdi-account-plus', 'indigo darken-1']
+//   case 'personalAssumption':
+//     return ['Personal Assumption', 'mdi-account-check', 'deep-purple darken-1']
+//   case 'religiousThinking':
+//     return ['Religious Thinking', 'mdi-book-open-page-variant', 'amber darken-1']
+//   case 'statedByAuthority':
+//     return ['Stated by Authority', 'mdi-exclamation-thick', 'orange darken-1']
+//   case 'unableToDisprove':
+//     return ['Unable to Disprove', 'mdi-help', 'red darken-1']
+//   default: return ['', '', '']
+// }
+
+const iconDataMap = {
+  'scientificEvidence': ['Scientific Evidence', 'mdi-beaker', 'light-green darken-1'],
+  'observation': ['Observation', 'mdi-eye', 'light-blue darken-1'],
+  'personalConclusion': ['Personal Conclusion', 'mdi-account-plus', 'indigo darken-1'],
+  'personalAssumption': ['Personal Assumption', 'mdi-account-check', 'deep-purple darken-1'],
+  'religiousThinking': ['Religious Thinking', 'mdi-book-open-page-variant', 'amber darken-1'],
+  'statedByAuthority': ['Stated by Authority', 'mdi-exclamation-thick', 'orange darken-1'],
+  'unableToDisprove': ['Unable to Disprove', 'mdi-help', 'red darken-1'],
+} as any
 
 export default Vue.extend({
   name: 'BeliefDetails',
@@ -103,78 +130,30 @@ export default Vue.extend({
   data() {
     return {
       addBelief: false,
-      positions: {
-        clientX: undefined as any,
-        clientY: undefined as any,
-        movementX: 0,
-        movementY: 0
-      },
     }
   },
   computed: {
-    hasCopyData(): boolean {
-      const copiedNode = this.$store.state.nodes.copiedNode
-      return Object.keys(copiedNode).length > 0
-    },
     node(): Node {
       return this.$store.state.nodes.selectedNode as Node
     }
   },
   methods: {
-    drag(event: any) {
-      event.preventDefault()
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-      document.onmousemove = this.moveCard
-      document.onmouseup = this.stopDrag
-      console.log('draaaaag')
-    },
-    moveCard(event: any) {
-      event.preventDefault()
-      this.positions.movementX = this.positions.clientX - event.clientX
-      this.positions.movementY = this.positions.clientY - event.clientY
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-
-      (this.$refs.addBeliefCard as any).style.top = `${(
-        (this.$refs.addBeliefCard as any).offsetTop - this.positions.movementY
-      )}px`;
-      (this.$refs.addBeliefCard as any).style.left = `${(
-        (this.$refs.addBeliefCard as any).offsetLeft - this.positions.movementX
-      )}px`;
-      console.log('draggin!')
-    },
-    stopDrag(event: any) {
-      document.onmouseup = null
-      document.onmousemove = null
-    },
     getFormattedTypeAndIcon(type: string): [string, string, string] {
-      switch (type) {
-        case 'scientificEvidence':
-          return ['Scientific Evidence', 'mdi-beaker', 'light-green darken-1']
-        case 'observation':
-          return ['Observation', 'mdi-eye', 'light-blue darken-1']
-        case 'personalConclusion':
-          return ['Personal Conclusion', 'mdi-account-plus', 'indigo darken-1']
-        case 'personalAssumption':
-          return ['Personal Assumption', 'mdi-account-check', 'deep-purple darken-1']
-        case 'religiousThinking':
-          return ['Religious Thinking', 'mdi-book-open-page-variant', 'amber darken-1']
-        case 'statedByAuthority':
-          return ['Stated by Authority', 'mdi-exclamation-thick', 'orange darken-1']
-        case 'unableToDisprove':
-          return ['Unable to Disprove', 'mdi-help', 'red darken-1']
-        default: return ['', '', '']
-      }
+      return iconDataMap[type]
     },
     copyDetails() {
-      this.$store.commit('nodes/copy', this.node)
-      console.log(`Node ${this.node.id} copied`)
+      this.$store.commit('nodes/copy', {
+        id: this.node.id,
+        name: this.node.name,
+        notes: this.node.notes,
+        type: this.node.type,
+        references: this.node.references,
+        isRoot: this.node.isRoot,
+      } as NodeData)
     },
     deleteBelief() {
       // TODO Show overlay first to confirm
       this.$store.commit('data/deleteNode', [this.node.id, this.node.children])
-      this.$nuxt.$emit('tree-edited')
     },
     close() {
       this.$store.commit('display/setDisplayBeliefDetails', false)

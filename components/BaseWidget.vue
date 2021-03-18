@@ -12,14 +12,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   name: 'BaseWidget',
   props: ['initialWidth', 'initialHeight', 'overlay'],
-  // data() {
-  //   return {
-  //     isOverlay: this.overlay,
-  //   }
-  // }
 })
 </script>
 

@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { normalizeURL, decode } from 'ufo'
-import { interopDefault } from './utils'
+import { interopDefault } from './utils'// eslint-disable-line no-unused-vars
 import scrollBehavior from './router.scrollBehavior.js'
-
-const _5bfd1d28 = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
 
@@ -16,12 +14,9 @@ export const routerOptions = {
   linkActiveClass: 'nuxt-link-active',
   linkExactActiveClass: 'nuxt-link-exact-active',
   scrollBehavior,
-
-  routes: [{
-    path: "/",
-    component: _5bfd1d28,
-    name: "index"
-  }],
+  /* eslint-disable array-bracket-spacing, quotes, quote-props, object-curly-spacing, key-spacing */
+  routes: [],
+  /* eslint-enable array-bracket-spacing, quotes, quote-props, object-curly-spacing, key-spacing */
 
   fallback: false
 }
