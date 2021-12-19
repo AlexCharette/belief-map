@@ -1,1 +1,26 @@
-{"id":"027f6d59-c086-4b11-871b-fdd43eaa5c73","name":"Your Beliefs","notes":"","references":[],"type":"personalConclusion","isRoot":true,"children":[{"id":"780a287e-ff48-414e-90f9-f3af9009ed71","name":"I once saw a dog stand on two legs","notes":"It was wild","references":[],"type":null,"isRoot":false},{"id":"8a6608b2-ecc6-42e8-b9a6-598407ffe0a4","name":"Whatever","notes":"Does it work?","references":[],"type":null,"isRoot":false}]}
+{
+    "id": "027f6d59-c086-4b11-871b-fdd43eaa5c73",
+    "name": "Your Beliefs",
+    "notes": "",
+    "references": [],
+    "type": "personalConclusion",
+    "isRoot": true,
+    "children": [
+        {
+            "id": "780a287e-ff48-414e-90f9-f3af9009ed71",
+            "name": "I once saw a dog stand on two legs",
+            "notes": "It was wild",
+            "references": [],
+            "type": "personalObservation",
+            "isRoot": false
+        },
+        {
+            "id": "8a6608b2-ecc6-42e8-b9a6-598407ffe0a4",
+            "name": "Whatever",
+            "notes": "Does it work?",
+            "references": [],
+            "type": "religiousThinking",
+            "isRoot": false
+        }
+    ]
+}

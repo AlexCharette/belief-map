@@ -31,6 +31,68 @@ export function interopDefault (promise) {
   return promise.then(m => m.default || m)
 }
 
+export function hasFetch(vm) {
+  return vm.$options && typeof vm.$options.fetch === 'function' && !vm.$options.fetch.length
+}
+export function purifyData(data) {
+  if (process.env.NODE_ENV === 'production') {
+    return data
+  }
+
+  return Object.entries(data).filter(
+    ([key, value]) => {
+      const valid = !(value instanceof Function) && !(value instanceof Promise)
+      if (!valid) {
+        console.warn(`${key} is not able to be stringified. This will break in a production environment.`)
+      }
+      return valid
+    }
+    ).reduce((obj, [key, value]) => {
+      obj[key] = value
+      return obj
+    }, {})
+}
+export function getChildrenComponentInstancesUsingFetch(vm, instances = []) {
+  const children = vm.$children || []
+  for (const child of children) {
+    if (child.$fetch) {
+      instances.push(child)
+      continue; // Don't get the children since it will reload the template
+    }
+    if (child.$children) {
+      getChildrenComponentInstancesUsingFetch(child, instances)
+    }
+  }
+  return instances
+}
+
+export function applyAsyncData (Component, asyncData) {
+  if (
+    // For SSR, we once all this function without second param to just apply asyncData
+    // Prevent doing this for each SSR request
+    !asyncData && Component.options.__hasNuxtData
+  ) {
+    return
+  }
+
+  const ComponentData = Component.options._originDataFn || Component.options.data || function () { return {} }
+  Component.options._originDataFn = ComponentData
+
+  Component.options.data = function () {
+    const data = ComponentData.call(this, this)
+    if (this.$ssrContext) {
+      asyncData = this.$ssrContext.asyncData[Component.cid]
+    }
+    return { ...data, ...asyncData }
+  }
+
+  Component.options.__hasNuxtData = true
+
+  if (Component._Ctor && Component._Ctor.options) {
+    Component._Ctor.options.data = Component.options.data
+  }
+}
+
 export function sanitizeComponent (Component) {
   // If Component already sanitized
   if (Component.options && Component._Ctor === Component) {
@@ -81,7 +143,29 @@ export function resolveRouteComponents (route, fn) {
     flatMapComponents(route, async (Component, instance, match, key) => {
       // If component is a function, resolve it
       if (typeof Component === 'function' && !Component.options) {
-        Component = await Component()
+        try {
+          Component = await Component()
+        } catch (error) {
+          // Handle webpack chunk loading errors
+          // This may be due to a new deployment or a network problem
+          if (
+            error &&
+            error.name === 'ChunkLoadError' &&
+            typeof window !== 'undefined' &&
+            window.sessionStorage
+          ) {
+            const timeNow = Date.now()
+            const previousReloadTime = parseInt(window.sessionStorage.getItem('nuxt-reload'))
+
+            // check for previous reload time not to reload infinitely
+            if (!previousReloadTime || previousReloadTime + 60000 < timeNow) {
+              window.sessionStorage.setItem('nuxt-reload', timeNow)
+              window.location.reload(true /* skip cache */)
+            }
+          }
+
+          throw error
+        }
       }
       match.components[key] = Component = sanitizeComponent(Component)
       return typeof fn === 'function' ? fn(Component, instance, match, key) : Component
@@ -109,16 +193,23 @@ export async function setContext (app, context) {
   if (!app.context) {
     app.context = {
       isStatic: process.static,
-      isDev: false,
+      isDev: true,
       isHMR: false,
       app,
       store: app.store,
       payload: context.payload,
       error: context.error,
       base: app.router.options.base,
-      env: {}// eslint-disable-line
+      env: {}
     }
     // Only set once
+
+    if (context.req) {
+      app.context.req = context.req
+    }
+    if (context.res) {
+      app.context.res = context.res
+    }
 
     if (context.ssrContext) {
       app.context.ssrContext = context.ssrContext
@@ -188,13 +279,40 @@ export async function setContext (app, context) {
   app.context.next = context.next
   app.context._redirected = false
   app.context._errored = false
-  app.context.isHMR = false
+  app.context.isHMR = Boolean(context.isHMR)
   app.context.params = app.context.route.params || {}
   app.context.query = app.context.route.query || {}
 }
 
+export function middlewareSeries (promises, appContext) {
+  if (!promises.length || appContext._redirected || appContext._errored) {
+    return Promise.resolve()
+  }
+  return promisify(promises[0], appContext)
+    .then(() => {
+      return middlewareSeries(promises.slice(1), appContext)
+    })
+}
+
 export function promisify (fn, context) {
-  const promise = fn(context)
+  let promise
+  if (fn.length === 2) {
+      console.warn('Callback-based asyncData, fetch or middleware calls are deprecated. ' +
+        'Please switch to promises or async/await syntax')
+
+    // fn(context, callback)
+    promise = new Promise((resolve) => {
+      fn(context, function (err, data) {
+        if (err) {
+          context.error(err)
+        }
+        data = data || {}
+        resolve(data)
+      })
+    })
+  } else {
+    promise = fn(context)
+  }
 
   if (promise && promise instanceof Promise && typeof promise.then === 'function') {
     return promise

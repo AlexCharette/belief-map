@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import * as uuid from 'uuid'
 import * as d3 from 'd3'
+import * as uuid from 'uuid'
 import BeliefNode from '~/components/BeliefNode.vue'
 
 const NODE_WIDTH = 75
@@ -79,6 +79,8 @@ export default Vue.extend({
           }
     },
     deleteNode() {
+      console.log('D3Tree.deleteNode() -- Deleting node')
+
       let self = this
 
       if (
@@ -98,27 +100,7 @@ export default Vue.extend({
     },
     formatDimension(dimension: any) {
       if (typeof dimension === 'number') return `${dimension}px`
-      if (dimension.indexOf('px') !== -1) {
-        return dimension
-      } else {
-        return `${dimension}px`
-      }
-    },
-    addUniqueKey(root: any) {
-      // TODO this is modifiying state data which is no bueno
-      const queue = [root]
-      while (queue.length !== 0) {
-        const node = queue.pop()
-        if (node === undefined) {
-          console.log('Node is undefined')
-          return
-        }
-        node.id = uuid.v4()
-        if (node.children) {
-          queue.push(...node.children)
-        }
-      }
-      return root
+      return (dimension.indexOf('px') !== -1) ? dimension : `${dimension}px`
     },
     initTransform() {
       const containerWidth = (this.$refs.container as any).offsetWidth
@@ -132,16 +114,22 @@ export default Vue.extend({
       return [tree.descendants(), tree.links()]
     },
     update(source: any) {
+      console.log("D3Tree.update() -- Updating the tree")
+
       const self = this
 
       const [nodes, links] = this.buildTree(source)
+
+      // Update all IDs
+      nodes.forEach((node: any) => node.id = uuid.v4())
+
       this.links = links
 
       this.svg = d3.select('#belief-map')
 
-      const linkObjects = this.svg.selectAll('.link').data(links, (d: any) => {
-        return `${d.source.data.id}-${d.target.data.id}`
-      })
+      const linkObjects = this.svg.selectAll('.link').data(
+        links, (d: any) => `${d.source.data.id}-${d.target.data.id}`
+      )
 
       // Enter any new links at the parent's previous position.
       linkObjects
@@ -153,17 +141,13 @@ export default Vue.extend({
         .ease(d3.easeCubicInOut)
         .style('opacity', 1)
         .attr('class', 'link')
-        .attr('d', (d: any) => {
-          return self.diagonal(d)
-        })
+        .attr('d', (d: any) => self.diagonal(d))
       // Transition back to the parent element position
       linkObjects
         .transition()
         .duration(self.duration)
         .ease(d3.easeCubicInOut)
-        .attr('d', (d: any) => {
-          return self.diagonal(d)
-        })
+        .attr('d', (d: any) => self.diagonal(d))
       // Remove any exiting links
       linkObjects
         .exit()
@@ -208,7 +192,7 @@ export default Vue.extend({
   },
   watch: {
     dataset(newData: any, oldData: any) {
-      // this.addUniqueKey(this.dataSet)
+      // this.$store.commit('data/addUniqueKey')
       this.root = this.dataset
 
       this.update(this.root)

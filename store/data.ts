@@ -16,16 +16,16 @@ export const state = () => ({
 
 export const mutations = {
   addNode(state: any, payload: [Node, string]) {
-    if (payload[1] === state.tree.id) {
-      state.tree.children.push(payload[0])
+    if (payload[1] === state.tree.id) { // If the selected node is the root,
+      state.tree.children.push(payload[0]) // Add the new node directly
     } else {
       findSelectedNode(state.tree.children)
     }
-    
-  
+
     function findSelectedNode(children: any[]) {
-      children.some((currentItem) => {
-        currentItem.id === payload[1] ? currentItem.children.push(payload[0]) : findSelectedNode(currentItem.children)
+      children.some((currentItem: any, index: number) => {
+        console.log(`Vuex.data.findSelectedNode() -- ${index} -- Looking for the node`);
+        (currentItem.id === payload[1]) ? currentItem.children.push(payload[0]) : findSelectedNode(currentItem.children)
       })
     }
   },
@@ -34,12 +34,12 @@ export const mutations = {
     const selectedNodeChildren = payload[1]
     
     findAndRemoveNode([state.tree], selectedNodeChildren)
-    
+
     function findAndRemoveNode(children: any[], newChildren: any[]) {
-      children.forEach((currentItem: any) => {
+      children.forEach((currentItem: any, index: number) => {
         // If the current item has the selected node as its child,
         if (currentItem.children.some((currentChild: any) => currentChild.id === selectedNodeId)) {
-          console.log('found the node')
+          console.log(`Vuex.data.findAndRemoveNode() -- ${index} -- Found the node`)
           if (selectedNodeChildren.length > 1) { // TODO length is sometimes undefined
             // Absorb the selected node's children
             currentItem.children = currentItem.children.concat(selectedNodeChildren)
@@ -48,13 +48,28 @@ export const mutations = {
           currentItem.children = currentItem.children.filter((child: any) => child.id != selectedNodeId)
           return
         } else {
-          console.log('not yet')
+          console.log(`Vuex.data.findAndRemoveNode() -- ${index} -- Still looking`)
           if (currentItem.children && currentItem.children.length > 0)
             findAndRemoveNode(currentItem.children, newChildren)
         }    
       })
     }
-    console.log('Belief removed')
+    console.log('Vuex.data.findAndRemoveNode() -- Node removed')
+  },
+  // TODO evaluate usefulness
+  addUniqueKey(state: any) {
+    const queue = [state.tree[0]]
+      while (queue.length !== 0) {
+        const node = queue.pop()
+        if (node === undefined) {
+          console.log('Vuex.data.addUniqueKey() -- Node is undefined')
+          return
+        }
+        node.id = uuid.v4()
+        if (node.children) {
+          queue.push(...node.children)
+        }
+      }
   },
   set(state: any, payload: [{}, string]) {
     state.tree = payload[0]

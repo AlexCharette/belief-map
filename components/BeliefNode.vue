@@ -1,11 +1,10 @@
 <template>
-
     <div
       @mouseenter="isInflated = true"
       @mouseleave="isInflated = false"
     >
       <donut-chart 
-        :key="index"
+        :key="id"
         :index="index"
         :node="fullNode"
         :segments="segments"

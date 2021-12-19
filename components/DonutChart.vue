@@ -1,7 +1,7 @@
 <template>
   <svg 
     v-if="(hasSegments && numSegments > 1)" 
-    :key="index"
+    :key="node.id"
     @click="onClick"
   >
     <defs>
@@ -14,7 +14,7 @@
       </filter>
     </defs>
     <circle 
-      :key="`double_circle_path_${index}_a`"
+      :key="`double_circle_path_${node.id}_a`"
       class="clickable"
       fill="white"
       :cx="circleData.x"
@@ -25,7 +25,7 @@
       :filter="`url(#${node.id}-path-shadow)`"
     ></circle>
     <circle 
-      :key="`double_circle_path_${index}_b`"
+      :key="`double_circle_path_${node.id}_b`"
       class="clickable"
       fill="white"
       :cx="circleData.x"
@@ -36,7 +36,7 @@
     ></circle>
     <path 
       v-for="(segment, loopIndex) in segments" 
-      :key="`path_${index}_${loopIndex}`"
+      :key="`path_${node.id}_${loopIndex}`"
       fill="white"
       :stroke="getHexColour(segment.colour)"
       :stroke-width="(strokeWidth + (segment.count * 3))"
@@ -45,7 +45,7 @@
   </svg>
   <svg 
     v-else-if="(hasSegments && numSegments == 1)" 
-    :key="index"
+    :key="node.id"
     @click="onClick"
   >
     <defs>
@@ -58,7 +58,7 @@
       </filter>
     </defs>
     <circle 
-      :key="`double_circle_${index}_a`"
+      :key="`double_circle_${node.id}_a`"
       class="clickable"
       fill="white"
       :cx="circleData.x"
@@ -68,7 +68,7 @@
       :stroke-width="2"
     ></circle>
     <circle 
-      :key="`double_circle_${index}_b`"
+      :key="`double_circle_${node.id}_b`"
       class="clickable"
       fill="white"
       :cx="circleData.x"
@@ -81,7 +81,7 @@
   </svg>
   <svg 
     v-else 
-    :key="index"
+    :key="node.id"
     @click="onClick"
   >
     <defs>
@@ -94,7 +94,7 @@
       </filter>
     </defs>
     <circle 
-      :key="`single_circle_${index}`"
+      :key="`single_circle_${node.id}`"
       class="clickable"
       fill="white"
       :cx="circleData.x"

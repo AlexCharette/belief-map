@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import { compile } from '../utils'
 
-import NuxtError from './nuxt-error.vue'
+import NuxtError from '../..\\layouts\\error.vue'
 
 import NuxtChild from './nuxt-child'
 
-// @vue/component
 export default {
   name: 'Nuxt',
   components: {
