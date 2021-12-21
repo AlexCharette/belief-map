@@ -1,17 +1,19 @@
 import * as uuid from 'uuid'
 import { BeliefType, Node } from "~/belief-map.types"
 
+const newTree = {
+  id: uuid.v4(),
+  name: 'Your Beliefs',
+  notes: '',
+  references: [],
+  type: BeliefType.PersonalConclusion,
+  isRoot: true,
+  children: []
+}
+
 export const state = () => ({
   filename: '',
-  tree: {
-    id: uuid.v4(),
-    name: 'Your Beliefs',
-    notes: '',
-    references: [],
-    type: BeliefType.PersonalConclusion,
-    isRoot: true,
-    children: []
-  }
+  tree: newTree
 })
 
 export const mutations = {
@@ -56,28 +58,19 @@ export const mutations = {
     }
     console.log('Vuex.data.findAndRemoveNode() -- Node removed')
   },
-  // TODO evaluate usefulness
-  addUniqueKey(state: any) {
-    const queue = [state.tree[0]]
-      while (queue.length !== 0) {
-        const node = queue.pop()
-        if (node === undefined) {
-          console.log('Vuex.data.addUniqueKey() -- Node is undefined')
-          return
-        }
-        node.id = uuid.v4()
-        if (node.children) {
-          queue.push(...node.children)
-        }
-      }
+  set(state: any, payload: {}) {
+    state.tree = payload
   },
-  set(state: any, payload: [{}, string]) {
+  setWithFile(state: any, payload: [{}, string]) {
     state.tree = payload[0]
     state.filename = payload[1]
   }
 }
 
 export const actions = {
+  new(context: any) {
+    context.commit('set', newTree)
+  },
   save(context: any) {
     console.log(JSON.stringify(context.state.tree))
     localStorage.treeData = JSON.stringify(context.state.tree)

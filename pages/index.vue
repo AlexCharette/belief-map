@@ -4,6 +4,9 @@
     <template v-slot:file-input>
       <file-input></file-input>
     </template>
+    <template v-slot:new-btn>
+      <v-btn @click.prevent="newTree">New</v-btn>
+    </template>
     <template v-slot:save-btn>
       <v-btn @click.prevent="saveTree" :disabled="!canSave">Save</v-btn>
     </template>
@@ -78,6 +81,10 @@ export default Vue.extend({
     // },
   },
   methods: {
+    newTree() {
+      // TODO open confirmation modal
+      this.$store.dispatch('data/new')
+    },
     saveTree() {
       if (process.browser) {
         this.$store.dispatch('data/save')
@@ -98,7 +105,7 @@ export default Vue.extend({
       if (localStorage.getItem('treeData') && localStorage.getItem('treeData') != 'undefined') {
         const treeString = localStorage.getItem('treeData') as string
         const treeData = JSON.parse(treeString)
-        this.$store.commit('data/set', [treeData, ''])
+        this.$store.commit('data/set', treeData)
       }
     }
   },

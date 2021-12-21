@@ -7,6 +7,8 @@
     <v-spacer></v-spacer>
     <slot name="file-input"></slot>
     <v-spacer></v-spacer>
+    <slot name="new-btn" align="center"></slot>
+    <v-spacer></v-spacer>
     <slot name="save-btn" align="center"></slot>
     <v-spacer></v-spacer>
     <slot name="export-btn" align="center"></slot>

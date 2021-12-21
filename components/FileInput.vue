@@ -37,7 +37,7 @@ export default Vue.extend({
         this.fileReader.onload = (e: any) => {
           try {
             self.jsonData = JSON.parse(e.target.result)
-            self.$store.commit('data/set', [self.jsonData, file.name])
+            self.$store.commit('data/setWithFile', [self.jsonData, file.name])
             console.log('Data sent to Vuex store')
           } catch (exception: any) {
             alert('Your file does not appear to contain a valid JSON object')
