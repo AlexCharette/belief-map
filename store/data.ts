@@ -32,7 +32,7 @@ export const mutations = {
   deleteNode(state: any, payload: [string, any[]]) {
     const selectedNodeId = payload[0]
     const selectedNodeChildren = payload[1]
-    
+    console.log(`Vuex.data.deleteNode() -- Selected node has ${selectedNodeChildren} children`)
     findAndRemoveNode([state.tree], selectedNodeChildren)
 
     function findAndRemoveNode(children: any[], newChildren: any[]) {
@@ -40,7 +40,7 @@ export const mutations = {
         // If the current item has the selected node as its child,
         if (currentItem.children.some((currentChild: any) => currentChild.id === selectedNodeId)) {
           console.log(`Vuex.data.findAndRemoveNode() -- ${index} -- Found the node`)
-          if (selectedNodeChildren.length > 1) { // TODO length is sometimes undefined
+          if (selectedNodeChildren.length > 0) { // TODO length is sometimes undefined
             // Absorb the selected node's children
             currentItem.children = currentItem.children.concat(selectedNodeChildren)
           }
