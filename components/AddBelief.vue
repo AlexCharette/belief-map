@@ -26,7 +26,7 @@
         </v-icon>
       </v-col>
     </v-row>
-    <v-form v-model="valid" @submit.prevent="submit">
+    <v-form ref="form" v-model="valid" @submit.prevent="submit">
       <v-container>
         <v-row>
           <v-col>
@@ -176,7 +176,9 @@ export default Vue.extend({
     },
     submit() {
       const selectedNode = this.$store.state.nodes.selectedNode
+      const form : any = this.$refs.form
       this.$store.commit('data/addNode', [this.node, selectedNode.id])
+      form.reset()
       this.close()
     },
   },
