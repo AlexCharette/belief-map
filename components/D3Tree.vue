@@ -120,7 +120,7 @@ export default Vue.extend({
 
       const [nodes, links] = this.buildTree(source)
 
-      // Update all IDs
+      // Update all IDs - VERY IMPORTANT for proper re-rendering
       nodes.forEach((node: any) => node.id = uuid.v4())
 
       this.links = links
@@ -192,9 +192,7 @@ export default Vue.extend({
   },
   watch: {
     dataset(newData: any, oldData: any) {
-      // this.$store.commit('data/addUniqueKey')
       this.root = this.dataset
-
       this.update(this.root)
       this.initTransform()
     },

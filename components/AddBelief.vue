@@ -14,7 +14,9 @@
           Paste details
         </v-btn>
       </v-col>
-      <v-col md="3"></v-col>
+      <v-col md="3">
+        Adding a premise to "{{ selectedNode.name }}"
+      </v-col>
       <v-col md="1">
         <slot></slot>
         <v-icon
@@ -107,6 +109,16 @@ import * as uuid from 'uuid'
 import BaseWidget from '~/components/BaseWidget.vue'
 import { BeliefReference, BeliefType, Node, NodeData } from '~/belief-map.types'
 
+const formattedTypeNames = {
+  'scientificEvidence': 'Scientific Evidence',
+  'observation': 'Observation',
+  'personalConclusion': 'Personal Conclusion',
+  'personalAssumption': 'Personal Assumption',
+  'religiousThinking': 'Religious Thinking',
+  'statedByAuthority': 'Stated by Authority',
+  'unableToDisprove': 'Unable to Disprove',
+} as any
+
 export default Vue.extend({
   name: 'AddBelief',
   components: {
@@ -128,11 +140,23 @@ export default Vue.extend({
       typeRules: [
         (v: any) => !!v || 'You must choose a type',
       ],
+      selectedNode: {} as Node,
       valid: true,
     }
   },
   computed: {
     beliefTypes(): string[] {
+      // TODO filter this based on what type the selected node is
+      // TODO this is not super efficient.. might be worth revising data types
+      // let beliefTypes: any = Object.keys(BeliefType).map((beliefType: string) => {
+      //   for (let i = 1; i < beliefType.length; i++) {
+      //     if (beliefType.charAt(i) == beliefType.charAt(i).toUpperCase()) {
+      //       // TODO insert space just before it
+      //       return [beliefType.slice(0, i - 1), beliefType.slice(i)].join(' ');
+      //     }
+      //   }
+      // })
+
       return Object.keys(BeliefType)
     },
     hasCopyData(): boolean {
@@ -151,6 +175,9 @@ export default Vue.extend({
         children: [],
       } as NodeData
     }
+  },
+  mounted() {
+    this.selectedNode = this.$store.state.nodes.selectedNode
   },
   methods: {
     addReferenceSlot() {
@@ -175,9 +202,9 @@ export default Vue.extend({
       }
     },
     submit() {
-      const selectedNode = this.$store.state.nodes.selectedNode
+      this.selectedNode = this.$store.state.nodes.selectedNode
       const form : any = this.$refs.form
-      this.$store.commit('data/addNode', [this.node, selectedNode.id])
+      this.$store.commit('data/addNode', [this.node, this.selectedNode.id])
       form.reset()
       this.close()
     },
