@@ -2,7 +2,6 @@
   <div id="tree-container" ref="container">
     <svg id="belief-map" :style="initialTransformStyle"></svg>
     <div id="node-container" :style="initialTransformStyle">
-      <!-- <transition-group name="tree-node" tag="div" class="annoying"> -->
       <belief-node
         v-for="(node, index) of nodes"
         :key="node.id"
@@ -12,7 +11,6 @@
         class="node"
         :style="nodeStyle(node)"
       ></belief-node>
-      <!-- </transition-group> -->
     </div>
   </div>
 </template>
@@ -21,6 +19,7 @@
 import Vue from 'vue'
 import * as d3 from 'd3'
 import * as uuid from 'uuid'
+// import { useDrag, useMove } from 'vue-use-gesture'
 import BeliefNode from '~/components/BeliefNode.vue'
 
 const NODE_WIDTH = 75
@@ -28,7 +27,7 @@ const NODE_HEIGHT = 75
 const HEIGHT_LEVEL = 225
 
 export default Vue.extend({
-  name: 'D3Tree',
+  name: 'TheVerticalD3Tree',
   components: {
     BeliefNode,
   },
@@ -79,7 +78,7 @@ export default Vue.extend({
           }
     },
     deleteNode() {
-      console.log('D3Tree.deleteNode() -- Deleting node')
+      console.log('TheVerticalD3Tree.deleteNode() -- Deleting node')
 
       let self = this
 
@@ -109,7 +108,7 @@ export default Vue.extend({
       this.initTransformData.y = Math.floor(NODE_HEIGHT)
     },
     buildTree(root: any) {
-      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH * 2, HEIGHT_LEVEL]) // TODO [nodeWidth, levelHeight]
+      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH * 2, HEIGHT_LEVEL])
       const tree = treeBuilder(d3.hierarchy(root))
       return [tree.descendants(), tree.links()]
     },
@@ -161,21 +160,11 @@ export default Vue.extend({
     },
     diagonal(d: any) {
       const linkPath = d3.linkVertical()
-      // let source = { x: d.source.x, y: d.source.y };
-      // let target = { x: d.target.x, y: d.target.y };
       linkPath
-        .x((d: any) => {
-          return d.x
-        })
-        .y((d: any) => {
-          return d.y
-        })
-        .source((d: any) => {
-          return d.source
-        })
-        .target((d: any) => {
-          return d.target
-        })
+        .x((d: any) => d.x )
+        .y((d: any) => d.y )
+        .source((d: any) => d.source )
+        .target((d: any) => d.target )
       return linkPath(d)
     },
     onClick(node: any) {

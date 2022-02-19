@@ -2,9 +2,9 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
-import D3Tree from '@/components/D3Tree.vue'
+import D3Tree from '~/components/TheVerticalD3Tree.vue'
 
-describe('D3Tree', () => {
+describe('VerticalD3Tree', () => {
 
   let localVue = createLocalVue()
   let vuetify: any

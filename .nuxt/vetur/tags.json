@@ -17,9 +17,6 @@
   "BeliefNode": {
     "description": "Auto imported from components/BeliefNode.vue"
   },
-  "D3Tree": {
-    "description": "Auto imported from components/D3Tree.vue"
-  },
   "DonutChart": {
     "description": "Auto imported from components/DonutChart.vue"
   },
@@ -28,5 +25,8 @@
   },
   "IconRoundedSquare": {
     "description": "Auto imported from components/IconRoundedSquare.vue"
+  },
+  "TheVerticalD3Tree": {
+    "description": "Auto imported from components/TheVerticalD3Tree.vue"
   }
 }

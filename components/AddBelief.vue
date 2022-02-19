@@ -56,7 +56,7 @@
             v-model="formData.notes"
             solo
           >
-            <template v-slot:label>
+            <template #label>
               <div>
                 Notes <small>(optional)</small>
               </div>

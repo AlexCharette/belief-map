@@ -1,36 +1,36 @@
 <template>
-<v-app class="scrollX">
-  <app-bar>
-    <template v-slot:file-input>
-      <file-input></file-input>
-    </template>
-    <template v-slot:new-btn>
-      <v-btn @click.prevent="newTree">New</v-btn>
-    </template>
-    <template v-slot:save-btn>
-      <v-btn @click.prevent="saveTree" :disabled="!canSave">Save</v-btn>
-    </template>
-    <template v-slot:export-btn>
-      <v-btn @click.prevent="exportTree">Export</v-btn>
-    </template>
-  </app-bar>
-      <app-background></app-background>
-      <v-main>
-        <v-container>
-          <belief-details 
-            v-if="displayBeliefDetails" 
-            :node="selectedNode"
-          ></belief-details>
-            <d-3-tree style="width: 100vw; height: 100vh;"></d-3-tree>
-          <v-snackbar
-            v-model="showSnackbar"
-            :timeout="snackbarTimeout"
-          >
-          {{ snackbarMessage }}
-          </v-snackbar>
-      </v-container>
-    </v-main>
-</v-app>
+  <v-app class="scrollX">
+    <app-bar>
+      <template #file-input>
+        <file-input></file-input>
+      </template>
+      <template #new-btn>
+        <v-btn @click.prevent="newTree">New</v-btn>
+      </template>
+      <template #save-btn>
+        <v-btn @click.prevent="saveTree" :disabled="!canSave">Save</v-btn>
+      </template>
+      <template #export-btn>
+        <v-btn @click.prevent="exportTree">Export</v-btn>
+      </template>
+    </app-bar>
+        <app-background></app-background>
+        <v-main>
+          <v-container>
+            <belief-details 
+              v-if="displayBeliefDetails" 
+              :node="selectedNode"
+            ></belief-details>
+              <the-vertical-d-3-tree style="width: 100vw; height: 100vh;"></the-vertical-d-3-tree>
+            <v-snackbar
+              v-model="showSnackbar"
+              :timeout="snackbarTimeout"
+            >
+            {{ snackbarMessage }}
+            </v-snackbar>
+        </v-container>
+      </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
@@ -39,7 +39,7 @@ import download from 'downloadjs'
 import AddBelief from '~/components/AddBelief.vue'
 import AppBar from '~/components/AppBar.vue'
 import BeliefDetails from '~/components/BeliefDetails.vue'
-import D3Tree from '~/components/D3Tree.vue'
+import TheVerticalD3Tree from '~/components/TheVerticalD3Tree.vue'
 import FileInput from '~/components/FileInput.vue'
 import AppBackground from '~/components/AppBackground.vue'
 
@@ -49,7 +49,7 @@ export default Vue.extend({
     AppBar,
     AddBelief, 
     BeliefDetails,
-    D3Tree,
+    TheVerticalD3Tree,
     FileInput,
   },
   data() {
@@ -102,16 +102,14 @@ export default Vue.extend({
   },
   created() {
     if (process.browser) {  
-      if (localStorage.getItem('treeData') && localStorage.getItem('treeData') != 'undefined') {
-        const treeString = localStorage.getItem('treeData') as string
-        const treeData = JSON.parse(treeString)
-        this.$store.commit('data/set', treeData)
-      }
+      this.$store.dispatch('data/load')
     }
   },
 })
 </script>
 
 <style lang="scss">
-  .scrollX { overflow-x: scroll; }
+  .scrollX { 
+    overflow-x: scroll; 
+  }
 </style>

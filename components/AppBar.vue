@@ -22,3 +22,12 @@ export default Vue.extend({
   name: 'AppBar',
 })
 </script>
+
+<style lang="scss" scoped>
+  .spacer {
+    min-width: 20px;
+  }
+  .v-toolbar__title { 
+    overflow: visible !important; 
+  }
+</style>

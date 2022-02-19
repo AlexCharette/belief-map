@@ -13,7 +13,7 @@
             v-model="addBelief"
             max-width="660px"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn 
                 v-on="on"
                 v-bind="attrs"

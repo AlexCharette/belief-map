@@ -8,7 +8,7 @@ const VUEX_PROPERTIES = ['state', 'getters', 'actions', 'mutations']
 let store = {};
 
 (function updateModules () {
-  store = normalizeRoot(require('..\\store\\index.ts'), 'store/index.ts')
+  store = normalizeRoot(require('../store/index.ts'), 'store/index.ts')
 
   // If store is an exported method = classic mode (deprecated)
 
@@ -19,19 +19,19 @@ let store = {};
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('..\\store\\data.ts'), 'data.ts')
-  resolveStoreModules(require('..\\store\\display.ts'), 'display.ts')
-  resolveStoreModules(require('..\\store\\nodes.ts'), 'nodes.ts')
+  resolveStoreModules(require('../store/data.ts'), 'data.ts')
+  resolveStoreModules(require('../store/display.ts'), 'display.ts')
+  resolveStoreModules(require('../store/nodes.ts'), 'nodes.ts')
 
   // If the environment supports hot reloading...
 
   if (process.client && module.hot) {
     // Whenever any Vuex module is updated...
     module.hot.accept([
-      '..\\store\\data.ts',
-      '..\\store\\display.ts',
-      '..\\store\\index.ts',
-      '..\\store\\nodes.ts',
+      '../store/data.ts',
+      '../store/display.ts',
+      '../store/index.ts',
+      '../store/nodes.ts',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

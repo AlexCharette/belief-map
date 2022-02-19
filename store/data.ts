@@ -1,5 +1,9 @@
 import * as uuid from 'uuid'
+import { EncryptStorage } from 'encrypt-storage'
 import { BeliefType, Node } from "~/belief-map.types"
+
+// TODO define secret key
+// const encryptStorage = new EncryptStorage('secret-key')
 
 const newTree = {
   id: uuid.v4(),
@@ -13,7 +17,8 @@ const newTree = {
 
 export const state = () => ({
   filename: '',
-  tree: newTree
+  tree: newTree,
+  // encryptStorage: encryptStorage
 })
 
 export const mutations = {
@@ -68,11 +73,21 @@ export const mutations = {
 }
 
 export const actions = {
+  load(context: any) {
+    // const treeDataInStorage = encryptStorage.getItem('treeData')
+    // if (treeDataInStorage && treeDataInStorage != 'undefined') {
+    //   const treeString = treeDataInStorage as string
+    //   const treeData = JSON.parse(treeString)
+    //   context.commit('set', treeData)
+    // }
+  },
   new(context: any) {
     context.commit('set', newTree)
   },
   save(context: any) {
-    console.log(JSON.stringify(context.state.tree))
-    localStorage.treeData = JSON.stringify(context.state.tree)
+    const treeData = JSON.stringify(context.state.tree)
+    console.log(`Vuex.data.save() -- ${treeData}`)
+    // context.state.encryptStorage.setItem('treeData', treeData)
+    // // localStorage.treeData = treeData
   }
 }
