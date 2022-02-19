@@ -211,7 +211,7 @@ export default Vue.extend({
 
 <style lang="scss">
 #tree-container {
-  position: relative;
+  // position: relative;
   // overflow: hidden;
   #belief-map {
     position: relative;
