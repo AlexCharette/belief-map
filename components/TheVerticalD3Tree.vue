@@ -62,20 +62,11 @@ export default Vue.extend({
     },
   },
   methods: {
-    nodeStyle(node: any) {
-      return node.data.isRoot
-        ? {
-            left: this.formatDimension(node.x + this.nodeWidth / 2),
-            top: this.formatDimension(node.y + this.nodeHeight / 2),
-            width: this.formatDimension(this.nodeWidth),
-            height: this.formatDimension(this.nodeHeight),
-          }
-        : {
-            left: this.formatDimension(this.nodeWidth / 2),
-            top: this.formatDimension(this.nodeHeight / 2),
-            width: this.formatDimension(this.nodeWidth),
-            height: this.formatDimension(this.nodeHeight),
-          }
+    // ----------------------------------[ Logic Methods ]---------------------------------- \\
+    buildTree(root: any) {
+      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH * 2, HEIGHT_LEVEL])
+      const tree = treeBuilder(d3.hierarchy(root))
+      return [tree.descendants(), tree.links()]
     },
     deleteNode() {
       console.log('TheVerticalD3Tree.deleteNode() -- Deleting node')
@@ -97,9 +88,36 @@ export default Vue.extend({
         })
       }
     },
+    onClick(node: any) {
+      this.currentNode = node
+      if (node.children) {
+        node._children = node.children
+        node.children = null
+      } else {
+        node.children = node._children
+        node._children = null
+      }
+      this.update(node)
+    },
+    // ----------------------------------[ UI Methods ]---------------------------------- \\
+    nodeStyle(node: any) {
+      return node.data.isRoot
+        ? {
+            left: this.formatDimension(node.x + this.nodeWidth / 2),
+            top: this.formatDimension(node.y + this.nodeHeight / 2),
+            width: this.formatDimension(this.nodeWidth),
+            height: this.formatDimension(this.nodeHeight),
+          }
+        : {
+            left: this.formatDimension(this.nodeWidth / 2),
+            top: this.formatDimension(this.nodeHeight / 2),
+            width: this.formatDimension(this.nodeWidth),
+            height: this.formatDimension(this.nodeHeight),
+          }
+    },
     formatDimension(dimension: any) {
-      if (typeof dimension === 'number') return `${dimension}px`
-      return (dimension.indexOf('px') !== -1) ? dimension : `${dimension}px`
+      return (typeof dimension === 'number') ? `${dimension}px` :
+        (dimension.indexOf('px') !== -1) ? dimension : `${dimension}px`
     },
     initTransform() {
       const containerWidth = (this.$refs.container as any).offsetWidth
@@ -107,13 +125,9 @@ export default Vue.extend({
       this.initTransformData.x = Math.floor(containerWidth / 2)
       this.initTransformData.y = Math.floor(NODE_HEIGHT)
     },
-    buildTree(root: any) {
-      const treeBuilder = d3.tree().nodeSize([NODE_WIDTH * 2, HEIGHT_LEVEL])
-      const tree = treeBuilder(d3.hierarchy(root))
-      return [tree.descendants(), tree.links()]
-    },
+
     update(source: any) {
-      console.log("D3Tree.update() -- Updating the tree")
+      console.log("TheVerticalD3Tree.update() -- Updating the tree")
 
       const self = this
 
@@ -167,17 +181,6 @@ export default Vue.extend({
         .target((d: any) => d.target )
       return linkPath(d)
     },
-    onClick(node: any) {
-      this.currentNode = node
-      if (node.children) {
-        node._children = node.children
-        node.children = null
-      } else {
-        node.children = node._children
-        node._children = null
-      }
-      this.update(node)
-    },
   },
   watch: {
     dataset(newData: any, oldData: any) {
@@ -211,7 +214,7 @@ export default Vue.extend({
 
 <style lang="scss">
 #tree-container {
-  // position: relative;
+  //position: relative;
   // overflow: hidden;
   #belief-map {
     position: relative;
