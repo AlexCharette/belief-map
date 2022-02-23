@@ -1,6 +1,13 @@
 import * as uuid from 'uuid'
 import { EncryptStorage } from 'encrypt-storage'
-import { BeliefType, Node } from "~/belief-map.types"
+import { 
+  addNodeParents, 
+  BeliefType, 
+  getNodeChildren, 
+  getNodeParents,
+  Node, 
+  NodeData 
+} from "~/belief-map.types"
 
 // TODO define secret key
 // const encryptStorage = new EncryptStorage('secret-key')
@@ -15,13 +22,45 @@ const newTree = {
   children: []
 }
 
+const newDag = {
+  id: uuid.v4(),
+  name: 'Your Beliefs',
+  notes: '',
+  references: [],
+  type: BeliefType.PersonalConclusion,
+  isRoot: true,
+  parents: []
+}
+
 export const state = () => ({
   filename: '',
   tree: newTree,
+  dag: newDag,
+  nodes: [],
   // encryptStorage: encryptStorage
 })
 
 export const mutations = {
+  addDagNode(state: any, payload: [NodeData, string]) {
+    // Should just be able to add the node to the main list
+    // and ensure it is marked as having the selected node as a parent
+    const newNode = {
+      data: payload[0],
+      parents: [payload[1]],
+    } as Node
+    state.nodes.push(newNode)
+  },
+  deleteDagNode(state: any, payload: [string, any[]]) {
+    // To find the children, we'll need to search for all nodes that have the selected node listed as a parent
+    const children = getNodeChildren(payload[0], state.dag.nodes)
+    // Ensure its parents are assigned to each of its children
+    // This means its parents must be added while its own ID is removed
+    // TODO Get parents
+    const parents = getNodeParents(payload[0], state.dag.nodes)
+    addNodeParents(parents, children)
+
+    // Delete the selected node
+  },
   addNode(state: any, payload: [Node, string]) {
     if (payload[1] === state.tree.id) { // If the selected node is the root,
       state.tree.children.push(payload[0]) // Add the new node directly

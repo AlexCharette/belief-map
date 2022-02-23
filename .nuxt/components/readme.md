@@ -12,6 +12,7 @@ You can directly use them in pages and other components without the need to impo
 - `<BaseWidget>` | `<base-widget>` (components/BaseWidget.vue)
 - `<BeliefDetails>` | `<belief-details>` (components/BeliefDetails.vue)
 - `<BeliefNode>` | `<belief-node>` (components/BeliefNode.vue)
+- `<D3Dag>` | `<d3-dag>` (components/D3Dag.vue)
 - `<DonutChart>` | `<donut-chart>` (components/DonutChart.vue)
 - `<FileInput>` | `<file-input>` (components/FileInput.vue)
 - `<IconRoundedSquare>` | `<icon-rounded-square>` (components/IconRoundedSquare.vue)

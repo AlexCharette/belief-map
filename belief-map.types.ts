@@ -1,3 +1,4 @@
+import { lookup } from "dns"
 
 export enum BeliefType {
   ScientificEvidence = "scientificEvidence",
@@ -21,6 +22,11 @@ export interface BezierData {
   y: number,
 }
 
+export interface Coords {
+  x: number,
+  y: number,
+}
+
 export interface CircleData {
   x: number,
   y: number,
@@ -41,6 +47,7 @@ export interface JsonNode {
   type: string,
   references: any[],
   children: any[],
+  parents: string[],
 }
 
 export interface NodeData {
@@ -50,14 +57,43 @@ export interface NodeData {
   type: BeliefType,
   references: BeliefReference[],
   isRoot: boolean,
+  coords: Coords,
 }
 
 export interface Node {
-  id: string,
-  name: string,
-  notes: string,
-  type: BeliefType,
-  references: BeliefReference[],
-  isRoot: boolean,
+  data: NodeData,
   children: Node[],
+  parents: string[],
+}
+
+export interface Link {
+  parent: Node,
+  child: Node,
+}
+
+export function getNodeChildren(lookupId: string, nodes: Node[]): Node[] {
+  let children = nodes.filter((node: Node) => node.parents.includes(lookupId))
+  return children
+}
+
+export function getNodeCoords(lookupId: string, nodes: Node[]): Coords {
+  // Get data
+  let data = nodes.map((node: Node) => node.data)
+  let found = data.find(({ id }) => id === lookupId)
+  // Return coords
+  return found!.coords
+}
+
+export function getNodeParents(lookupId: string, nodes: Node[]): string[] {
+  return nodes
+    .filter((node: Node) => node.data.id == lookupId)
+    .map((node: Node) => node.parents)[0]
+}
+
+export function addNodeParents(newParents: string[], nodes: Node[]) {
+  nodes.forEach((node: Node) => node.parents.concat(newParents))
+}
+
+export function removeNodeParent(parentId: string, nodes: Node[]) {
+  // TODO not sure how to do this
 }

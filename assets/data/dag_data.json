@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "id": "027f6d59-c086-4b11-871b-fdd43eaa5c73",
+      "name": "Your Beliefs",
+      "notes": "",
+      "references": [],
+      "type": "personalConclusion",
+      "isRoot": true,
+      "parents": []
+    },
+    {
+      "id": "03f5f39d-0e54-44e8-85db-7716969a1c50",
+      "name": "GOD HATES SNITCHES",
+      "notes": "",
+      "type": "personalAssumption",
+      "references": [],
+      "isRoot": false,
+      "parents": ["027f6d59-c086-4b11-871b-fdd43eaa5c73"]
+    },
+    {
+        "id": "f6e8979a-fd58-4ac8-a183-288db6f9013f",
+        "name": "The stoics said so",
+        "notes": "Whatever",
+        "references": [],
+        "type": null,
+        "isRoot": false,
+        "parents": ["027f6d59-c086-4b11-871b-fdd43eaa5c73", "03f5f39d-0e54-44e8-85db-7716969a1c50"]
+    }
+  ]
+}

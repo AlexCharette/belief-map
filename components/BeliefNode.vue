@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CircleData, Node, Segment } from '~/belief-map.types'
+import { CircleData, Coords, Node, Segment } from '~/belief-map.types'
 import DonutChart from '~/components/DonutChart.vue'
 
 interface IObjectKeys {
@@ -70,11 +70,11 @@ export default Vue.extend({
   props: ['index', 'node', 'shapeData'],
   data() {
     return {
-      id: this.node.id,
-      name: this.node.name,
+      id: this.node.data.id,
+      name: this.node.data.name,
       notes: this.node.notes,
-      references: this.node.references,
-      type: this.node.type,
+      references: this.node.data.references,
+      type: this.node.data.type,
       numTypes: 0 as number,
       isInflated: false,
     }
@@ -82,11 +82,17 @@ export default Vue.extend({
   computed: {
     fullNode(): Node {
       return {
-        id: this.node.id,
-        name: this.node.name,
-        notes: this.node.notes,
-        references: this.node.references,
-        type: this.node.type,
+        data: {
+          id: this.node.data.id,
+          name: this.node.data.name,
+          notes: this.node.data.notes,
+          references: this.node.data.references,
+          type: this.node.data.type,
+          coords: {
+            x: this.circleData.x,
+            y: this.circleData.y,
+          } as Coords,
+        },
         children: this.hasChildren ? this.node.children : [],
       } as Node
     },  
