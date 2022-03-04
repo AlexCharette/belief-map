@@ -71,11 +71,21 @@ export interface Link {
   child: Node,
 }
 
+/** 
+ * Returns the children of a given node
+ * @param {string} lookupId The id of the node whose children we want
+ * @param {Node[]} nodes The list of nodes to search
+*/
 export function getNodeChildren(lookupId: string, nodes: Node[]): Node[] {
   let children = nodes.filter((node: Node) => node.parents.includes(lookupId))
   return children
 }
 
+/** 
+ * Returns the coordinates of a given node
+ * @param {string} lookupId The id of the node whose coordinates we want
+ * @param {Node[]} nodes The list of nodes to search
+*/
 export function getNodeCoords(lookupId: string, nodes: Node[]): Coords {
   // Get data
   let data = nodes.map((node: Node) => node.data)
@@ -84,16 +94,42 @@ export function getNodeCoords(lookupId: string, nodes: Node[]): Coords {
   return found!.coords
 }
 
+/** 
+ * Returns the parents of a given node
+ * @param {string} lookupId The id of the node whose parents we want
+ * @param {Node[]} nodes The list of nodes to search
+*/
 export function getNodeParents(lookupId: string, nodes: Node[]): string[] {
   return nodes
     .filter((node: Node) => node.data.id == lookupId)
     .map((node: Node) => node.parents)[0]
 }
 
+/** 
+ * Adds parents to a given node
+ * @param {string[]} newParents The list of parents we want to add
+ * @param {Node[]} nodes The list of nodes to which the parents will be added
+*/
 export function addNodeParents(newParents: string[], nodes: Node[]) {
   nodes.forEach((node: Node) => node.parents.concat(newParents))
 }
 
-export function removeNodeParent(parentId: string, nodes: Node[]) {
-  // TODO not sure how to do this
+/** 
+ * Removes a parent from a list of nodes
+ * @param {string} parentId The id of the parent we want to remove
+ * @param {Node[]} nodes The list of nodes to remove the parent from
+*/
+export function removeParentFromNodes(parentId: string, nodes: Node[]) {
+  nodes.forEach(
+    (node: Node) => delete node.parents[node.parents.indexOf(parentId)]
+  )
+}
+
+/** 
+ * Removes a node from a given list
+ * @param {string} lookupId The id of the node we want to remove
+ * @param {Node[]} nodes The list of nodes to remove the node from
+*/
+export function removeNode(lookupId: string, nodes: Node[]) {
+  nodes = nodes.filter((node: Node) => node.data.id === lookupId)
 }

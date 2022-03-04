@@ -6,7 +6,9 @@ import {
   getNodeChildren, 
   getNodeParents,
   Node, 
-  NodeData 
+  NodeData,
+  removeNode,
+  removeParentFromNodes,
 } from "~/belief-map.types"
 
 // TODO define secret key
@@ -41,6 +43,13 @@ export const state = () => ({
 })
 
 export const mutations = {
+  /** 
+   * Adds a node to the DAG
+   * @param {any} state The state of the store
+   * @param {any[]} payload A list containing:
+   * - the data of the node to add
+   * - the id of the new node's parent
+  */
   addDagNode(state: any, payload: [NodeData, string]) {
     // Should just be able to add the node to the main list
     // and ensure it is marked as having the selected node as a parent
@@ -50,17 +59,31 @@ export const mutations = {
     } as Node
     state.nodes.push(newNode)
   },
+  /** 
+   * Removes a node from the DAG
+   * @param {any} state The state of the store
+   * @param {any[]} payload A list containing:
+   * - the id of the node to remove
+   * - something that can probably be removed
+  */
   deleteDagNode(state: any, payload: [string, any[]]) {
-    // To find the children, we'll need to search for all nodes that have the selected node listed as a parent
     const children = getNodeChildren(payload[0], state.dag.nodes)
     // Ensure its parents are assigned to each of its children
-    // This means its parents must be added while its own ID is removed
-    // TODO Get parents
+    // This means its parents must be added while its own ID is removed from all of its children
     const parents = getNodeParents(payload[0], state.dag.nodes)
     addNodeParents(parents, children)
-
-    // Delete the selected node
+    removeParentFromNodes(payload[0], children)
+    removeNode(payload[0], state.dag.nodes)
   },
+  setDag(state: any, payload: {}) {
+    state.dag = payload
+  },
+  setDagWithFile(state: any, payload: [{}, string]) {
+    state.dag = payload[0]
+    state.filename = payload[1]
+  },
+
+  // ---------------------------------------------- OLD ---------------------------------------------- \\
   addNode(state: any, payload: [Node, string]) {
     if (payload[1] === state.tree.id) { // If the selected node is the root,
       state.tree.children.push(payload[0]) // Add the new node directly
