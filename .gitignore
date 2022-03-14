@@ -1,3 +1,5 @@
+# Test output files
+coverage
 # Nuxt dev/build outputs
 .output
 .nuxt
