@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-// import * as d3 from 'd3'
-import * as d3 from 'd3-dag'
+import * as d3 from 'd3'
+// import * as d3 from 'd3-dag'
 import * as uuid from 'uuid'
 // import { useDrag, useMove } from 'vue-use-gesture'
-import { Coords, getNodeCoords, Node } from '~/belief-map.types'
+import { Coords, getNodeCoords, Link, Node } from '~/belief-map.types'
 import BeliefNode from '~/components/BeliefNode.vue'
 import { hierarchy } from 'd3-hierarchy'
 
@@ -104,14 +104,14 @@ export default Vue.extend({
       }
     },
     render(nodes: Node[]) {
-        nodes.forEach((node: Node) {
+        nodes.forEach((node: Node) => {
             // Generate coords
             const childCoords = node.data.coords
             // Iterate through parents
-            node.parents.forEach((parentId: string) {
+            node.parents.forEach((parentId: string) => {
                 const parentCoords = getNodeCoords(parentId, nodes)
-                links.push(Link(parentCoords, childCoords))
-            }
+                // this.links.push({ parentCoords, childCoords } as Link)
+            })
         })
     },
     update(source: any) {
@@ -142,13 +142,13 @@ export default Vue.extend({
         .ease(d3.easeCubicInOut)
         .style('opacity', 1)
         .attr('class', 'link')
-        .attr('d', (d: any) => self.diagonal(d))
+        //.attr('d', (d: any) => this.diagonal(d))
       // Transition back to the parent element position
       linkObjects
         .transition()
         .duration(self.duration)
         .ease(d3.easeCubicInOut)
-        .attr('d', (d: any) => self.diagonal(d))
+        //.attr('d', (d: any) => self.diagonal(d))
       // Remove any exiting links
       linkObjects
         .exit()

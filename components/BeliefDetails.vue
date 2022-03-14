@@ -143,17 +143,17 @@ export default Vue.extend({
     },
     copyDetails() {
       this.$store.commit('nodes/copy', {
-        id: this.node.id,
-        name: this.node.name,
-        notes: this.node.notes,
-        type: this.node.type,
-        references: this.node.references,
-        isRoot: this.node.isRoot,
+        id: this.node.data.id,
+        name: this.node.data.name,
+        notes: this.node.data.notes,
+        type: this.node.data.type,
+        references: this.node.data.references,
+        isRoot: this.node.data.isRoot,
       } as NodeData)
     },
     deleteBelief() {
       // TODO Show overlay first to confirm
-      this.$store.commit('data/deleteNode', [this.node.id, this.node.children])
+      this.$store.commit('data/deleteNode', [this.node.data.id, this.node.children])
     },
     close() {
       this.$store.commit('display/setDisplayBeliefDetails', false)

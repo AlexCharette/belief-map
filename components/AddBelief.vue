@@ -107,7 +107,7 @@
 import Vue from 'vue'
 import * as uuid from 'uuid'
 import BaseWidget from '~/components/BaseWidget.vue'
-import { BeliefReference, BeliefType, Node, NodeData } from '~/belief-map.types'
+import { BeliefReference, BeliefType, Coords, Node, NodeData } from '~/belief-map.types'
 
 const formattedTypeNames = {
   'scientificEvidence': 'Scientific Evidence',
@@ -172,6 +172,7 @@ export default Vue.extend({
         references: this.formData.references,
         type: value,
         isRoot: false,
+        coords: { x: 0, y: 0 } as Coords,
         children: [],
       } as NodeData
     }
@@ -204,7 +205,7 @@ export default Vue.extend({
     submit() {
       this.selectedNode = this.$store.state.nodes.selectedNode
       const form : any = this.$refs.form
-      this.$store.commit('data/addNode', [this.node, this.selectedNode.id])
+      this.$store.commit('data/addNode', [this.node, this.selectedNode.data.id])
       form.reset()
       this.close()
     },

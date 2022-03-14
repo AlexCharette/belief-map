@@ -1,5 +1,5 @@
 import * as uuid from 'uuid'
-import { EncryptStorage } from 'encrypt-storage'
+// import { EncryptStorage } from 'encrypt-storage'
 import { 
   addNodeParents, 
   BeliefType, 
@@ -25,13 +25,19 @@ const newTree = {
 }
 
 const newDag = {
-  id: uuid.v4(),
-  name: 'Your Beliefs',
-  notes: '',
-  references: [],
-  type: BeliefType.PersonalConclusion,
-  isRoot: true,
-  parents: []
+  items: [
+    {
+      data: {
+        id: uuid.v4(),
+        name: 'Your Beliefs',
+        notes: '',
+        references: [],
+        type: BeliefType.PersonalConclusion,
+        isRoot: true,
+        parents: [],
+      },
+    }
+  ],
 }
 
 export const state = () => ({
@@ -57,7 +63,7 @@ export const mutations = {
       data: payload[0],
       parents: [payload[1]],
     } as Node
-    state.nodes.push(newNode)
+    state.dag.items.push(newNode)
   },
   /** 
    * Removes a node from the DAG
@@ -66,14 +72,14 @@ export const mutations = {
    * - the id of the node to remove
    * - something that can probably be removed
   */
-  deleteDagNode(state: any, payload: [string, any[]]) {
-    const children = getNodeChildren(payload[0], state.dag.nodes)
+  deleteDagNode(state: any, payload: [string]) {
+    const children = getNodeChildren(payload[0], state.dag.items)
     // Ensure its parents are assigned to each of its children
     // This means its parents must be added while its own ID is removed from all of its children
-    const parents = getNodeParents(payload[0], state.dag.nodes)
+    const parents = getNodeParents(payload[0], state.dag.items)
     addNodeParents(parents, children)
     removeParentFromNodes(payload[0], children)
-    removeNode(payload[0], state.dag.nodes)
+    state.dag.items = removeNode(payload[0], state.dag.items)
   },
   setDag(state: any, payload: {}) {
     state.dag = payload

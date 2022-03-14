@@ -72,6 +72,16 @@ export interface Link {
 }
 
 /** 
+ * Returns a node
+ * @param {string} lookupId The id of the node we want
+ * @param {Node[]} nodes The list of nodes to search
+*/
+export function getNode(lookupId: string, nodes: Node[]): Node {
+  let node = nodes.filter((node: Node) => node.data.id == lookupId)[0]
+  return node
+}
+
+/** 
  * Returns the children of a given node
  * @param {string} lookupId The id of the node whose children we want
  * @param {Node[]} nodes The list of nodes to search
@@ -121,7 +131,9 @@ export function addNodeParents(newParents: string[], nodes: Node[]) {
 */
 export function removeParentFromNodes(parentId: string, nodes: Node[]) {
   nodes.forEach(
-    (node: Node) => delete node.parents[node.parents.indexOf(parentId)]
+    (node: Node) => {
+      node.parents = node.parents.filter((parent: string) => parent != parentId) 
+    }
   )
 }
 
@@ -131,5 +143,5 @@ export function removeParentFromNodes(parentId: string, nodes: Node[]) {
  * @param {Node[]} nodes The list of nodes to remove the node from
 */
 export function removeNode(lookupId: string, nodes: Node[]) {
-  nodes = nodes.filter((node: Node) => node.data.id === lookupId)
+  return nodes.filter((node: Node) => node.data.id != lookupId)
 }
