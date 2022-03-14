@@ -1,10 +1,10 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { mutations } from '../store/data'
-import { BeliefReference, BeliefType, Coords, getNode, Node, NodeData } from '../belief-map.types'
+import { mutations } from '../../store/data'
+import { BeliefReference, BeliefType, Coords, getNode, Node, NodeData } from '../../belief-map.types'
 
-const { addDagNode, deleteDagNode } = mutations
+const { addDagNode, deleteDagNode, setDag, setDagWithFile } = mutations
 let state : any = {}
 
 describe('Store', () => {
@@ -50,7 +50,38 @@ describe('Store', () => {
 
     state = {
       dag,
+      filename: '',
     }
+  })
+
+  it('sets the DAG from an object', () => {
+    const newDag = {
+      items: []
+    }
+
+    setDag(
+      state, 
+      newDag,
+    )
+
+    expect(state.dag.items.length).toEqual(0)
+  })
+
+  it('sets the DAG from a file', () => {
+    const newDag = {
+      items: []
+    }
+
+    setDagWithFile(
+      state, 
+      [
+        newDag,
+        'file',
+      ]
+    )
+
+    expect(state.dag.items.length).toEqual(0)
+    expect(state.filename).toEqual('file')
   })
 
   it('adds a node to the DAG', () => {
