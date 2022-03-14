@@ -62,7 +62,7 @@ export interface NodeData {
 
 export interface Node {
   data: NodeData,
-  children: Node[],
+  // children: Node[],
   parents: string[],
 }
 
@@ -121,7 +121,11 @@ export function getNodeParents(lookupId: string, nodes: Node[]): string[] {
  * @param {Node[]} nodes The list of nodes to which the parents will be added
 */
 export function addNodeParents(newParents: string[], nodes: Node[]) {
-  nodes.forEach((node: Node) => node.parents.concat(newParents))
+  nodes.forEach((node: Node) => {
+    let temp = node.parents.concat(newParents)
+    let set = [...new Set(temp)]
+    node.parents = set
+  })
 }
 
 /** 
@@ -142,6 +146,16 @@ export function removeParentFromNodes(parentId: string, nodes: Node[]) {
  * @param {string} lookupId The id of the node we want to remove
  * @param {Node[]} nodes The list of nodes to remove the node from
 */
-export function removeNode(lookupId: string, nodes: Node[]) {
+export function removeNode(lookupId: string, nodes: Node[]) : Node[] {
+  // Check if the node is root
+  nodes.forEach((node: Node) => {
+    if (isRoot(node) && lookupId === node.data.id) {
+      throw new Error('Cannot remove root node')
+    }
+  })
   return nodes.filter((node: Node) => node.data.id != lookupId)
+}
+
+export function isRoot(node: Node) : boolean {
+  return (node.parents.length === 0)
 }

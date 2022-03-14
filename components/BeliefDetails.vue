@@ -153,7 +153,7 @@ export default Vue.extend({
     },
     deleteBelief() {
       // TODO Show overlay first to confirm
-      this.$store.commit('data/deleteNode', [this.node.data.id, this.node.children])
+      this.$store.commit('data/deleteNode', [this.node.data.id, this.node.parents])
     },
     close() {
       this.$store.commit('display/setDisplayBeliefDetails', false)

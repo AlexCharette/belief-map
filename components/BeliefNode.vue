@@ -93,7 +93,7 @@ export default Vue.extend({
             y: this.circleData.y,
           } as Coords,
         },
-        children: this.hasChildren ? this.node.children : [],
+        parents: this.hasChildren ? this.node.children : [],
       } as Node
     },  
     hasChildren(): boolean {
