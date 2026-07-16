@@ -12,6 +12,7 @@
 	import { maps } from '$lib/stores/maps.svelte';
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { view } from '$lib/stores/view.svelte';
 	import { computeLayout } from '$lib/tree/layout';
 	import { canReroute, moveNode } from '$lib/tree/operations';
 	import BeliefFlowNode from './BeliefFlowNode.svelte';
@@ -43,7 +44,7 @@
 		// Auto positions (d3-hierarchy) are the fallback; a node's saved `position`
 		// wins. Positions only change on drag-stop, never mid-drag, so this effect
 		// doesn't stomp an in-progress drag.
-		const layout = computeLayout(maps.roots, ui.collapsed);
+		const layout = computeLayout(maps.roots, ui.collapsed, view.cardinality);
 		nodes = layout.nodes.map((n) => ({
 			id: n.data.id,
 			type: 'belief',

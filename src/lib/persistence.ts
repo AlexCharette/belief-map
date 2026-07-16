@@ -5,6 +5,7 @@ import { isLocale, type Locale } from './i18n/messages';
 const INDEX_KEY = 'beliefmap:index';
 const ACTIVE_KEY = 'beliefmap:active';
 const LOCALE_KEY = 'beliefmap:locale';
+const CARDINALITY_KEY = 'beliefmap:cardinality';
 const mapKey = (id: string) => `beliefmap:map:${id}`;
 
 function storage(): Storage | null {
@@ -70,4 +71,15 @@ export function loadLocale(): Locale | null {
 
 export function saveLocale(locale: Locale): void {
 	storage()?.setItem(LOCALE_KEY, locale);
+}
+
+/** Root-spoke cardinality (1–9), or null if unset/invalid. */
+export function loadCardinality(): number | null {
+	const raw = storage()?.getItem(CARDINALITY_KEY);
+	const n = Number(raw);
+	return Number.isInteger(n) && n >= 1 && n <= 9 ? n : null;
+}
+
+export function saveCardinality(cardinality: number): void {
+	storage()?.setItem(CARDINALITY_KEY, String(cardinality));
 }

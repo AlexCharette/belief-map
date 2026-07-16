@@ -21,8 +21,9 @@
 		targetPosition
 	}: EdgeProps = $props();
 
+	// Standard Svelte Flow bezier curve between the two endpoints.
 	const bezier = $derived(
-		getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition })
+		getBezierPath({ sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition })
 	);
 	const path = $derived(bezier[0]);
 	const labelX = $derived(bezier[1]);

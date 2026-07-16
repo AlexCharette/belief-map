@@ -115,7 +115,8 @@ export const de: Messages = {
 		dragHint:
 			'Auf eine Verbindung ziehen, um eine Überzeugung zwischen den beiden verbundenen einzufügen',
 		tidy: 'Aufräumen',
-		tidyHint: 'Automatisch anordnen — manuelle Positionen zurücksetzen'
+		tidyHint: 'Automatisch anordnen — manuelle Positionen zurücksetzen',
+		directions: 'Richtungen, in die sich die Wurzel verzweigt (1–9)'
 	},
 	edge: {
 		insertHere: 'Hier eine Überzeugung einfügen'

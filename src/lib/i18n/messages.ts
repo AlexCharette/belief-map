@@ -126,6 +126,7 @@ export interface Messages {
 		dragHint: string;
 		tidy: string;
 		tidyHint: string;
+		directions: string;
 	};
 	edge: {
 		insertHere: string;

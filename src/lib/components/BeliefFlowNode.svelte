@@ -164,8 +164,14 @@
 		color: var(--accent);
 	}
 	/* Connection handles are drop targets for reconnection — kept invisible until
-	   the node is hovered, but always hittable so edges can be dropped on them. */
+	   the node is hovered, but always hittable so edges can be dropped on them.
+	   Both are pinned to the donut's center so edges emanate from the node center
+	   (running edge-to-edge under the glyph) rather than from below the label. */
 	.belief-node :global(.svelte-flow__handle) {
+		top: 50px !important;
+		bottom: auto !important;
+		left: 50% !important;
+		transform: translate(-50%, -50%) !important;
 		opacity: 0;
 		width: 10px;
 		height: 10px;

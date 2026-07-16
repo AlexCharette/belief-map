@@ -3,6 +3,7 @@
 	import { maps } from '$lib/stores/maps.svelte';
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { view } from '$lib/stores/view.svelte';
 	import AppBar from '$lib/components/AppBar.svelte';
 	import Background from '$lib/components/Background.svelte';
 	import BeliefTree from '$lib/components/BeliefTree.svelte';
@@ -16,6 +17,7 @@
 
 	onMount(() => {
 		i18n.init(); // before maps.init() so a first-run seed uses the detected locale
+		view.init();
 		maps.init();
 	});
 </script>

@@ -113,7 +113,8 @@ export const fr: Messages = {
 		belief: 'Croyance',
 		dragHint: 'Faites glisser sur une connexion pour insérer une croyance entre les deux qu’elle relie',
 		tidy: 'Ranger',
-		tidyHint: 'Réorganiser automatiquement — effacer les positions manuelles'
+		tidyHint: 'Réorganiser automatiquement — effacer les positions manuelles',
+		directions: 'Directions dans lesquelles la racine se ramifie (1–9)'
 	},
 	edge: {
 		insertHere: 'Insérer une croyance ici'

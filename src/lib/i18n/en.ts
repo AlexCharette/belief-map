@@ -110,7 +110,8 @@ export const en: Messages = {
 		belief: 'Belief',
 		dragHint: 'Drag onto a connection to insert a belief between the two it links',
 		tidy: 'Tidy',
-		tidyHint: 'Auto-arrange — clear manual positions'
+		tidyHint: 'Auto-arrange — clear manual positions',
+		directions: 'Directions the root branches out (1–9)'
 	},
 	edge: {
 		insertHere: 'Insert a belief here'
