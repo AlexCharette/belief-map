@@ -1,0 +1,169 @@
+:root {
+	/* Rose Pine (Moon) — a cozy dark "night sky". The muted-violet base IS the
+	   constellation field; white belief-donuts and the accent hues glow on top of it.
+	   On dark, depth comes from surface lightness (surface > base), not heavy shadow.
+	   Source hues (beliefTypes.ts) are mapped onto Rose Pine's own accent set. */
+	--bg: #232136; /* base — the night-sky field */
+	--bg-panel: #2a273f; /* surface — panels lift by being lighter than base */
+	--surface: #2a273f;
+	--surface-raised: #393552; /* overlay — dropdowns / higher elevation */
+	--border: #44415a; /* highlight-med */
+	--text: #e0def4; /* text — soft lilac-white */
+	--text-muted: #908caa; /* subtle */
+	--accent: #c4a7e7; /* iris — primary action, selection, focus */
+	--accent-strong: #cbb0ee; /* brighter iris for link / accent text */
+	--accent-contrast: #232136; /* base — text on the (light) accent fill */
+	--link-line: #6e6a86; /* muted — edge strokes + the star-dot grid */
+	--danger: #eb6f92; /* love */
+	--shadow: 0 14px 32px rgba(11, 10, 20, 0.55); /* soft grounding on dark */
+	--radius: 12px;
+	--font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {
+	font-family: var(--font);
+	color: var(--text);
+	background: var(--bg);
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	margin: 0 0 0.4em;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+button {
+	font-family: inherit;
+}
+
+a {
+	color: var(--accent-strong);
+}
+
+/* Shared control styles */
+.btn {
+	appearance: none;
+	border: 1px solid var(--border);
+	background: var(--surface);
+	color: var(--text);
+	padding: 0.5rem 0.9rem;
+	border-radius: 8px;
+	font-size: 0.9rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition:
+		background 0.15s ease,
+		border-color 0.15s ease,
+		transform 0.05s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+	border-color: var(--accent);
+}
+
+.btn:active:not(:disabled) {
+	transform: translateY(1px);
+}
+
+.btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.btn-primary {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-contrast);
+}
+
+.btn-primary:hover:not(:disabled) {
+	filter: brightness(1.08);
+}
+
+.btn-danger {
+	color: var(--danger);
+	border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+}
+
+.btn-danger:hover:not(:disabled) {
+	border-color: var(--danger);
+	background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+}
+
+.icon-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: transparent;
+	color: var(--text-muted);
+	cursor: pointer;
+	padding: 0.3rem;
+	border-radius: 8px;
+	line-height: 0;
+}
+
+.icon-btn:hover {
+	background: color-mix(in srgb, var(--accent) 10%, transparent);
+	color: var(--accent);
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	margin-bottom: 0.9rem;
+}
+
+.field label {
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: var(--text-muted);
+}
+
+.field input,
+.field textarea,
+.field select,
+.ref-fields input {
+	font-family: inherit;
+	font-size: 0.95rem;
+	padding: 0.55rem 0.7rem;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--surface);
+	color: var(--text);
+	width: 100%;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+.ref-fields input:focus {
+	outline: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+	outline-offset: 0;
+	border-color: var(--accent);
+}
+
+.field .error {
+	font-size: 0.75rem;
+	color: var(--danger);
+}
