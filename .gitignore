@@ -1,7 +1,10 @@
-# Nuxt dev/build outputs
-.output
-.nuxt
-# Node dependencies
 node_modules
-# System files
-*.log
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
+.DS_Store
