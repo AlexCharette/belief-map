@@ -26,6 +26,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Project Pages serves at /<repo>; drop this once a custom domain is set.
+          BASE_PATH: /belief-map
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build

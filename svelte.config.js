@@ -10,7 +10,13 @@ const config = {
 		// so deep links / hard refreshes boot the client router instead of hard-404ing.
 		adapter: adapter({
 			fallback: '404.html'
-		})
+		}),
+		// Served from a GitHub Pages *project* URL (…/belief-map) until a custom domain
+		// is added. The workflow sets BASE_PATH=/belief-map for the build; a root/custom
+		// domain deploy just leaves BASE_PATH unset so base = ''.
+		paths: {
+			base: process.env.BASE_PATH ?? ''
+		}
 	}
 };
 
