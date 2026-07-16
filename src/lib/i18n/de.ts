@@ -13,7 +13,9 @@ export const de: Messages = {
 		exported: 'Karte exportiert',
 		imported: ({ name }) => `„${name}“ importiert`,
 		invalidFile: 'Diese Datei ist keine gültige Belief-Map-JSON',
-		readError: 'Datei konnte nicht gelesen werden'
+		readError: 'Datei konnte nicht gelesen werden',
+		showToolbar: 'Symbolleiste einblenden',
+		hideToolbar: 'Symbolleiste ausblenden'
 	},
 	mapManager: {
 		current: 'Filament',

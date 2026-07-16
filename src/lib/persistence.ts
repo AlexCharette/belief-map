@@ -6,6 +6,7 @@ const INDEX_KEY = 'beliefmap:index';
 const ACTIVE_KEY = 'beliefmap:active';
 const LOCALE_KEY = 'beliefmap:locale';
 const CARDINALITY_KEY = 'beliefmap:cardinality';
+const TOOLBAR_KEY = 'beliefmap:toolbar';
 const mapKey = (id: string) => `beliefmap:map:${id}`;
 
 function storage(): Storage | null {
@@ -82,4 +83,14 @@ export function loadCardinality(): number | null {
 
 export function saveCardinality(cardinality: number): void {
 	storage()?.setItem(CARDINALITY_KEY, String(cardinality));
+}
+
+/** Whether the top-right toolbar is expanded, or null if unset. */
+export function loadToolbarOpen(): boolean | null {
+	const raw = storage()?.getItem(TOOLBAR_KEY);
+	return raw === '1' ? true : raw === '0' ? false : null;
+}
+
+export function saveToolbarOpen(open: boolean): void {
+	storage()?.setItem(TOOLBAR_KEY, open ? '1' : '0');
 }

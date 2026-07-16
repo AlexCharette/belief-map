@@ -2,6 +2,7 @@
 	import { maps } from '$lib/stores/maps.svelte';
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { view } from '$lib/stores/view.svelte';
 	import { normalizeMap } from '$lib/tree/operations';
 	import Icon from './Icon.svelte';
 	import MapManager from './MapManager.svelte';
@@ -52,7 +53,8 @@
 	}
 </script>
 
-<div class="appbar">
+<!-- Sliding cluster of controls (map picker, categories, import, export, language). -->
+<div class="cluster" class:collapsed={!view.toolbarOpen} inert={!view.toolbarOpen}>
 	<MapManager />
 	<button class="btn" onclick={() => ui.openTaxonomy()}>
 		<Icon name="tags" size={16} /> {i18n.m.appbar.categories}
@@ -74,19 +76,61 @@
 	/>
 </div>
 
+<!-- Always-visible chip: collapses the cluster off-screen / brings it back. -->
+<button
+	class="toggle"
+	onclick={() => view.toggleToolbar()}
+	aria-expanded={view.toolbarOpen}
+	aria-label={view.toolbarOpen ? i18n.m.appbar.hideToolbar : i18n.m.appbar.showToolbar}
+>
+	<Icon name={view.toolbarOpen ? 'close' : 'menu'} size={20} />
+</button>
+
 <style>
-	/* Floating cluster of four controls (map picker, categories, import, export). */
-	.appbar {
+	/* Floating cluster, anchored to the right with room for the toggle chip. */
+	.cluster {
+		position: fixed;
+		top: 12px;
+		right: 56px;
+		z-index: 49;
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		transition:
+			transform 0.28s ease,
+			opacity 0.2s ease;
+	}
+	.cluster.collapsed {
+		/* Slide fully past the right edge and disable interaction. */
+		transform: translateX(calc(100% + 64px));
+		opacity: 0;
+		pointer-events: none;
+	}
+	.cluster :global(.trigger),
+	.cluster .btn {
+		box-shadow: var(--shadow);
+	}
+
+	.toggle {
 		position: fixed;
 		top: 12px;
 		right: 12px;
 		z-index: 50;
+		width: 38px;
+		height: 38px;
 		display: flex;
 		align-items: center;
-		gap: 0.4rem;
-	}
-	.appbar :global(.trigger),
-	.appbar .btn {
+		justify-content: center;
+		padding: 0;
+		color: var(--text-muted);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 50%;
+		cursor: pointer;
 		box-shadow: var(--shadow);
+	}
+	.toggle:hover {
+		color: var(--accent);
+		border-color: var(--accent);
 	}
 </style>

@@ -31,6 +31,8 @@ export interface Messages {
 		imported: (p: { name: string }) => string;
 		invalidFile: string;
 		readError: string;
+		showToolbar: string;
+		hideToolbar: string;
 	};
 	mapManager: {
 		current: string; // fallback trigger label when no active map

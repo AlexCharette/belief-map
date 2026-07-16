@@ -13,7 +13,9 @@ export const ru: Messages = {
 		exported: 'Карта экспортирована',
 		imported: ({ name }) => `«${name}» импортирована`,
 		invalidFile: 'Этот файл не является корректным JSON карты убеждений',
-		readError: 'Не удалось прочитать файл'
+		readError: 'Не удалось прочитать файл',
+		showToolbar: 'Показать панель',
+		hideToolbar: 'Скрыть панель'
 	},
 	mapManager: {
 		current: 'Filament',

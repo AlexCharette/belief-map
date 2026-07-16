@@ -13,7 +13,9 @@ export const fr: Messages = {
 		exported: 'Carte exportée',
 		imported: ({ name }) => `« ${name} » importée`,
 		invalidFile: 'Ce fichier n’est pas une carte de croyances JSON valide',
-		readError: 'Impossible de lire ce fichier'
+		readError: 'Impossible de lire ce fichier',
+		showToolbar: 'Afficher la barre d’outils',
+		hideToolbar: 'Masquer la barre d’outils'
 	},
 	mapManager: {
 		current: 'Filament',

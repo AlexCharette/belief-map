@@ -13,7 +13,9 @@ export const en: Messages = {
 		exported: 'Map exported',
 		imported: ({ name }) => `Imported “${name}”`,
 		invalidFile: 'That file is not a valid belief map JSON',
-		readError: 'Could not read that file'
+		readError: 'Could not read that file',
+		showToolbar: 'Show toolbar',
+		hideToolbar: 'Hide toolbar'
 	},
 	mapManager: {
 		current: 'Filament',

@@ -1,4 +1,9 @@
-import { loadCardinality, saveCardinality } from '../persistence';
+import {
+	loadCardinality,
+	saveCardinality,
+	loadToolbarOpen,
+	saveToolbarOpen
+} from '../persistence';
 
 export const MIN_CARDINALITY = 1;
 export const MAX_CARDINALITY = 9;
@@ -12,9 +17,12 @@ const clamp = (n: number) =>
  *  i18n singleton pattern; call `init()` once in the browser. */
 class ViewStore {
 	cardinality = $state(DEFAULT_CARDINALITY);
+	/** Whether the top-right toolbar cluster is expanded (visible). */
+	toolbarOpen = $state(true);
 
 	init(): void {
 		this.cardinality = loadCardinality() ?? DEFAULT_CARDINALITY;
+		this.toolbarOpen = loadToolbarOpen() ?? true;
 	}
 
 	set(cardinality: number): void {
@@ -22,6 +30,11 @@ class ViewStore {
 		if (next === this.cardinality) return;
 		this.cardinality = next;
 		saveCardinality(next);
+	}
+
+	toggleToolbar(): void {
+		this.toolbarOpen = !this.toolbarOpen;
+		saveToolbarOpen(this.toolbarOpen);
 	}
 }
 
