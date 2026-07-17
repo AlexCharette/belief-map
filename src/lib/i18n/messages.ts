@@ -165,6 +165,7 @@ export interface Messages {
 		donateBody: string;
 		copyAddress: string;
 		copied: string;
+		donateKofi: string;
 	};
 	/** Default taxonomy DATA seeded into new maps (localized per the chosen locale). */
 	taxo: {

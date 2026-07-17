@@ -159,9 +159,10 @@ export const fr: Messages = {
 			'Utilisez le sélecteur de cartes pour en conserver plusieurs ; Importer / Exporter les enregistre et les charge en JSON.'
 		],
 		donateTitle: 'Soutenir ce projet',
-		donateBody: 'Si cet outil vous est utile, vous pouvez envoyer un peu de bitcoin.',
+		donateBody: 'Si cet outil vous est utile, vous pouvez le soutenir par un petit don.',
 		copyAddress: 'Copier l’adresse',
-		copied: 'Copié !'
+		copied: 'Copié !',
+		donateKofi: 'Soutenir sur Ko-fi'
 	},
 	taxo: {
 		defaultMapName: 'Vos croyances',

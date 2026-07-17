@@ -21,6 +21,7 @@ import Check from '@lucide/svelte/icons/check';
 import Menu from '@lucide/svelte/icons/menu';
 import UserCheck from '@lucide/svelte/icons/user-check';
 import Bitcoin from '@lucide/svelte/icons/bitcoin';
+import Coffee from '@lucide/svelte/icons/coffee';
 import CircleHelp from '@lucide/svelte/icons/circle-help';
 import Tags from '@lucide/svelte/icons/tags';
 // category-picker icons
@@ -77,6 +78,7 @@ export const ICON_MAP = {
 	menu: Menu,
 	'account-check': UserCheck,
 	bitcoin: Bitcoin,
+	coffee: Coffee,
 	help: CircleHelp,
 	tags: Tags,
 	// category icons (Lucide kebab names)

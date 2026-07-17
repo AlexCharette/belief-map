@@ -156,9 +156,10 @@ export const en: Messages = {
 			'Use the map picker to keep several maps; Import / Export save and load them as JSON.'
 		],
 		donateTitle: 'Support this project',
-		donateBody: 'If this tool is useful to you, you can send a little bitcoin.',
+		donateBody: 'If this tool is useful to you, you can support it with a small donation.',
 		copyAddress: 'Copy address',
-		copied: 'Copied!'
+		copied: 'Copied!',
+		donateKofi: 'Support on Ko-fi'
 	},
 	taxo: {
 		defaultMapName: 'Your Beliefs',

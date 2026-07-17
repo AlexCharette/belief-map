@@ -161,9 +161,10 @@ export const de: Messages = {
 			'Über die Kartenauswahl können Sie mehrere Karten führen; Importieren / Exportieren speichert und lädt sie als JSON.'
 		],
 		donateTitle: 'Dieses Projekt unterstützen',
-		donateBody: 'Wenn Ihnen dieses Werkzeug nützt, können Sie etwas Bitcoin senden.',
+		donateBody: 'Wenn Ihnen dieses Werkzeug nützt, können Sie es mit einer kleinen Spende unterstützen.',
 		copyAddress: 'Adresse kopieren',
-		copied: 'Kopiert!'
+		copied: 'Kopiert!',
+		donateKofi: 'Auf Ko-fi unterstützen'
 	},
 	taxo: {
 		defaultMapName: 'Ihre Überzeugungen',
