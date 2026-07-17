@@ -202,7 +202,7 @@ absent — 0.4 is the floor.
 
 **The Icon-and-Label Rule.** A source is *always* backed by its icon and label, never
 color alone — chips (colored icon + tinted pill + **ink** label), forms, and the node's
-own name below the donut. Meaning-bearing text stays in ink so it clears contrast on any
+own description below the donut. Meaning-bearing text stays in ink so it clears contrast on any
 hue.
 
 **The Lift-by-Light Rule.** On this dark theme depth comes from surface *lightness*
@@ -220,14 +220,14 @@ system the user already trusts, not a branded voice competing with their beliefs
 Hierarchy comes from **weight (400 → 600 → 700) and size**, never from a second family.
 
 ### Hierarchy
-- **Title** (600, 1.15rem, line-height 1.2): the selected belief's name in the detail
+- **Title** (600, 1.15rem, line-height 1.2): the selected belief's description in the detail
   panel — the largest text in the app.
 - **Headline** (600, 1.05–1.1rem): app-bar brand ("Belief Map") and modal headers.
 - **Body** (400, 0.9–0.95rem, line-height 1.5): belief notes, references, menu items,
   button labels. Cap prose at 65–75ch inside panels.
 - **Label** (600, 0.8rem): form field labels and section headers — often in Ink Muted.
-- **Node Label** (500, 12px): the belief name under each donut on the field; turns
-  Constellation Indigo at weight 700 when its node is selected. Names over 20 chars are
+- **Node Label** (500, 12px): the belief description under each donut on the field; turns
+  Constellation Indigo at weight 700 when its node is selected. Long descriptions are
   truncated with an ellipsis.
 - **Micro** (400, 0.72–0.75rem): hints and inline validation errors only.
 
@@ -309,7 +309,7 @@ made explicit where there's room for it.
 ### Inputs / Fields
 - **Style:** dark Surface, 1px Border, 8px radius; label above in Ink-Muted 0.8rem/600.
   Native `<select>` for the source-category and confidence pickers (the belief form pairs
-  them side by side); `<input>`/`<textarea>` for name, notes, and reference rows.
+  them side by side); `<textarea>` for the description and notes, `<input>` for reference rows.
 - **Focus:** a 2px iris outline at 40% (`color-mix`) plus a solid iris border — a soft
   focus glow, clearly visible, never a hard system ring.
 - **Error:** inline Danger micro text below the field; validation is deferred until an
@@ -334,7 +334,7 @@ chrome never looks like a third-party default:
 ### The Reroute Modal (move a belief)
 A focused modal for re-parenting: a hint line naming the current parent, an optional search
 box (shown only past 8 candidates), and a scrollable, depth-indented list of eligible target
-beliefs — each a full-width row with the target's category **dot**, its name, and a trailing
+beliefs — each a full-width row with the target's category **dot**, its description, and a trailing
 chevron. Hover paints a 9% iris wash. It exists so structural edits stay light and reversible.
 
 ### The Belief Node (signature component)
@@ -344,7 +344,7 @@ arc *width* scaled by count, arc *opacity* by average child confidence) show the
 mix, and an inner ring stroked in the node's own source hue at its own confidence opacity.
 Radius is 25px at rest and inflates to 37px on hover with a 0.18s ease — soft and springy,
 inviting a poke. A small collapse/expand badge (± in a bordered `surface-raised` circle)
-sits at the node's shoulder when it has children. The name label sits below; selection
+sits at the node's shoulder when it has children. The description label sits below; selection
 turns it iris and bold. This is where "inviting to tinker" and "legible structure over
 decoration" both live — protect it.
 

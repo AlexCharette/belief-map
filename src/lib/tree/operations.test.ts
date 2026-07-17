@@ -22,11 +22,11 @@ import {
 } from './operations';
 
 const input = (
-	name: string,
+	description: string,
 	source = Source.DirectObservation,
 	confidence = Confidence.Probable
 ) => ({
-	name,
+	description,
 	notes: '',
 	source,
 	confidence,
@@ -41,7 +41,7 @@ describe('newForest / newTree / createBelief', () => {
 		const roots = newForest();
 		expect(roots).toHaveLength(1);
 		expect(roots[0].isRoot).toBe(true);
-		expect(roots[0].name).toBe('Your Beliefs');
+		expect(roots[0].description).toBe('Your Beliefs');
 		expect(roots[0].children).toEqual([]);
 	});
 
@@ -60,7 +60,7 @@ describe('addNode / addOrphan', () => {
 		expect(next).not.toBe(roots);
 		expect(roots[0].children).toHaveLength(0); // original untouched
 		expect(next[0].children).toHaveLength(1);
-		expect(next[0].children[0].name).toBe('child');
+		expect(next[0].children[0].description).toBe('child');
 	});
 
 	it('addOrphan appends a new parentless root', () => {
@@ -68,7 +68,7 @@ describe('addNode / addOrphan', () => {
 		roots = addOrphan(roots, input('loner'), { x: 10, y: 20 });
 		expect(roots).toHaveLength(2);
 		const loner = roots[1];
-		expect(loner.name).toBe('loner');
+		expect(loner.description).toBe('loner');
 		expect(loner.isRoot).toBe(true);
 		expect(loner.position).toEqual({ x: 10, y: 20 });
 		expect(findParent(roots, loner.id)).toBeNull(); // truly parentless
@@ -81,14 +81,14 @@ describe('updateNode', () => {
 		roots = addNode(roots, rootId(roots), input('old'));
 		const id = roots[0].children[0].id;
 		const next = updateNode(roots, id, {
-			name: 'new',
+			description: 'new',
 			notes: 'note',
 			source: Source.ScientificEvidence,
 			confidence: Confidence.Established,
 			references: [{ text: 'r', link: 'http://x' }]
 		});
 		const updated = findNode(next, id)!;
-		expect(updated.name).toBe('new');
+		expect(updated.description).toBe('new');
 		expect(updated.source).toBe(Source.ScientificEvidence);
 		expect(updated.confidence).toBe(Confidence.Established);
 		expect(updated.references[0].link).toBe('http://x');
@@ -105,7 +105,7 @@ describe('deleteNode', () => {
 
 		const next = deleteNode(roots, midId);
 		expect(next[0].children).toHaveLength(2);
-		expect(next[0].children.map((c) => c.name).sort()).toEqual(['leaf1', 'leaf2']);
+		expect(next[0].children.map((c) => c.description).sort()).toEqual(['leaf1', 'leaf2']);
 	});
 
 	it('deleting a root promotes its children to roots', () => {
@@ -113,7 +113,7 @@ describe('deleteNode', () => {
 		roots = addNode(roots, rootId(roots), input('a'));
 		roots = addNode(roots, rootId(roots), input('b'));
 		const next = deleteNode(roots, rootId(roots));
-		expect(next.map((r) => r.name).sort()).toEqual(['a', 'b']);
+		expect(next.map((r) => r.description).sort()).toEqual(['a', 'b']);
 		expect(next.every((r) => r.isRoot)).toBe(true);
 	});
 });
@@ -137,8 +137,8 @@ describe('reroute (moveNode / canReroute) — forest', () => {
 		const { roots, aId, bId } = sample();
 		const next = moveNode(roots, aId, bId);
 		const b = findNode(next, bId)!;
-		expect(b.children.map((c) => c.name)).toEqual(['a']);
-		expect(b.children[0].children[0].name).toBe('a1'); // subtree came along
+		expect(b.children.map((c) => c.description)).toEqual(['a']);
+		expect(b.children[0].children[0].description).toBe('a1'); // subtree came along
 	});
 
 	it('re-parents an orphan root under a node (root loses root status)', () => {
@@ -182,9 +182,9 @@ describe('insertBetween', () => {
 
 		const next = insertBetween(roots, rootId(roots), childId, input('bridge'));
 		const mid = next[0].children[0];
-		expect(mid.name).toBe('bridge');
+		expect(mid.description).toBe('bridge');
 		expect(mid.children[0].id).toBe(childId);
-		expect(mid.children[0].children[0].name).toBe('grandchild');
+		expect(mid.children[0].children[0].description).toBe('grandchild');
 	});
 
 	it('is a no-op when childId is not a direct child of parentId', () => {
@@ -224,6 +224,8 @@ describe('normalizeMap', () => {
 		expect(doc.roots).toHaveLength(1);
 		const t = doc.roots[0];
 		expect(t.source).toBe(Source.LogicalReasoning);
+		expect(t.description).toBe('Your Beliefs'); // legacy `name` migrates to `description`
+		expect(t.children[0].description).toBe('sci');
 		expect(t.children[0]).toMatchObject({ source: Source.ScientificEvidence, confidence: Confidence.Established });
 		expect(t.children[1]).toMatchObject({ source: Source.ExpertAuthority, confidence: Confidence.Probable });
 		expect(t.children[2]).toMatchObject({ source: Source.Faith, confidence: Confidence.Probable });

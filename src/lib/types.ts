@@ -43,7 +43,7 @@ export interface BeliefReference {
  *  ConfidenceLevel in the owning map's taxonomy, by id. Recursive via `children`. */
 export interface BeliefNode {
 	id: string;
-	name: string;
+	description: string;
 	notes: string;
 	source: string;
 	confidence: string;
@@ -66,7 +66,7 @@ export interface BeliefMapDoc {
 /** The editable payload of a belief (everything a form collects). */
 export type BeliefInput = Pick<
 	BeliefNode,
-	'name' | 'notes' | 'source' | 'confidence' | 'references'
+	'description' | 'notes' | 'source' | 'confidence' | 'references'
 >;
 
 /** Metadata for a saved map, kept in the persistence index. */

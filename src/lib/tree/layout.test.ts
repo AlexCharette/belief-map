@@ -3,8 +3,8 @@ import { Confidence, Source } from '../types';
 import { addNode, addOrphan, newForest } from './operations';
 import { computeLayout, type LaidOutNode } from './layout';
 
-const belief = (name: string) => ({
-	name,
+const belief = (description: string) => ({
+	description,
 	notes: '',
 	source: Source.DirectObservation,
 	confidence: Confidence.Probable,
@@ -31,8 +31,8 @@ describe('computeLayout (root spokes)', () => {
 		expect(links).toHaveLength(3);
 		const root = byId(nodes, rid);
 		const a = byId(nodes, aId);
-		const b = nodes.find((n) => n.data.name === 'b')!;
-		const a1 = nodes.find((n) => n.data.name === 'a1')!;
+		const b = nodes.find((n) => n.data.description === 'b')!;
+		const a1 = nodes.find((n) => n.data.description === 'a1')!;
 		// every descendant hangs below its ancestor
 		expect(a.y).toBeGreaterThan(root.y);
 		expect(b.y).toBeGreaterThan(root.y);
@@ -45,7 +45,7 @@ describe('computeLayout (root spokes)', () => {
 		for (const n of ['south', 'west', 'north', 'east']) roots = addNode(roots, rid, belief(n));
 		const { nodes } = computeLayout(roots, new Set(), 4);
 		const root = byId(nodes, rid);
-		const dir = (name: string) => nodes.find((n) => n.data.name === name)!;
+		const dir = (name: string) => nodes.find((n) => n.data.description === name)!;
 		const near = (a: number, b: number) => Math.abs(a - b) < 1;
 
 		expect(dir('south').y).toBeGreaterThan(root.y);
@@ -76,10 +76,10 @@ describe('computeLayout (root spokes)', () => {
 		const a = byId(nodes, aId);
 		// 'a' went south; its grandchildren continue further south, not re-branched
 		expect(a.y).toBeGreaterThan(root.y);
-		expect(nodes.find((n) => n.data.name === 'a1')!.y).toBeGreaterThan(a.y);
-		expect(nodes.find((n) => n.data.name === 'a2')!.y).toBeGreaterThan(a.y);
+		expect(nodes.find((n) => n.data.description === 'a1')!.y).toBeGreaterThan(a.y);
+		expect(nodes.find((n) => n.data.description === 'a2')!.y).toBeGreaterThan(a.y);
 		// 'b' went west
-		expect(nodes.find((n) => n.data.name === 'b')!.x).toBeLessThan(root.x);
+		expect(nodes.find((n) => n.data.description === 'b')!.x).toBeLessThan(root.x);
 	});
 
 	it('tiles multiple roots into separate, horizontally-offset clusters', () => {
@@ -102,7 +102,7 @@ describe('computeLayout (root spokes)', () => {
 	it('hides the subtree of a collapsed node', () => {
 		const { roots, aId } = sample();
 		const { nodes } = computeLayout(roots, new Set([aId]), 4);
-		const names = nodes.map((n) => n.data.name);
+		const names = nodes.map((n) => n.data.description);
 		expect(names).toContain('a');
 		expect(names).not.toContain('a1');
 		expect(byId(nodes, aId).collapsed).toBe(true);
