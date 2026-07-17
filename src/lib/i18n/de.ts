@@ -159,7 +159,11 @@ export const de: Messages = {
 			'Aufräumen (oben links) ordnet alles automatisch wieder zu sauberen Bäumen an.',
 			'Kategorien (obere Leiste) lässt Sie Ihre Quellkategorien und Zuversichtsstufen umbenennen, umfärben und mit neuen Symbolen versehen — oder eine Vorlage laden.',
 			'Über die Kartenauswahl können Sie mehrere Karten führen; Importieren / Exportieren speichert und lädt sie als JSON.'
-		]
+		],
+		donateTitle: 'Dieses Projekt unterstützen',
+		donateBody: 'Wenn Ihnen dieses Werkzeug nützt, können Sie etwas Bitcoin senden.',
+		copyAddress: 'Adresse kopieren',
+		copied: 'Kopiert!'
 	},
 	taxo: {
 		defaultMapName: 'Ihre Überzeugungen',

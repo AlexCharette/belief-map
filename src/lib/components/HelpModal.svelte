@@ -1,9 +1,20 @@
 <script lang="ts">
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { BTC_ADDRESS } from '$lib/donate';
 	import Modal from './Modal.svelte';
 	import Icon from './Icon.svelte';
 	import type { IconName } from '$lib/icons';
+
+	let copied = $state(false);
+	let copyTimer: ReturnType<typeof setTimeout>;
+
+	async function copyAddress() {
+		await navigator.clipboard.writeText(BTC_ADDRESS);
+		copied = true;
+		clearTimeout(copyTimer);
+		copyTimer = setTimeout(() => (copied = false), 2000);
+	}
 
 	// One icon per how-to step, paired by index with i18n.m.help.steps. Each matches
 	// the affordance the step describes, using the same glyph the app uses for it:
@@ -36,6 +47,17 @@
 				</li>
 			{/each}
 		</ul>
+
+		<h3>{i18n.m.help.donateTitle}</h3>
+		<p>{i18n.m.help.donateBody}</p>
+		<div class="donate">
+			<span class="glyph"><Icon name="bitcoin" size={16} color="var(--accent)" /></span>
+			<code>{BTC_ADDRESS}</code>
+			<button class="btn" onclick={copyAddress} aria-label={i18n.m.help.copyAddress}>
+				<Icon name={copied ? 'check' : 'copy'} size={16} />
+				<span>{copied ? i18n.m.help.copied : i18n.m.help.copyAddress}</span>
+			</button>
+		</div>
 	</div>
 </Modal>
 
@@ -70,6 +92,20 @@
 		gap: 0.6rem;
 		font-size: 0.9rem;
 		line-height: 1.4;
+	}
+	.donate {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-size: 0.9rem;
+	}
+	.donate code {
+		flex: 1;
+		font-size: 0.8rem;
+		overflow-wrap: anywhere;
+	}
+	.donate .btn {
+		flex: none;
 	}
 	.glyph {
 		flex: none;
