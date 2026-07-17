@@ -15,6 +15,8 @@ import Waypoints from '@lucide/svelte/icons/waypoints';
 import ChevronDown from '@lucide/svelte/icons/chevron-down';
 import ChevronUp from '@lucide/svelte/icons/chevron-up';
 import ChevronRight from '@lucide/svelte/icons/chevron-right';
+import ChevronsDownUp from '@lucide/svelte/icons/chevrons-down-up';
+import ChevronsUpDown from '@lucide/svelte/icons/chevrons-up-down';
 import Check from '@lucide/svelte/icons/check';
 import Menu from '@lucide/svelte/icons/menu';
 import UserCheck from '@lucide/svelte/icons/user-check';
@@ -68,6 +70,8 @@ export const ICON_MAP = {
 	'chevron-down': ChevronDown,
 	'chevron-up': ChevronUp,
 	'chevron-right': ChevronRight,
+	'chevrons-down-up': ChevronsDownUp,
+	'chevrons-up-down': ChevronsUpDown,
 	check: Check,
 	menu: Menu,
 	'account-check': UserCheck,

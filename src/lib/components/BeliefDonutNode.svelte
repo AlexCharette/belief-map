@@ -80,7 +80,7 @@
 			tabindex="-1"
 			aria-label={collapsed ? i18n.m.node.expand : i18n.m.node.collapse}
 		>
-			{collapsed ? '+' : '−'}
+			<Icon name={collapsed ? 'chevrons-up-down' : 'chevrons-down-up'} size={12} />
 		</span>
 	{/if}
 

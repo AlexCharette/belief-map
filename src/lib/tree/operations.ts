@@ -216,6 +216,20 @@ export function moveNode(roots: BeliefNode[], id: string, newParentId: string): 
 	return next;
 }
 
+/** Detach node `id` from its parent — the edge is removed and the node (with its
+ *  whole subtree) becomes a standalone root. No-op if `id` is already a root or
+ *  is not found. Returns a new forest. */
+export function detachNode(roots: BeliefNode[], id: string): BeliefNode[] {
+	const next = cloneForest(roots);
+	const parent = findParent(next, id);
+	if (!parent) return next; // already a root (or missing) — nothing to detach
+	const idx = parent.children.findIndex((c) => c.id === id);
+	const [detached] = parent.children.splice(idx, 1);
+	detached.isRoot = true;
+	next.push(detached);
+	return next;
+}
+
 /** Valid reroute targets for node `id`, in depth-first order with depth for
  *  indentation. Excludes the node, its descendants, and its current parent. */
 export function rerouteCandidates(

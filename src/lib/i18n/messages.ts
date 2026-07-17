@@ -136,6 +136,8 @@ export interface Messages {
 	};
 	edge: {
 		insertHere: string;
+		deleteEdge: string;
+		edgeDetached: string;
 	};
 	modal: {
 		close: string;

@@ -8,6 +8,7 @@ import {
 	countByCategory,
 	createBelief,
 	deleteNode,
+	detachNode,
 	findNode,
 	findParent,
 	insertBetween,
@@ -170,6 +171,25 @@ describe('reroute (moveNode / canReroute) — forest', () => {
 		expect(ids).toContain(orphanId); // a node in another tree is a valid target
 		expect(ids).not.toContain(aId);
 		expect(ids).not.toContain(a1Id);
+	});
+
+	it('detachNode promotes a child (with its subtree) to a root', () => {
+		const { roots, rid, aId, a1Id } = sample();
+		const next = detachNode(roots, aId);
+		// 'a' is gone from the root's children...
+		expect(findNode(next, rid)!.children.map((c) => c.id)).not.toContain(aId);
+		// ...and is now a top-level root, still carrying its subtree ('a1').
+		expect(next.some((r) => r.id === aId)).toBe(true);
+		const a = findNode(next, aId)!;
+		expect(a.isRoot).toBe(true);
+		expect(findParent(next, aId)).toBeNull();
+		expect(a.children[0].id).toBe(a1Id);
+	});
+
+	it('detachNode is a no-op on a node that is already a root', () => {
+		const { roots, orphanId } = sample();
+		const next = detachNode(roots, orphanId);
+		expect(next.map((r) => r.id).sort()).toEqual(roots.map((r) => r.id).sort());
 	});
 });
 

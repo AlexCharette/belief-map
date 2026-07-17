@@ -124,7 +124,9 @@ export const de: Messages = {
 		styleCard: 'Karte'
 	},
 	edge: {
-		insertHere: 'Hier eine Überzeugung einfügen'
+		insertHere: 'Hier eine Überzeugung einfügen',
+		deleteEdge: 'Diese Überzeugung ablösen',
+		edgeDetached: 'Überzeugung abgelöst'
 	},
 	modal: {
 		close: 'Schließen',

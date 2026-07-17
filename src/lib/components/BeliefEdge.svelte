@@ -7,7 +7,9 @@
 		type EdgeProps
 	} from '@xyflow/svelte';
 	import { ui } from '$lib/stores/ui.svelte';
+	import { maps } from '$lib/stores/maps.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { detachNode } from '$lib/tree/operations';
 	import Icon from './Icon.svelte';
 
 	let {
@@ -30,6 +32,13 @@
 	const labelY = $derived(bezier[2]);
 
 	let reconnecting = $state(false);
+
+	// Detach the child (target) from its parent (source): the edge is removed and
+	// the child becomes a standalone root, keeping its subtree.
+	function detachEdge() {
+		maps.applyForestOp((r) => detachNode(r, target));
+		ui.notify(i18n.m.edge.edgeDetached);
+	}
 </script>
 
 {#if !reconnecting}
@@ -39,16 +48,27 @@
 <!-- Drag the parent (source) end onto another belief to re-parent this one. -->
 <EdgeReconnectAnchor bind:reconnecting type="source" position={{ x: sourceX, y: sourceY }} />
 
-<!-- Always-present "+" — click to insert a belief on this connection. -->
+<!-- Edge tools at the midpoint: "+" inserts a belief on this connection, "−" detaches the child. -->
 <EdgeLabel x={labelX} y={labelY} transparent>
-	<button class="hint" title={i18n.m.edge.insertHere} onclick={() => ui.openInsertForm(source, target)}>
-		<Icon name="plus" size={14} />
-	</button>
+	<div class="edge-tools">
+		<button class="hint" title={i18n.m.edge.insertHere} onclick={() => ui.openInsertForm(source, target)}>
+			<Icon name="plus" size={14} />
+		</button>
+		<button class="hint danger" title={i18n.m.edge.deleteEdge} onclick={detachEdge}>
+			<Icon name="minus" size={14} />
+		</button>
+	</div>
 </EdgeLabel>
 
 <style>
-	/* Always-present click-to-insert "+" on the edge midpoint. Subtle by default,
-	   emphasized on its own hover — stable (never remounts), so it never flickers. */
+	/* Insert ("+") and detach ("−") controls at the edge midpoint. */
+	.edge-tools {
+		display: flex;
+		gap: 4px;
+		pointer-events: none; /* only the buttons themselves are hittable */
+	}
+	/* Subtle by default, emphasized on its own hover — stable (never remounts),
+	   so it never flickers. */
 	.hint {
 		pointer-events: all;
 		width: 20px;
@@ -76,5 +96,14 @@
 		background: color-mix(in srgb, var(--accent) 20%, var(--surface));
 		border-color: var(--accent);
 		box-shadow: var(--shadow);
+	}
+	/* The detach control reads as destructive on hover. */
+	.hint.danger {
+		color: var(--danger);
+		border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+	}
+	.hint.danger:hover {
+		background: color-mix(in srgb, var(--danger) 20%, var(--surface));
+		border-color: var(--danger);
 	}
 </style>

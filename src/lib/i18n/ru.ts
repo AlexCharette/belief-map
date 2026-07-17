@@ -120,7 +120,9 @@ export const ru: Messages = {
 		styleCard: 'Карточка'
 	},
 	edge: {
-		insertHere: 'Вставить убеждение здесь'
+		insertHere: 'Вставить убеждение здесь',
+		deleteEdge: 'Отсоединить это убеждение',
+		edgeDetached: 'Убеждение отсоединено'
 	},
 	modal: {
 		close: 'Закрыть',

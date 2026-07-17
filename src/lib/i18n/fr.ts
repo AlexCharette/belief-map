@@ -122,7 +122,9 @@ export const fr: Messages = {
 		styleCard: 'Carte'
 	},
 	edge: {
-		insertHere: 'Insérer une croyance ici'
+		insertHere: 'Insérer une croyance ici',
+		deleteEdge: 'Détacher cette croyance',
+		edgeDetached: 'Croyance détachée'
 	},
 	modal: {
 		close: 'Fermer',

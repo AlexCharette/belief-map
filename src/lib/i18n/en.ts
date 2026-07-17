@@ -119,7 +119,9 @@ export const en: Messages = {
 		styleCard: 'Card'
 	},
 	edge: {
-		insertHere: 'Insert a belief here'
+		insertHere: 'Insert a belief here',
+		deleteEdge: 'Detach this belief',
+		edgeDetached: 'Belief detached'
 	},
 	modal: {
 		close: 'Close',
