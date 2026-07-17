@@ -139,12 +139,9 @@
 		border-color: var(--accent);
 	}
 
-	/* Mobile: keep the cluster in a right-hand zone (leaves the top-left palette
-	   clear) and drop command labels to a compact icon-only strip. */
+	/* Mobile: drop command labels to a compact icon-only strip. (The top-left
+	   palette moves to the bottom on mobile, so the bar can use the full width.) */
 	@media (max-width: 640px) {
-		.cluster {
-			max-width: min(calc(100vw - 68px), 64vw);
-		}
 		.cluster .btn {
 			padding: 0.5rem;
 			gap: 0;

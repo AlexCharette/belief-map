@@ -103,7 +103,7 @@
 	.option.active {
 		background: color-mix(in srgb, var(--accent) 10%, transparent);
 	}
-	/* Reserve the check column so the flag+label align whether or not the row is active. */
+	/* Reserve the check column so the flag + label align whether or not the row is active. */
 	.option:not(.active) > .flag {
 		margin-left: 1.4rem;
 	}

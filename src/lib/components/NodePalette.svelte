@@ -42,6 +42,14 @@
 		gap: 0.4rem;
 		align-items: center;
 	}
+	/* On mobile the top-right bar owns the top edge; drop these controls to the
+	   bottom-left so they don't collide (help chip stays bottom-right). */
+	@media (max-width: 640px) {
+		.palette {
+			top: auto;
+			bottom: 12px;
+		}
+	}
 	.tidy {
 		display: inline-flex;
 		align-items: center;
