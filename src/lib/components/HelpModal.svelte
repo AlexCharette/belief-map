@@ -1,9 +1,21 @@
 <script lang="ts">
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
+	import { BTC_ADDRESS, KOFI_URL } from '$lib/donate';
 	import Modal from './Modal.svelte';
 	import Icon from './Icon.svelte';
 	import type { IconName } from '$lib/icons';
+
+	let copied = $state(false);
+	let copyTimer: ReturnType<typeof setTimeout>;
+	let kofiOpen = $state(false);
+
+	async function copyAddress() {
+		await navigator.clipboard.writeText(BTC_ADDRESS);
+		copied = true;
+		clearTimeout(copyTimer);
+		copyTimer = setTimeout(() => (copied = false), 2000);
+	}
 
 	// One icon per how-to step, paired by index with i18n.m.help.steps. Each matches
 	// the affordance the step describes, using the same glyph the app uses for it:
@@ -21,7 +33,9 @@
 	];
 </script>
 
-<Modal onclose={() => ui.closeHelp()} maxWidth={560}>
+<!-- Both modals listen for Escape globally, so while the Ko-fi popup is open the
+     outer modal's close must dismiss the popup instead of the whole help dialog. -->
+<Modal onclose={() => (kofiOpen ? (kofiOpen = false) : ui.closeHelp())} maxWidth={560}>
 	<div class="help">
 		<h2>{i18n.m.app.title}</h2>
 		<p>{i18n.m.help.intro}</p>
@@ -36,8 +50,33 @@
 				</li>
 			{/each}
 		</ul>
+
+		<h3>{i18n.m.help.donateTitle}</h3>
+		<p>{i18n.m.help.donateBody}</p>
+		<div class="donate">
+			<span class="glyph"><Icon name="bitcoin" size={16} color="var(--accent)" /></span>
+			<code>{BTC_ADDRESS}</code>
+			<button class="btn" onclick={copyAddress} aria-label={i18n.m.help.copyAddress}>
+				<Icon name={copied ? 'check' : 'copy'} size={16} />
+				<span>{copied ? i18n.m.help.copied : i18n.m.help.copyAddress}</span>
+			</button>
+		</div>
+		<div class="donate">
+			<span class="glyph"><Icon name="coffee" size={16} color="var(--accent)" /></span>
+			<button class="btn" onclick={() => (kofiOpen = true)}>
+				<span>{i18n.m.help.donateKofi}</span>
+			</button>
+		</div>
 	</div>
 </Modal>
+
+{#if kofiOpen}
+	<Modal onclose={() => (kofiOpen = false)} maxWidth={420}>
+		<!-- The Ko-fi widget is only loaded here, on explicit user action, so the app
+		     makes no third-party requests until the visitor opts in. -->
+		<iframe src={KOFI_URL} class="kofi" height="712" title={i18n.m.help.donateKofi}></iframe>
+	</Modal>
+{/if}
 
 <style>
 	.help h2 {
@@ -70,6 +109,31 @@
 		gap: 0.6rem;
 		font-size: 0.9rem;
 		line-height: 1.4;
+	}
+	.donate {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-size: 0.9rem;
+	}
+	.donate + .donate {
+		margin-top: 0.6rem;
+	}
+	.donate code {
+		flex: 1;
+		font-size: 0.8rem;
+		overflow-wrap: anywhere;
+	}
+	.donate .btn {
+		flex: none;
+	}
+	.kofi {
+		display: block;
+		border: none;
+		width: 100%;
+		padding: 4px;
+		background: #f9f9f9;
+		border-radius: calc(var(--radius) - 4px);
 	}
 	.glyph {
 		flex: none;

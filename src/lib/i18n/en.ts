@@ -154,7 +154,12 @@ export const en: Messages = {
 			'Tidy (top-left) auto-arranges everything back into neat trees.',
 			'Categories (top bar) lets you rename, recolor, and re-icon your source categories and confidence levels — or load a preset.',
 			'Use the map picker to keep several maps; Import / Export save and load them as JSON.'
-		]
+		],
+		donateTitle: 'Support this project',
+		donateBody: 'If this tool is useful to you, you can support it with a small donation.',
+		copyAddress: 'Copy address',
+		copied: 'Copied!',
+		donateKofi: 'Support on Ko-fi'
 	},
 	taxo: {
 		defaultMapName: 'Your Beliefs',

@@ -157,7 +157,12 @@ export const fr: Messages = {
 			'Ranger (en haut à gauche) réorganise automatiquement le tout en arbres nets.',
 			'Catégories (barre du haut) permet de renommer, recolorer et changer l’icône de vos catégories de source et niveaux de confiance — ou de charger un modèle.',
 			'Utilisez le sélecteur de cartes pour en conserver plusieurs ; Importer / Exporter les enregistre et les charge en JSON.'
-		]
+		],
+		donateTitle: 'Soutenir ce projet',
+		donateBody: 'Si cet outil vous est utile, vous pouvez le soutenir par un petit don.',
+		copyAddress: 'Copier l’adresse',
+		copied: 'Copié !',
+		donateKofi: 'Soutenir sur Ko-fi'
 	},
 	taxo: {
 		defaultMapName: 'Vos croyances',

@@ -161,6 +161,11 @@ export interface Messages {
 		howTo: string;
 		/** Eight how-to steps, paired by index with the icon list in HelpModal.svelte. */
 		steps: [string, string, string, string, string, string, string, string];
+		donateTitle: string;
+		donateBody: string;
+		copyAddress: string;
+		copied: string;
+		donateKofi: string;
 	};
 	/** Default taxonomy DATA seeded into new maps (localized per the chosen locale). */
 	taxo: {
