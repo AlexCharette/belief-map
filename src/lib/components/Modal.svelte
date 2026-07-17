@@ -31,8 +31,8 @@
 		aria-modal="true"
 		onclick={(e) => e.stopPropagation()}
 		onkeydown={(e) => {
+			e.stopPropagation();
 			if (e.key === 'Escape') onclose();
-			else e.stopPropagation();
 		}}
 		tabindex="-1"
 	>
