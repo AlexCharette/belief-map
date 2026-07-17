@@ -5,8 +5,12 @@ import { isLocale, type Locale } from './i18n/messages';
 const INDEX_KEY = 'beliefmap:index';
 const ACTIVE_KEY = 'beliefmap:active';
 const LOCALE_KEY = 'beliefmap:locale';
+/** Canvas node render styles. */
+export type NodeStyle = 'donut' | 'card';
+
 const CARDINALITY_KEY = 'beliefmap:cardinality';
 const TOOLBAR_KEY = 'beliefmap:toolbar';
+const NODE_STYLE_KEY = 'beliefmap:nodestyle';
 const mapKey = (id: string) => `beliefmap:map:${id}`;
 
 function storage(): Storage | null {
@@ -93,4 +97,14 @@ export function loadToolbarOpen(): boolean | null {
 
 export function saveToolbarOpen(open: boolean): void {
 	storage()?.setItem(TOOLBAR_KEY, open ? '1' : '0');
+}
+
+/** Which node render style ('donut' | 'card'), or null if unset/unknown. */
+export function loadNodeStyle(): NodeStyle | null {
+	const raw = storage()?.getItem(NODE_STYLE_KEY);
+	return raw === 'donut' || raw === 'card' ? raw : null;
+}
+
+export function saveNodeStyle(style: NodeStyle): void {
+	storage()?.setItem(NODE_STYLE_KEY, style);
 }

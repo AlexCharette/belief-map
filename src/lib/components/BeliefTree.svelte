@@ -22,10 +22,6 @@
 	const nodeTypes = { belief: BeliefFlowNode };
 	const edgeTypes = { belief: BeliefEdge };
 
-	// d3-hierarchy x/y are node centers; Flow position is the node's top-left.
-	// Offset by half the glyph so donut centers land on the layout grid.
-	const OFFSET = 45;
-
 	let nodes = $state.raw<Node[]>([]);
 	let edges = $state.raw<Edge[]>([]);
 	let viewport = $state.raw<Viewport>({ x: 0, y: 0, zoom: 1 });
@@ -35,20 +31,22 @@
 	function onPaneContextMenu({ event }: { event: MouseEvent }) {
 		event.preventDefault();
 		const rect = paneEl.getBoundingClientRect();
-		const x = (event.clientX - rect.left - viewport.x) / viewport.zoom - OFFSET;
-		const y = (event.clientY - rect.top - viewport.y) / viewport.zoom - OFFSET;
+		// nodeOrigin is [0.5, 0.5], so a node's position is its center — drop the click at that point.
+		const x = (event.clientX - rect.left - viewport.x) / viewport.zoom;
+		const y = (event.clientY - rect.top - viewport.y) / viewport.zoom;
 		ui.openCreateForm({ x, y });
 	}
 
 	$effect(() => {
 		// Auto positions (d3-hierarchy) are the fallback; a node's saved `position`
 		// wins. Positions only change on drag-stop, never mid-drag, so this effect
-		// doesn't stomp an in-progress drag.
+		// doesn't stomp an in-progress drag. nodeOrigin=[0.5,0.5] means a node's
+		// position is its center, so layout centers are used directly.
 		const layout = computeLayout(maps.roots, ui.collapsed, view.cardinality);
 		nodes = layout.nodes.map((n) => ({
 			id: n.data.id,
 			type: 'belief',
-			position: n.data.position ?? { x: n.x - OFFSET, y: n.y - OFFSET },
+			position: n.data.position ?? { x: n.x, y: n.y },
 			data: { node: n.data, collapsed: n.collapsed },
 			draggable: true,
 			selectable: true
@@ -98,6 +96,7 @@
 		bind:viewport
 		{nodeTypes}
 		{edgeTypes}
+		nodeOrigin={[0.5, 0.5]}
 		fitView
 		fitViewOptions={{ maxZoom: 1, padding: 0.25 }}
 		nodesDraggable

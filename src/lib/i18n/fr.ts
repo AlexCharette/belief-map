@@ -116,7 +116,10 @@ export const fr: Messages = {
 		dragHint: 'Faites glisser sur une connexion pour insérer une croyance entre les deux qu’elle relie',
 		tidy: 'Ranger',
 		tidyHint: 'Réorganiser automatiquement — effacer les positions manuelles',
-		directions: 'Directions dans lesquelles la racine se ramifie (1–9)'
+		directions: 'Directions dans lesquelles la racine se ramifie (1–9)',
+		nodeStyle: 'Style de nœud',
+		styleDonut: 'Anneau',
+		styleCard: 'Carte'
 	},
 	edge: {
 		insertHere: 'Insérer une croyance ici'

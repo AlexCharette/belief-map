@@ -2,7 +2,10 @@ import {
 	loadCardinality,
 	saveCardinality,
 	loadToolbarOpen,
-	saveToolbarOpen
+	saveToolbarOpen,
+	loadNodeStyle,
+	saveNodeStyle,
+	type NodeStyle
 } from '../persistence';
 
 export const MIN_CARDINALITY = 1;
@@ -19,10 +22,14 @@ class ViewStore {
 	cardinality = $state(DEFAULT_CARDINALITY);
 	/** Whether the top-right toolbar cluster is expanded (visible). */
 	toolbarOpen = $state(true);
+	/** Which canvas node render style is active. Defaults to 'card'; the in-UI
+	 *  switcher is currently hidden, but the persisted value still applies. */
+	nodeStyle = $state<NodeStyle>('card');
 
 	init(): void {
 		this.cardinality = loadCardinality() ?? DEFAULT_CARDINALITY;
 		this.toolbarOpen = loadToolbarOpen() ?? true;
+		this.nodeStyle = loadNodeStyle() ?? 'card';
 	}
 
 	set(cardinality: number): void {
@@ -35,6 +42,12 @@ class ViewStore {
 	toggleToolbar(): void {
 		this.toolbarOpen = !this.toolbarOpen;
 		saveToolbarOpen(this.toolbarOpen);
+	}
+
+	setNodeStyle(style: NodeStyle): void {
+		if (style === this.nodeStyle) return;
+		this.nodeStyle = style;
+		saveNodeStyle(style);
 	}
 }
 

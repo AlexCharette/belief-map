@@ -129,6 +129,9 @@ export interface Messages {
 		tidy: string;
 		tidyHint: string;
 		directions: string;
+		nodeStyle: string;
+		styleDonut: string;
+		styleCard: string;
 	};
 	edge: {
 		insertHere: string;
