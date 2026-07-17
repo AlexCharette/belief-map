@@ -11,9 +11,8 @@ const config = {
 		adapter: adapter({
 			fallback: '404.html'
 		}),
-		// Served from a GitHub Pages *project* URL (…/belief-map) until a custom domain
-		// is added. The workflow sets BASE_PATH=/belief-map for the build; a root/custom
-		// domain deploy just leaves BASE_PATH unset so base = ''.
+		// Served at the custom domain filament.littlecarts.dev from the root, so base = ''.
+		// BASE_PATH is left available for a project-URL (…/belief-map) fallback build.
 		paths: {
 			base: process.env.BASE_PATH ?? ''
 		}

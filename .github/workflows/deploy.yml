@@ -25,10 +25,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Served at the custom domain filament.littlecarts.dev (root), so no BASE_PATH.
       - run: npm run build
-        env:
-          # Project Pages serves at /<repo>; drop this once a custom domain is set.
-          BASE_PATH: /belief-map
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build
