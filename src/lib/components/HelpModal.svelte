@@ -5,6 +5,20 @@
 	import Icon from './Icon.svelte';
 	import type { IconName } from '$lib/icons';
 
+	// One icon per how-to step, paired by index with i18n.m.help.steps. Each matches
+	// the affordance the step describes, using the same glyph the app uses for it:
+	//  0 create standalone node · 1 click a node → details · 2 edit/collapse badges
+	//  3 the + on a connection · 4 drag to move / re-parent · 5 Tidy · 6 Categories · 7 maps
+	const stepIcons: IconName[] = [
+		'file-plus',
+		'target',
+		'edit',
+		'plus',
+		'move',
+		'sparkles',
+		'tags',
+		'folder'
+	];
 </script>
 
 <Modal onclose={() => ui.closeHelp()} maxWidth={560}>
@@ -12,6 +26,16 @@
 		<h2>{i18n.m.app.title}</h2>
 		<p>{i18n.m.help.intro}</p>
 		<p class="muted">{i18n.m.help.privacy}</p>
+
+		<h3>{i18n.m.help.howTo}</h3>
+		<ul>
+			{#each i18n.m.help.steps as step, i (i)}
+				<li>
+					<span class="glyph"><Icon name={stepIcons[i]} size={16} color="var(--accent)" /></span>
+					<span>{step}</span>
+				</li>
+			{/each}
+		</ul>
 	</div>
 </Modal>
 

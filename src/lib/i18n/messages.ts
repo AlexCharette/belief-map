@@ -1,12 +1,13 @@
 /** Supported UI locales. */
 export type Locale = 'en' | 'fr' | 'de' | 'ru';
 
-/** Language switcher metadata — `native` is shown in the switcher itself. */
-export const LOCALES: { code: Locale; native: string }[] = [
-	{ code: 'en', native: 'English' },
-	{ code: 'fr', native: 'Français' },
-	{ code: 'de', native: 'Deutsch' },
-	{ code: 'ru', native: 'Русский' }
+/** Language switcher metadata — `native` names the language, `flag` is the emoji
+ *  shown in the compact switcher trigger. */
+export const LOCALES: { code: Locale; native: string; flag: string }[] = [
+	{ code: 'en', native: 'English', flag: '🇬🇧' },
+	{ code: 'fr', native: 'Français', flag: '🇫🇷' },
+	{ code: 'de', native: 'Deutsch', flag: '🇩🇪' },
+	{ code: 'ru', native: 'Русский', flag: '🇷🇺' }
 ];
 
 export function isLocale(v: unknown): v is Locale {
