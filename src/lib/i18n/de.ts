@@ -50,9 +50,9 @@ export const de: Messages = {
 		titleAdd: ({ parent }) => `Prämisse zu „${parent}“ hinzufügen`,
 		titleInsert: ({ parent, child }) => `Überzeugung zwischen „${parent}“ und „${child}“ einfügen`,
 		paste: 'Kopierte Details einfügen',
-		name: 'Name',
-		namePlaceholder: 'Ein kurzer Name für diese Überzeugung',
-		nameRequired: 'Sie müssen einen Namen eingeben',
+		description: 'Beschreibung',
+		descriptionPlaceholder: 'Beschreiben Sie diese Überzeugung',
+		descriptionRequired: 'Sie müssen eine Beschreibung eingeben',
 		source: 'Quelle der Begründung',
 		chooseCategory: 'Kategorie wählen…',
 		sourceRequired: 'Sie müssen eine Quelle wählen',
@@ -76,14 +76,14 @@ export const de: Messages = {
 		wouldLoop: 'Das würde eine Schleife erzeugen'
 	},
 	node: {
-		belief: ({ name }) => `Überzeugung: ${name}`,
+		belief: ({ description }) => `Überzeugung: ${description}`,
 		editBelief: 'Überzeugung bearbeiten',
 		expand: 'Aufklappen',
 		collapse: 'Zuklappen'
 	},
 	reroute: {
-		title: ({ name }) => `„${name}“ verschieben`,
-		movedUnder: ({ name, target }) => `„${name}“ unter „${target}“ verschoben`,
+		title: ({ description }) => `„${description}“ verschieben`,
+		movedUnder: ({ description, target }) => `„${description}“ unter „${target}“ verschoben`,
 		hintPrefix: 'Wählen Sie eine neue übergeordnete Überzeugung. Das aktuelle übergeordnete Element ist ',
 		hintSuffix:
 			'. Sie können sie nicht unter sich selbst oder eine ihrer eigenen Prämissen verschieben.',

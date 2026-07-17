@@ -39,7 +39,7 @@ function uuid(): string {
 export function createBelief(input: BeliefInput, isRoot = false): BeliefNode {
 	return {
 		id: uuid(),
-		name: input.name,
+		description: input.description,
 		notes: input.notes,
 		source: input.source,
 		confidence: input.confidence,
@@ -50,16 +50,16 @@ export function createBelief(input: BeliefInput, isRoot = false): BeliefNode {
 }
 
 /** A single seeded root belief. */
-export function newTree(name = 'Your Beliefs'): BeliefNode {
+export function newTree(description = 'Your Beliefs'): BeliefNode {
 	return createBelief(
-		{ name, notes: '', source: Source.LogicalReasoning, confidence: Confidence.Established, references: [] },
+		{ description, notes: '', source: Source.LogicalReasoning, confidence: Confidence.Established, references: [] },
 		true
 	);
 }
 
 /** A brand-new forest (one seeded root). */
-export function newForest(name = 'Your Beliefs'): BeliefNode[] {
-	return [newTree(name)];
+export function newForest(description = 'Your Beliefs'): BeliefNode[] {
+	return [newTree(description)];
 }
 
 /** Structural clone of a node subtree. */
@@ -152,7 +152,7 @@ export function addOrphan(
 /** Update the fields of the node identified by `id`. Returns a new forest. */
 export function updateNode(roots: BeliefNode[], id: string, patch: BeliefInput): BeliefNode[] {
 	return mutateNode(roots, id, (node) => {
-		node.name = patch.name;
+		node.description = patch.description;
 		node.notes = patch.notes;
 		node.source = patch.source;
 		node.confidence = patch.confidence;
@@ -221,15 +221,15 @@ export function moveNode(roots: BeliefNode[], id: string, newParentId: string): 
 export function rerouteCandidates(
 	roots: BeliefNode[],
 	id: string
-): { id: string; name: string; source: string; depth: number }[] {
+): { id: string; description: string; source: string; depth: number }[] {
 	const node = findNode(roots, id);
 	if (!node) return [];
 	const blocked = subtreeIds(node); // self + descendants
 	const currentParent = findParent(roots, id);
-	const out: { id: string; name: string; source: string; depth: number }[] = [];
+	const out: { id: string; description: string; source: string; depth: number }[] = [];
 	const walk = (n: BeliefNode, depth: number) => {
 		const isBlocked = blocked.has(n.id) || currentParent?.id === n.id;
-		if (!isBlocked) out.push({ id: n.id, name: n.name, source: n.source, depth });
+		if (!isBlocked) out.push({ id: n.id, description: n.description, source: n.source, depth });
 		for (const child of n.children) walk(child, depth + 1);
 	};
 	for (const r of roots) walk(r, 0);
@@ -403,7 +403,13 @@ function normalizeNode(
 		p && typeof p.x === 'number' && typeof p.y === 'number' ? { x: p.x, y: p.y } : undefined;
 	return {
 		id: typeof obj.id === 'string' && obj.id ? obj.id : uuid(),
-		name: typeof obj.name === 'string' ? obj.name : '',
+		// Read `description`, falling back to the legacy `name` field for old JSON.
+		description:
+			typeof obj.description === 'string'
+				? obj.description
+				: typeof obj.name === 'string'
+					? obj.name
+					: '',
 		notes: typeof obj.notes === 'string' ? obj.notes : '',
 		source: resolveId(obj.source, catIds, legacy?.source ?? null, fallbackCat),
 		confidence: resolveId(obj.confidence, levelIds, legacy?.confidence ?? null, fallbackLevel),

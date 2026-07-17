@@ -47,9 +47,9 @@ export const en: Messages = {
 		titleAdd: ({ parent }) => `Add a premise to “${parent}”`,
 		titleInsert: ({ parent, child }) => `Insert a belief between “${parent}” and “${child}”`,
 		paste: 'Paste copied details',
-		name: 'Name',
-		namePlaceholder: 'A short name for this belief',
-		nameRequired: 'You must enter a name',
+		description: 'Description',
+		descriptionPlaceholder: 'Describe this belief',
+		descriptionRequired: 'You must enter a description',
 		source: 'Source of justification',
 		chooseCategory: 'Choose a category…',
 		sourceRequired: 'You must choose a source',
@@ -73,14 +73,14 @@ export const en: Messages = {
 		wouldLoop: 'That would create a loop'
 	},
 	node: {
-		belief: ({ name }) => `Belief: ${name}`,
+		belief: ({ description }) => `Belief: ${description}`,
 		editBelief: 'Edit belief',
 		expand: 'Expand',
 		collapse: 'Collapse'
 	},
 	reroute: {
-		title: ({ name }) => `Move “${name}”`,
-		movedUnder: ({ name, target }) => `Moved “${name}” under “${target}”`,
+		title: ({ description }) => `Move “${description}”`,
+		movedUnder: ({ description, target }) => `Moved “${description}” under “${target}”`,
 		hintPrefix: 'Choose a new parent belief. Its current parent is ',
 		hintSuffix: '. You can’t move it under itself or one of its own premises.',
 		noParent: '—',

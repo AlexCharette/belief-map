@@ -48,9 +48,9 @@ export const ru: Messages = {
 		titleAdd: ({ parent }) => `Добавить посылку к «${parent}»`,
 		titleInsert: ({ parent, child }) => `Вставить убеждение между «${parent}» и «${child}»`,
 		paste: 'Вставить скопированные сведения',
-		name: 'Название',
-		namePlaceholder: 'Краткое название убеждения',
-		nameRequired: 'Необходимо указать название',
+		description: 'Описание',
+		descriptionPlaceholder: 'Опишите это убеждение',
+		descriptionRequired: 'Необходимо указать описание',
 		source: 'Источник обоснования',
 		chooseCategory: 'Выберите категорию…',
 		sourceRequired: 'Необходимо выбрать источник',
@@ -74,14 +74,14 @@ export const ru: Messages = {
 		wouldLoop: 'Это создаст цикл'
 	},
 	node: {
-		belief: ({ name }) => `Убеждение: ${name}`,
+		belief: ({ description }) => `Убеждение: ${description}`,
 		editBelief: 'Изменить убеждение',
 		expand: 'Развернуть',
 		collapse: 'Свернуть'
 	},
 	reroute: {
-		title: ({ name }) => `Переместить «${name}»`,
-		movedUnder: ({ name, target }) => `«${name}» перемещено под «${target}»`,
+		title: ({ description }) => `Переместить «${description}»`,
+		movedUnder: ({ description, target }) => `«${description}» перемещено под «${target}»`,
 		hintPrefix: 'Выберите новое родительское убеждение. Текущий родитель — ',
 		hintSuffix: '. Нельзя переместить его под само себя или под одну из его посылок.',
 		noParent: '—',

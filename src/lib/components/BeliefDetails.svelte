@@ -24,7 +24,7 @@
 	}
 	function copy() {
 		ui.copy({
-			name: node.name,
+			description: node.description,
 			notes: node.notes,
 			source: node.source,
 			confidence: node.confidence,
@@ -60,7 +60,7 @@
 		<span class="conf-label">{conf.label}</span>
 	</div>
 
-	<h2>{node.name}</h2>
+	<h2>{node.description}</h2>
 
 	{#if node.notes}
 		<p class="notes">{node.notes}</p>

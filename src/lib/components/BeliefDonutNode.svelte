@@ -25,7 +25,9 @@
 	// opacity = the average confidence of the children in that category group.
 	const segments = $derived.by(() => computeSegments(node));
 
-	const label = $derived(node.name.length > 100 ? node.name.slice(0, 99) + '…' : node.name);
+	const label = $derived(
+		node.description.length > 100 ? node.description.slice(0, 99) + '…' : node.description
+	);
 
 	function open() {
 		ui.select(node.id);
@@ -45,8 +47,8 @@
 	class:selected={ui.selectedId === node.id}
 	role="button"
 	tabindex="0"
-	aria-label={i18n.m.node.belief({ name: node.name })}
-	title={node.name}
+	aria-label={i18n.m.node.belief({ description: node.description })}
+	title={node.description}
 	onmouseenter={() => (hovered = true)}
 	onmouseleave={() => (hovered = false)}
 	onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), open())}

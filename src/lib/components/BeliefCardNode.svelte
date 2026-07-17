@@ -39,8 +39,8 @@
 	class:selected={ui.selectedId === node.id}
 	role="button"
 	tabindex="0"
-	aria-label={i18n.m.node.belief({ name: node.name })}
-	title={node.name}
+	aria-label={i18n.m.node.belief({ description: node.description })}
+	title={node.description}
 	onmouseenter={() => (hovered = true)}
 	onmouseleave={() => (hovered = false)}
 	onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), open())}
@@ -60,7 +60,7 @@
 		<Icon name={own.icon} size={15} />
 	</span>
 
-	<div class="name">{node.name}</div>
+	<div class="description">{node.description}</div>
 
 	<!-- Edit affordance (hover), stacked above the collapse badge. -->
 	{#if hovered}
@@ -138,7 +138,7 @@
 		line-height: 0;
 	}
 
-	.name {
+	.description {
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
@@ -152,7 +152,7 @@
 		line-height: 1.25;
 		color: var(--text);
 	}
-	.card.selected .name {
+	.card.selected .description {
 		color: var(--accent);
 		font-weight: 700;
 	}

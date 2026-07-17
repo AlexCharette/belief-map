@@ -49,9 +49,9 @@ export const fr: Messages = {
 		titleAdd: ({ parent }) => `Ajouter une prémisse à « ${parent} »`,
 		titleInsert: ({ parent, child }) => `Insérer une croyance entre « ${parent} » et « ${child} »`,
 		paste: 'Coller les détails copiés',
-		name: 'Nom',
-		namePlaceholder: 'Un nom court pour cette croyance',
-		nameRequired: 'Vous devez saisir un nom',
+		description: 'Description',
+		descriptionPlaceholder: 'Décrivez cette croyance',
+		descriptionRequired: 'Vous devez saisir une description',
 		source: 'Source de justification',
 		chooseCategory: 'Choisir une catégorie…',
 		sourceRequired: 'Vous devez choisir une source',
@@ -75,14 +75,14 @@ export const fr: Messages = {
 		wouldLoop: 'Cela créerait une boucle'
 	},
 	node: {
-		belief: ({ name }) => `Croyance : ${name}`,
+		belief: ({ description }) => `Croyance : ${description}`,
 		editBelief: 'Modifier la croyance',
 		expand: 'Développer',
 		collapse: 'Réduire'
 	},
 	reroute: {
-		title: ({ name }) => `Déplacer « ${name} »`,
-		movedUnder: ({ name, target }) => `« ${name} » déplacée sous « ${target} »`,
+		title: ({ description }) => `Déplacer « ${description} »`,
+		movedUnder: ({ description, target }) => `« ${description} » déplacée sous « ${target} »`,
 		hintPrefix: 'Choisissez une nouvelle croyance parente. Son parent actuel est ',
 		hintSuffix:
 			'. Vous ne pouvez pas la déplacer sous elle-même ni sous l’une de ses propres prémisses.',

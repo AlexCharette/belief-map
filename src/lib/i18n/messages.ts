@@ -65,9 +65,9 @@ export interface Messages {
 		titleAdd: (p: { parent: string }) => string;
 		titleInsert: (p: { parent: string; child: string }) => string;
 		paste: string;
-		name: string;
-		namePlaceholder: string;
-		nameRequired: string;
+		description: string;
+		descriptionPlaceholder: string;
+		descriptionRequired: string;
 		source: string;
 		chooseCategory: string;
 		sourceRequired: string;
@@ -91,14 +91,14 @@ export interface Messages {
 		wouldLoop: string;
 	};
 	node: {
-		belief: (p: { name: string }) => string;
+		belief: (p: { description: string }) => string;
 		editBelief: string;
 		expand: string;
 		collapse: string;
 	};
 	reroute: {
-		title: (p: { name: string }) => string;
-		movedUnder: (p: { name: string; target: string }) => string;
+		title: (p: { description: string }) => string;
+		movedUnder: (p: { description: string; target: string }) => string;
 		hintPrefix: string; // before the bold parent name
 		hintSuffix: string; // after the bold parent name
 		noParent: string; // em-dash fallback for a missing current parent

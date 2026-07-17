@@ -14,23 +14,28 @@
 	let query = $state('');
 	const filtered = $derived(
 		query.trim()
-			? candidates.filter((c) => c.name.toLowerCase().includes(query.trim().toLowerCase()))
+			? candidates.filter((c) => c.description.toLowerCase().includes(query.trim().toLowerCase()))
 			: candidates
 	);
 
 	function choose(newParentId: string) {
 		maps.applyForestOp((t) => moveNode(t, nodeId, newParentId));
 		const target = findNode(maps.roots, newParentId);
-		ui.notify(i18n.m.reroute.movedUnder({ name: node?.name ?? '', target: target?.name ?? '' }));
+		ui.notify(
+			i18n.m.reroute.movedUnder({
+				description: node?.description ?? '',
+				target: target?.description ?? ''
+			})
+		);
 		ui.closeReroute();
 	}
 </script>
 
 <Modal onclose={() => ui.closeReroute()}>
-	<h3 class="reroute-title">{i18n.m.reroute.title({ name: node?.name ?? '' })}</h3>
+	<h3 class="reroute-title">{i18n.m.reroute.title({ description: node?.description ?? '' })}</h3>
 	<p class="hint">
 		{i18n.m.reroute.hintPrefix}
-		<strong>{currentParent?.name ?? i18n.m.reroute.noParent}</strong>{i18n.m.reroute.hintSuffix}
+		<strong>{currentParent?.description ?? i18n.m.reroute.noParent}</strong>{i18n.m.reroute.hintSuffix}
 	</p>
 
 	{#if candidates.length > 8}
@@ -49,7 +54,7 @@
 				<li>
 					<button class="target" style="padding-left: {0.6 + c.depth * 0.9}rem" onclick={() => choose(c.id)}>
 						<span class="dot" style="background: {meta.colorHex}"></span>
-						<span class="name">{c.name || i18n.m.reroute.untitled}</span>
+						<span class="description">{c.description || i18n.m.reroute.untitled}</span>
 						<Icon name="chevron-right" size={16} color="var(--text-muted)" />
 					</button>
 				</li>
@@ -102,7 +107,7 @@
 		border-radius: 50%;
 		flex: none;
 	}
-	.name {
+	.description {
 		flex: 1;
 		overflow: hidden;
 		text-overflow: ellipsis;

@@ -15,7 +15,7 @@
 	// Default confidence for a new belief = the middle level of the active taxonomy.
 	const midLevel = maps.confidenceLevels[Math.floor((maps.confidenceLevels.length - 1) / 2)];
 
-	let name = $state(targetNode?.name ?? '');
+	let description = $state(targetNode?.description ?? '');
 	let notes = $state(targetNode?.notes ?? '');
 	let source = $state<string>(targetNode?.source ?? '');
 	let confidence = $state<string>(targetNode?.confidence ?? midLevel?.id ?? '');
@@ -25,7 +25,7 @@
 	let attempted = $state(false);
 
 	const canPaste = $derived(mode === 'add' && ui.copied !== null);
-	const nameValid = $derived(name.trim().length > 0);
+	const descriptionValid = $derived(description.trim().length > 0);
 	const sourceValid = $derived(source.length > 0);
 
 	function addReference() {
@@ -37,7 +37,7 @@
 
 	function pasteDetails() {
 		if (!ui.copied) return;
-		name = ui.copied.name;
+		description = ui.copied.description;
 		notes = ui.copied.notes;
 		source = ui.copied.source;
 		confidence = ui.copied.confidence;
@@ -47,10 +47,10 @@
 	function submit(e: SubmitEvent) {
 		e.preventDefault();
 		attempted = true;
-		if (!nameValid || !sourceValid) return;
+		if (!descriptionValid || !sourceValid) return;
 
 		const input: BeliefInput = {
-			name: name.trim(),
+			description: description.trim(),
 			notes,
 			source,
 			confidence,
@@ -83,13 +83,14 @@
 		{/if}
 
 		<div class="field">
-			<label for="belief-name">{i18n.m.form.name}</label>
-			<input
-				id="belief-name"
-				bind:value={name}
-				placeholder={i18n.m.form.namePlaceholder}
-			/>
-			{#if attempted && !nameValid}<span class="error">{i18n.m.form.nameRequired}</span>{/if}
+			<label for="belief-description">{i18n.m.form.description}</label>
+			<textarea
+				id="belief-description"
+				rows="2"
+				bind:value={description}
+				placeholder={i18n.m.form.descriptionPlaceholder}
+			></textarea>
+			{#if attempted && !descriptionValid}<span class="error">{i18n.m.form.descriptionRequired}</span>{/if}
 		</div>
 
 		<div class="row">
