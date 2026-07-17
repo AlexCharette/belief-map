@@ -17,6 +17,14 @@ export const ru: Messages = {
 		showToolbar: 'Показать панель',
 		hideToolbar: 'Скрыть панель'
 	},
+	clearData: {
+		button: 'Очистить данные',
+		title: 'Очистить все данные?',
+		body: 'Это навсегда удалит все карты убеждений и все настройки, сохранённые в этом браузере. Отменить это действие нельзя.',
+		confirm: 'Удалить всё',
+		cancel: 'Отмена',
+		cleared: 'Все данные очищены'
+	},
 	mapManager: {
 		current: 'Filament',
 		newMap: 'Новая карта',

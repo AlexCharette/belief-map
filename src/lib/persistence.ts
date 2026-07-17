@@ -108,3 +108,15 @@ export function loadNodeStyle(): NodeStyle | null {
 export function saveNodeStyle(style: NodeStyle): void {
 	storage()?.setItem(NODE_STYLE_KEY, style);
 }
+
+/** Remove every key this app owns (prefix `beliefmap:`). */
+export function clearAll(): void {
+	const s = storage();
+	if (!s) return;
+	const keys: string[] = [];
+	for (let i = 0; i < s.length; i++) {
+		const k = s.key(i);
+		if (k && k.startsWith('beliefmap:')) keys.push(k);
+	}
+	for (const k of keys) s.removeItem(k);
+}

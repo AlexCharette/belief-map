@@ -65,6 +65,9 @@
 	<button class="btn" onclick={exportMap} aria-label={i18n.m.appbar.export} title={i18n.m.appbar.export}>
 		<Icon name="download" size={16} /> <span class="label">{i18n.m.appbar.export}</span>
 	</button>
+	<button class="btn btn-danger" onclick={() => ui.openClearData()} aria-label={i18n.m.clearData.button} title={i18n.m.clearData.button}>
+		<Icon name="delete" size={16} /> <span class="label">{i18n.m.clearData.button}</span>
+	</button>
 	<LanguageMenu />
 
 	<input

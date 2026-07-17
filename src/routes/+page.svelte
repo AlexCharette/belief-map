@@ -13,6 +13,7 @@
 	import TaxonomyManager from '$lib/components/TaxonomyManager.svelte';
 	import HelpButton from '$lib/components/HelpButton.svelte';
 	import HelpModal from '$lib/components/HelpModal.svelte';
+	import ClearDataModal from '$lib/components/ClearDataModal.svelte';
 	import Toast from '$lib/components/Toast.svelte';
 
 	onMount(() => {
@@ -55,6 +56,10 @@
 
 {#if ui.helpOpen}
 	<HelpModal />
+{/if}
+
+{#if ui.clearDataOpen}
+	<ClearDataModal />
 {/if}
 
 <Toast />

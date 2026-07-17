@@ -35,6 +35,14 @@ export interface Messages {
 		showToolbar: string;
 		hideToolbar: string;
 	};
+	clearData: {
+		button: string;
+		title: string;
+		body: string;
+		confirm: string;
+		cancel: string;
+		cleared: string;
+	};
 	mapManager: {
 		current: string; // fallback trigger label when no active map
 		newMap: string; // "New belief map" action

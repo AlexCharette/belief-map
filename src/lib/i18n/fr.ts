@@ -17,6 +17,14 @@ export const fr: Messages = {
 		showToolbar: 'Afficher la barre d’outils',
 		hideToolbar: 'Masquer la barre d’outils'
 	},
+	clearData: {
+		button: 'Effacer les données',
+		title: 'Effacer toutes les données ?',
+		body: 'Cette action supprime définitivement toutes les cartes de croyances et toutes les préférences enregistrées dans ce navigateur. Elle est irréversible.',
+		confirm: 'Tout supprimer',
+		cancel: 'Annuler',
+		cleared: 'Toutes les données ont été effacées'
+	},
 	mapManager: {
 		current: 'Filament',
 		newMap: 'Nouvelle carte',
