@@ -17,6 +17,14 @@ export const en: Messages = {
 		showToolbar: 'Show toolbar',
 		hideToolbar: 'Hide toolbar'
 	},
+	clearData: {
+		button: 'Clear data',
+		title: 'Clear all data?',
+		body: 'This permanently deletes every belief map and all preferences stored in this browser. This cannot be undone.',
+		confirm: 'Delete everything',
+		cancel: 'Cancel',
+		cleared: 'All data cleared'
+	},
 	mapManager: {
 		current: 'Filament',
 		newMap: 'New belief map',

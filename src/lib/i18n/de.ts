@@ -17,6 +17,14 @@ export const de: Messages = {
 		showToolbar: 'Symbolleiste einblenden',
 		hideToolbar: 'Symbolleiste ausblenden'
 	},
+	clearData: {
+		button: 'Daten löschen',
+		title: 'Alle Daten löschen?',
+		body: 'Dadurch werden alle Glaubenskarten und sämtliche in diesem Browser gespeicherten Einstellungen dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.',
+		confirm: 'Alles löschen',
+		cancel: 'Abbrechen',
+		cleared: 'Alle Daten wurden gelöscht'
+	},
 	mapManager: {
 		current: 'Filament',
 		newMap: 'Neue Karte',

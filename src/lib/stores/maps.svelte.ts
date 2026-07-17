@@ -11,6 +11,7 @@ import {
 import type { BeliefInput } from '../types';
 import { defaultCategories, defaultConfidenceLevels, presets, opacityForIndex } from '../beliefTypes';
 import {
+	clearAll,
 	loadActiveId,
 	loadIndex,
 	loadMap,
@@ -172,6 +173,12 @@ class MapsStore {
 			this.index = remaining;
 		}
 		saveIndex(this.index);
+	}
+
+	/** Wipe ALL persisted app data, then start fresh with a single default map. */
+	clearAllData(): void {
+		clearAll();
+		this.seedDefault();
 	}
 
 	/** Create a new map from an (already normalized) imported document. */

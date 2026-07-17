@@ -25,6 +25,7 @@ class UiStore {
 	reroute = $state<{ open: boolean; nodeId: string }>({ open: false, nodeId: '' });
 	taxonomyOpen = $state(false);
 	helpOpen = $state(false);
+	clearDataOpen = $state(false);
 	toast = $state<{ message: string; seq: number } | null>(null);
 
 	private toastSeq = 0;
@@ -100,6 +101,14 @@ class UiStore {
 
 	closeHelp(): void {
 		this.helpOpen = false;
+	}
+
+	openClearData(): void {
+		this.clearDataOpen = true;
+	}
+
+	closeClearData(): void {
+		this.clearDataOpen = false;
 	}
 
 	toggleCollapse(id: string): void {
