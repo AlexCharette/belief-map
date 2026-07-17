@@ -56,14 +56,14 @@
 <!-- Sliding cluster of controls (map picker, categories, import, export, language). -->
 <div class="cluster" class:collapsed={!view.toolbarOpen} inert={!view.toolbarOpen}>
 	<MapManager />
-	<button class="btn" onclick={() => ui.openTaxonomy()}>
-		<Icon name="tags" size={16} /> {i18n.m.appbar.categories}
+	<button class="btn" onclick={() => ui.openTaxonomy()} aria-label={i18n.m.appbar.categories} title={i18n.m.appbar.categories}>
+		<Icon name="tags" size={16} /> <span class="label">{i18n.m.appbar.categories}</span>
 	</button>
-	<button class="btn" onclick={triggerImport}>
-		<Icon name="upload" size={16} /> {i18n.m.appbar.import}
+	<button class="btn" onclick={triggerImport} aria-label={i18n.m.appbar.import} title={i18n.m.appbar.import}>
+		<Icon name="upload" size={16} /> <span class="label">{i18n.m.appbar.import}</span>
 	</button>
-	<button class="btn" onclick={exportMap}>
-		<Icon name="download" size={16} /> {i18n.m.appbar.export}
+	<button class="btn" onclick={exportMap} aria-label={i18n.m.appbar.export} title={i18n.m.appbar.export}>
+		<Icon name="download" size={16} /> <span class="label">{i18n.m.appbar.export}</span>
 	</button>
 	<LanguageMenu />
 
@@ -87,15 +87,20 @@
 </button>
 
 <style>
-	/* Floating cluster, anchored to the right with room for the toggle chip. */
+	/* Floating cluster, anchored to the right with room for the toggle chip.
+	   Wraps (top → down the right) and is width-capped so it never runs off-screen. */
 	.cluster {
 		position: fixed;
 		top: 12px;
 		right: 56px;
 		z-index: 49;
 		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-content: flex-start;
 		align-items: center;
 		gap: 0.4rem;
+		max-width: calc(100vw - 68px);
 		transition:
 			transform 0.28s ease,
 			opacity 0.2s ease;
@@ -132,5 +137,20 @@
 	.toggle:hover {
 		color: var(--accent);
 		border-color: var(--accent);
+	}
+
+	/* Mobile: keep the cluster in a right-hand zone (leaves the top-left palette
+	   clear) and drop command labels to a compact icon-only strip. */
+	@media (max-width: 640px) {
+		.cluster {
+			max-width: min(calc(100vw - 68px), 64vw);
+		}
+		.cluster .btn {
+			padding: 0.5rem;
+			gap: 0;
+		}
+		.cluster .btn .label {
+			display: none;
+		}
 	}
 </style>

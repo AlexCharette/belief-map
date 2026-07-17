@@ -126,6 +126,15 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	/* Keep the map name from dominating the compact mobile top bar. */
+	@media (max-width: 640px) {
+		.trigger {
+			max-width: 44vw;
+		}
+		.current {
+			max-width: 34vw;
+		}
+	}
 	.dropdown {
 		position: absolute;
 		top: calc(100% + 6px);

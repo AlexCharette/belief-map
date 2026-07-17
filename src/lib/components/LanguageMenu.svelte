@@ -21,9 +21,15 @@
 <svelte:window on:pointerdown={onWindowPointerDown} />
 
 <div class="lang" bind:this={container}>
-	<button class="trigger" onclick={() => (open = !open)} aria-haspopup="true" aria-expanded={open}>
-		<Icon name="globe" size={16} />
-		<span class="current">{active?.native}</span>
+	<button
+		class="trigger"
+		onclick={() => (open = !open)}
+		aria-haspopup="true"
+		aria-expanded={open}
+		aria-label={active?.native}
+		title={active?.native}
+	>
+		<span class="flag">{active?.flag}</span>
 		<Icon name="chevron-down" size={16} />
 	</button>
 
@@ -32,6 +38,7 @@
 			{#each i18n.locales as l (l.code)}
 				<button class="option" class:active={l.code === i18n.locale} onclick={() => choose(l.code)}>
 					{#if l.code === i18n.locale}<Icon name="check" size={16} color="var(--accent)" />{/if}
+					<span class="flag">{l.flag}</span>
 					<span>{l.native}</span>
 				</button>
 			{/each}
@@ -46,11 +53,11 @@
 	.trigger {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4rem;
+		gap: 0.3rem;
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: 8px;
-		padding: 0.45rem 0.7rem;
+		padding: 0.45rem 0.6rem;
 		cursor: pointer;
 		font-size: 0.9rem;
 		font-weight: 600;
@@ -59,8 +66,9 @@
 	.trigger:hover {
 		border-color: var(--accent);
 	}
-	.current {
-		white-space: nowrap;
+	.flag {
+		font-size: 1.15rem;
+		line-height: 1;
 	}
 	.dropdown {
 		position: absolute;
@@ -95,8 +103,8 @@
 	.option.active {
 		background: color-mix(in srgb, var(--accent) 10%, transparent);
 	}
-	/* Reserve the check column so labels align whether or not the row is active. */
-	.option:not(.active) span {
+	/* Reserve the check column so the flag+label align whether or not the row is active. */
+	.option:not(.active) > .flag {
 		margin-left: 1.4rem;
 	}
 </style>
