@@ -4,12 +4,19 @@ import {
 	addOrphan as addOrphanOp,
 	clearPositions,
 	newForest,
+	reassignCategories,
 	reassignCategory,
 	reassignConfidence,
 	setPosition
 } from '../tree/operations';
 import type { BeliefInput } from '../types';
-import { defaultCategories, defaultConfidenceLevels, presets, opacityForIndex } from '../beliefTypes';
+import {
+	completePresetMapping,
+	defaultCategories,
+	defaultConfidenceLevels,
+	presets,
+	opacityForIndex
+} from '../beliefTypes';
 import {
 	clearAll,
 	loadActiveId,
@@ -221,19 +228,19 @@ class MapsStore {
 
 	// --- Taxonomy mutations --------------------------------------------------
 
-	applyPreset(presetId: string, fallbackId: string): void {
+	/** Replace the categories with a preset's, remapping beliefs per `mapping`
+	 *  (oldId → newId). `completePresetMapping` fills gaps and coerces invalid
+	 *  targets, so no belief ends up on a nonexistent category. */
+	applyPreset(presetId: string, mapping: Record<string, string> = {}): void {
 		const preset = presets(i18n.m).find((p) => p.id === presetId);
 		if (!preset) return;
-		const next = preset.categories.map((c) => ({ ...c }));
-		const validId = next.some((c) => c.id === fallbackId) ? fallbackId : next[0].id;
-		const newIds = new Set(next.map((c) => c.id));
-		// Remap any belief whose category no longer exists to the fallback.
-		let roots = this.roots;
-		for (const id of new Set(this.categories.map((c) => c.id))) {
-			if (!newIds.has(id)) roots = reassignCategory(roots, id, validId);
-		}
-		this.categories = next;
-		this.roots = roots;
+		const effective = completePresetMapping(
+			preset,
+			this.categories.map((c) => c.id),
+			mapping
+		);
+		this.roots = reassignCategories(this.roots, effective);
+		this.categories = preset.categories.map((c) => ({ ...c }));
 		this.persist();
 	}
 

@@ -102,8 +102,10 @@ export const ru: Messages = {
 			`Переместить ${count} ${pluralForm('ru', count, { one: 'убеждение', few: 'убеждения', many: 'убеждений', other: 'убеждений' })} из «${label}» в:`,
 		moveAndDelete: 'Переместить и удалить',
 		cancel: 'Отмена',
-		applyPresetPrompt: ({ name }) =>
-			`Загрузить набор «${name}»? Он заменит текущие категории. Убеждения, чья категория исчезает, будут перемещены в:`,
+		applyPresetMapPrompt: ({ name }) =>
+			`Загрузить набор «${name}»? Он заменит текущие категории. Выберите новую категорию для каждой существующей:`,
+		applyPresetEmptyPrompt: ({ name }) =>
+			`Загрузить набор «${name}»? Он заменит текущие категории.`,
 		applyPreset: 'Применить набор',
 		categories: 'Категории',
 		loadPreset: 'Загрузить набор',

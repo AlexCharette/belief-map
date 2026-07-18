@@ -2,7 +2,8 @@
 	import { maps } from '$lib/stores/maps.svelte';
 	import { ui } from '$lib/stores/ui.svelte';
 	import { i18n } from '$lib/stores/i18n.svelte';
-	import { presets, SWATCHES } from '$lib/beliefTypes';
+	import { completePresetMapping, presets, SWATCHES } from '$lib/beliefTypes';
+	import type { Category } from '$lib/types';
 	import { countByCategory, countByConfidence } from '$lib/tree/operations';
 	import Modal from './Modal.svelte';
 	import Icon from './Icon.svelte';
@@ -23,8 +24,14 @@
 		targetId: string;
 	} | null>(null);
 
-	// Pending preset application (choose fallback for orphaned beliefs).
-	let presetPending = $state<{ presetId: string; name: string; fallbackId: string } | null>(null);
+	// Pending preset application: map each in-use category to one of the new set.
+	let presetPending = $state<{
+		presetId: string;
+		name: string;
+		categories: Category[]; // new set (select options)
+		rows: { oldId: string; label: string; count: number }[]; // in-use old categories
+		mapping: Record<string, string>; // oldId → newId, bound to selects
+	} | null>(null);
 
 	function newId() {
 		return crypto.randomUUID();
@@ -75,11 +82,21 @@
 	function choosePreset(presetId: string) {
 		const preset = presets(i18n.m).find((p) => p.id === presetId);
 		if (!preset) return;
-		presetPending = { presetId, name: preset.name, fallbackId: preset.categories[0].id };
+		const inUse = maps.categories.filter((c) => (catCounts[c.id] ?? 0) > 0);
+		presetPending = {
+			presetId,
+			name: preset.name,
+			categories: preset.categories,
+			rows: inUse.map((c) => ({ oldId: c.id, label: c.label, count: catCounts[c.id] })),
+			mapping: completePresetMapping(
+				preset,
+				inUse.map((c) => c.id)
+			)
+		};
 	}
 	function confirmPreset() {
 		if (!presetPending) return;
-		maps.applyPreset(presetPending.presetId, presetPending.fallbackId);
+		maps.applyPreset(presetPending.presetId, presetPending.mapping);
 		presetPending = null;
 	}
 
@@ -108,12 +125,25 @@
 		</div>
 	{:else if presetPending}
 		<div class="remap">
-			<p>{i18n.m.taxonomy.applyPresetPrompt({ name: presetPending.name })}</p>
-			<select bind:value={presetPending.fallbackId}>
-				{#each presets(i18n.m).find((p) => p.id === presetPending!.presetId)!.categories as c (c.id)}
-					<option value={c.id}>{c.label}</option>
-				{/each}
-			</select>
+			{#if presetPending.rows.length > 0}
+				<p>{i18n.m.taxonomy.applyPresetMapPrompt({ name: presetPending.name })}</p>
+				<ul class="rows map-rows">
+					{#each presetPending.rows as row (row.oldId)}
+						<li>
+							<span class="map-old">{row.label}</span>
+							<span class="count">{row.count}</span>
+							<span class="map-arrow">→</span>
+							<select bind:value={presetPending.mapping[row.oldId]}>
+								{#each presetPending.categories as c (c.id)}
+									<option value={c.id}>{c.label}</option>
+								{/each}
+							</select>
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<p>{i18n.m.taxonomy.applyPresetEmptyPrompt({ name: presetPending.name })}</p>
+			{/if}
 			<div class="actions">
 				<button class="btn" onclick={() => (presetPending = null)}>{i18n.m.taxonomy.cancel}</button>
 				<button class="btn btn-primary" onclick={confirmPreset}>{i18n.m.taxonomy.applyPreset}</button>
@@ -389,6 +419,27 @@
 		border-radius: 7px;
 		background: var(--surface);
 		color: var(--text);
+	}
+	.map-rows {
+		max-height: 320px;
+		overflow-y: auto;
+	}
+	.map-old {
+		flex: 1;
+		min-width: 0;
+		font-size: 0.9rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.map-arrow {
+		color: var(--text-muted);
+		flex: none;
+	}
+	.map-rows select {
+		width: auto;
+		flex: 1;
+		min-width: 0;
 	}
 	.actions {
 		display: flex;

@@ -104,8 +104,10 @@ export const fr: Messages = {
 			`Déplacer ${count} ${pluralForm('fr', count, { one: 'croyance', other: 'croyances' })} utilisant « ${label} » vers :`,
 		moveAndDelete: 'Déplacer et supprimer',
 		cancel: 'Annuler',
-		applyPresetPrompt: ({ name }) =>
-			`Charger le modèle ${name} ? Il remplace les catégories actuelles. Les croyances dont la catégorie disparaît seront déplacées vers :`,
+		applyPresetMapPrompt: ({ name }) =>
+			`Charger le modèle ${name} ? Il remplace les catégories actuelles. Choisissez une nouvelle catégorie pour chacune des catégories existantes :`,
+		applyPresetEmptyPrompt: ({ name }) =>
+			`Charger le modèle ${name} ? Il remplace les catégories actuelles.`,
 		applyPreset: 'Appliquer le modèle',
 		categories: 'Catégories',
 		loadPreset: 'Charger un modèle',
