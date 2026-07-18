@@ -289,26 +289,35 @@ export function clearPositions(roots: BeliefNode[]): BeliefNode[] {
 
 // --- Taxonomy reassignment (used by delete / preset-switch) -----------------
 
-/** Point every belief whose `key` id is `fromId` at `toId`. Returns a new forest. */
+/** Rewrite each belief's `key` id through `mapping` (oldId → newId) in a single
+ *  pass, so chained mappings (A→B while B→C) never double-remap a node. Ids
+ *  absent from the mapping are left unchanged. Returns a new forest. */
 function reassign(
 	roots: BeliefNode[],
 	key: 'source' | 'confidence',
-	fromId: string,
-	toId: string
+	mapping: Record<string, string>
 ): BeliefNode[] {
 	const next = cloneForest(roots);
 	walkForest(next, (n) => {
-		if (n[key] === fromId) n[key] = toId;
+		const to = mapping[n[key]];
+		if (to !== undefined) n[key] = to;
 	});
 	return next;
 }
 
 export function reassignCategory(roots: BeliefNode[], fromId: string, toId: string): BeliefNode[] {
-	return reassign(roots, 'source', fromId, toId);
+	return reassign(roots, 'source', { [fromId]: toId });
 }
 
 export function reassignConfidence(roots: BeliefNode[], fromId: string, toId: string): BeliefNode[] {
-	return reassign(roots, 'confidence', fromId, toId);
+	return reassign(roots, 'confidence', { [fromId]: toId });
+}
+
+export function reassignCategories(
+	roots: BeliefNode[],
+	mapping: Record<string, string>
+): BeliefNode[] {
+	return reassign(roots, 'source', mapping);
 }
 
 function countBy(roots: BeliefNode[], key: 'source' | 'confidence'): Record<string, number> {

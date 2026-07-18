@@ -16,6 +16,7 @@ import {
 	newForest,
 	newTree,
 	normalizeMap,
+	reassignCategories,
 	reassignCategory,
 	rerouteCandidates,
 	setPosition,
@@ -289,5 +290,46 @@ describe('reassignCategory / counts', () => {
 		const next = reassignCategory(roots, Source.Faith, Source.Intuition);
 		expect(countByCategory(next)[Source.Faith]).toBeUndefined();
 		expect(countByCategory(next)[Source.Intuition]).toBe(3);
+	});
+});
+
+describe('reassignCategories', () => {
+	const forest = () => {
+		let roots = newForest();
+		roots = addNode(roots, rootId(roots), input('a', Source.Faith));
+		roots = addNode(roots, rootId(roots), input('b', Source.Intuition));
+		roots = addOrphan(roots, input('c', Source.Tradition));
+		return roots;
+	};
+
+	it('applies a chained mapping in a single pass (A→B while B→C)', () => {
+		const next = reassignCategories(forest(), {
+			[Source.Faith]: Source.Intuition,
+			[Source.Intuition]: Source.Tradition
+		});
+		const counts = countByCategory(next);
+		// Former-Faith beliefs land on Intuition and stay there — no double remap.
+		expect(counts[Source.Intuition]).toBe(1);
+		expect(counts[Source.Tradition]).toBe(2);
+		expect(counts[Source.Faith]).toBeUndefined();
+	});
+
+	it('swaps two categories cleanly', () => {
+		const next = reassignCategories(forest(), {
+			[Source.Faith]: Source.Intuition,
+			[Source.Intuition]: Source.Faith
+		});
+		const counts = countByCategory(next);
+		expect(counts[Source.Faith]).toBe(1);
+		expect(counts[Source.Intuition]).toBe(1);
+		expect(counts[Source.Tradition]).toBe(1);
+	});
+
+	it('leaves ids absent from the mapping unchanged and does not mutate the input', () => {
+		const roots = forest();
+		const next = reassignCategories(roots, { [Source.Faith]: Source.EmpiricalData });
+		expect(countByCategory(next)[Source.Intuition]).toBe(1);
+		expect(countByCategory(next)[Source.Tradition]).toBe(1);
+		expect(countByCategory(roots)[Source.Faith]).toBe(1);
 	});
 });

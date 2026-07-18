@@ -98,6 +98,77 @@ export function presets(m: Messages): Preset[] {
 	];
 }
 
+/** Default remap targets when switching presets: targetPresetId → (oldId → newId).
+ *  Consulted only when the old category id doesn't already exist in the target set;
+ *  unknown ids (e.g. custom categories) fall back to the target set's first category. */
+export const PRESET_REMAP_SUGGESTIONS: Record<string, Record<string, string>> = {
+	'dikw': {
+		empiricalData: 'data',
+		directObservation: 'data',
+		scientificEvidence: 'knowledge',
+		logicalReasoning: 'understanding',
+		expertAuthority: 'information',
+		tradition: 'belief',
+		faith: 'belief',
+		intuition: 'speculation',
+		experience: 'data',
+		testimony: 'information',
+		reasoning: 'understanding',
+		openQuestion: 'speculation'
+	},
+	'epistemic-ladder': {
+		empiricalData: 'data',
+		directObservation: 'experience',
+		scientificEvidence: 'knowledge',
+		logicalReasoning: 'reasoning',
+		expertAuthority: 'testimony',
+		tradition: 'testimony',
+		intuition: 'belief',
+		information: 'data',
+		understanding: 'knowledge',
+		wisdom: 'knowledge',
+		speculation: 'assumption'
+	},
+	'source-of-justification': {
+		data: 'empiricalData',
+		experience: 'directObservation',
+		testimony: 'expertAuthority',
+		reasoning: 'logicalReasoning',
+		knowledge: 'scientificEvidence',
+		openQuestion: 'intuition',
+		information: 'empiricalData',
+		understanding: 'logicalReasoning',
+		wisdom: 'intuition',
+		speculation: 'intuition',
+		assumption: 'intuition',
+		belief: 'faith'
+	}
+};
+
+/** Complete a preset-switch mapping: for each old category id, prefer the given
+ *  partial target (when it exists in the preset), then the id itself, then the
+ *  semantic suggestion, then the preset's first category. Single owner of the
+ *  fallback policy — seeds the remap UI and validates the final mapping on apply. */
+export function completePresetMapping(
+	preset: Preset,
+	oldIds: string[],
+	partial: Record<string, string> = {}
+): Record<string, string> {
+	const newIds = new Set(preset.categories.map((c) => c.id));
+	const suggest = PRESET_REMAP_SUGGESTIONS[preset.id] ?? {};
+	const mapping: Record<string, string> = {};
+	for (const id of oldIds) {
+		mapping[id] = newIds.has(partial[id])
+			? partial[id]
+			: newIds.has(id)
+				? id
+				: newIds.has(suggest[id])
+					? suggest[id]
+					: preset.categories[0].id;
+	}
+	return mapping;
+}
+
 /** Confidence → fill opacity, derived from the level's order so any count renders
  *  sensibly. 3 levels → 0.4 / 0.7 / 1.0 (matches the prior fixed scale). */
 export function opacityForIndex(index: number, count: number): number {

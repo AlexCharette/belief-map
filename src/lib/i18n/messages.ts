@@ -118,7 +118,8 @@ export interface Messages {
 		remapPrompt: (p: { count: number; label: string }) => string; // plural
 		moveAndDelete: string;
 		cancel: string;
-		applyPresetPrompt: (p: { name: string }) => string;
+		applyPresetMapPrompt: (p: { name: string }) => string;
+		applyPresetEmptyPrompt: (p: { name: string }) => string;
 		applyPreset: string;
 		categories: string;
 		loadPreset: string;

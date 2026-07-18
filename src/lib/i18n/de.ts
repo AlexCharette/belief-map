@@ -105,8 +105,10 @@ export const de: Messages = {
 			`${count} ${pluralForm('de', count, { one: 'Überzeugung', other: 'Überzeugungen' })} mit „${label}“ verschieben nach:`,
 		moveAndDelete: 'Verschieben & löschen',
 		cancel: 'Abbrechen',
-		applyPresetPrompt: ({ name }) =>
-			`Vorlage ${name} laden? Sie ersetzt die aktuellen Kategorien. Überzeugungen, deren Kategorie entfällt, werden verschoben nach:`,
+		applyPresetMapPrompt: ({ name }) =>
+			`Vorlage ${name} laden? Sie ersetzt die aktuellen Kategorien. Wähle für jede bestehende Kategorie eine neue:`,
+		applyPresetEmptyPrompt: ({ name }) =>
+			`Vorlage ${name} laden? Sie ersetzt die aktuellen Kategorien.`,
 		applyPreset: 'Vorlage anwenden',
 		categories: 'Kategorien',
 		loadPreset: 'Vorlage laden',

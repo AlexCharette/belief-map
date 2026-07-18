@@ -101,8 +101,10 @@ export const en: Messages = {
 			`Move the ${count} ${pluralForm('en', count, { one: 'belief', other: 'beliefs' })} using “${label}” to:`,
 		moveAndDelete: 'Move & delete',
 		cancel: 'Cancel',
-		applyPresetPrompt: ({ name }) =>
-			`Load the ${name} preset? It replaces the current categories. Beliefs whose category disappears move to:`,
+		applyPresetMapPrompt: ({ name }) =>
+			`Load the ${name} preset? It replaces the current categories. Choose a new category for each existing one:`,
+		applyPresetEmptyPrompt: ({ name }) =>
+			`Load the ${name} preset? It replaces the current categories.`,
 		applyPreset: 'Apply preset',
 		categories: 'Categories',
 		loadPreset: 'Load preset',
